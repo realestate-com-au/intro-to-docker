@@ -1,9 +1,6 @@
 FROM ubuntu:latest
 
-RUN apt-get update
-
-## Apache2
-RUN apt-get install -y -q apache2
+RUN apt-get update && apt-get install -y -q apache2
 
 RUN mkdir -p /var/lock/apache2 /var/log/apache2
 
@@ -17,4 +14,4 @@ env LANG               C
 
 CMD ["apache2", "-D", "FOREGROUND"]
 
-ADD docs /var/www/
+COPY docs/* /var/www/html/

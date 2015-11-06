@@ -1,7 +1,4 @@
 FROM ubuntu:latest
-
-# Defaults
-env GREETEE World
+COPY hello.sh /app/run
+ENV GREETEE World
 CMD ["/app/run"]
-
-ADD hello.sh /app/run
