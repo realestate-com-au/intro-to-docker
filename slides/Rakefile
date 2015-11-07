@@ -1,0 +1,16 @@
+task "default" => "../exercises.md"
+
+file "../exercises.md" => "index.html" do |t|
+  slides_body = File.read("index.html")
+    .sub(%r{.*<textarea id="source">(.*)</textarea>.*}m) { $1 }
+  slides = slides_body.split("---\n")
+  slides.each do |slide|
+    slide.sub!(/.*^# /m, '# ')
+  end
+  File.open(t.name, "w") do |exercises|
+    slides.each do |slide|
+      next unless slide =~ /^# Exercise: /
+      exercises.puts slide
+    end
+  end
+end
