@@ -1,9 +1,9 @@
-# Kata - run a command
+# Exercise: run a command
 
     $ docker run ubuntu dpkg -l
     $ docker run centos rpm -qa
 
-# Kata - how much overhead?
+# Exercise: how much overhead?
 
 Use "time" to measure the overhead of running a command in a container.
 
@@ -11,16 +11,16 @@ Use "time" to measure the overhead of running a command in a container.
 
 How much time did Docker add?
 
-# Kata - run a shell
+# Exercise: run a shell
 
     $ docker run -i -t ubuntu bash
 
-# Kata - show Docker containers
+# Exercise: show Docker containers
 
     $ docker ps
     $ docker ps -a
 
-# Kata - install some software
+# Exercise: install some software
 
     $ docker run -i -t ubuntu bash
 
@@ -30,19 +30,19 @@ How much time did Docker add?
 
     root@container# curl http://example.com
 
-# Kata - manually snapshot an image
+# Exercise: manually snapshot an image
 
     $ last_container=`docker ps -a -q -n 1`
     $ docker commit $last_container ubuntu-with-curl
 
     $ docker run -i -t ubuntu-with-curl curl http://example.com
 
-# Kata - show Docker images
+# Exercise: show Docker images
 
     $ docker images
     $ docker history ubuntu-with-curl
 
-# Kata - build an image using a Dockerfile
+# Exercise: build an image using a Dockerfile
 
 Build it:
 
@@ -53,15 +53,15 @@ Run it:
     $ docker run hello /app/run
     $ docker run hello
 
-# Kata - configure using environment variables
+# Exercise: configure using environment variables
 
     $ docker run -e GREETEE=Kitty hello
 
-# Kata - inspect built image
+# Exercise: inspect built image
 
     $ docker history hello
 
-# Kata - build cache
+# Exercise: build cache
 
 Build again:
 
@@ -69,24 +69,24 @@ Build again:
 
 Why so fast?
 
-# Kata - make a change, and rebuild
+# Exercise: make a change, and rebuild
 
 Edit `hello/hello.sh`, then:
 
     $ docker build -t hello ./hello
 
-# Kata - push an image to Docker Hub
+# Exercise: push an image to Docker Hub
 
     $ docker build -t YOURNAMEHERE/hello ./hello
 
     $ docker push YOURNAMEHERE/hello
 
-# Kata - run an image from the public registry
+# Exercise: run an image from the public registry
 
     $ docker run hello-world
     $ docker run YOURNEIGHBOUR/hello
 
-# Kata - build a more complex image
+# Exercise: build a more complex image
 
     $ docker build -t mysite ./mysite
 
@@ -98,7 +98,7 @@ Edit `hello/hello.sh`, then:
 
 (then browse to http://$docker_ip)
 
-# Kata - here's one I prepared earlier
+# Exercise: here's one I prepared earlier
 
     $ docker run -p 80:80 woollyams/blob-store
 
