@@ -3,45 +3,53 @@
   <head>
     <title>Title</title>
     <meta charset="utf-8">
-    <style>
-      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
-      @import url(https://fonts.googleapis.com/css?family=Noto+Serif:400,700,400italic);
-      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
-
-      body { font-family: 'Noto Serif'; }
-      h1, h2, h3 {
-        font-family: 'Yanone Kaffeesatz';
-        font-weight: normal;
-      }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <textarea id="source">
 
 class: center, middle
+# Getting started with Docker
 
-# Title
+Mike Williams
 
 ---
-
 # Agenda
 
-1. Introduction
-2. Deep-dive
+1. Docker basics
+  * Concepts
+  * Running containers
+  * Building images
+2. More
 3. Stuff
 
 ---
-
 # Introduction
 
 Blah blah
+
+---
+# Dockerfile
+
+```
+FROM ubuntu
+RUN apt-get install curl
+```
+
+```ruby
+def foo
+  s = "dsfsf"
+end
+```
+
 
     </textarea>
     <script src="remark-latest.min.js">
     </script>
     <script>
-      var slideshow = remark.create();
+      var slideshow = remark.create({
+        highlightStyle: 'vs'
+      });
     </script>
   </body>
 </html>
