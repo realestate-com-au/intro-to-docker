@@ -57,6 +57,10 @@ Run it:
 
     $ docker run -e GREETEE=Kitty hello
 
+# Kata - inspect built image
+
+    $ docker history hello
+
 # Kata - build cache
 
 Build again:
