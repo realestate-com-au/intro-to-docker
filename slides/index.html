@@ -132,11 +132,11 @@ Not a new idea:
 
 .lhs[
 
-* made of layers
-* copy-on-write
+Images are made of "layers", and can **share** base layers.
 
+Container root file system is just another (writable) layer.
 
-* many options:
+Various drivers supported:
   - aufs
   - btrfs
   - devicemapper
