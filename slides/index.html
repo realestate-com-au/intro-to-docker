@@ -40,28 +40,51 @@ class: center, middle
 ![on Windows](media/mac_docker_host.svg)
 ]
 
+???
+
+Notes for me
+
 ---
 # Basic concepts
 
-  * **Image** - a filesystem snapshot, plus metadata
-      - similar to: Virtual Machine image, AMI (Amazon Machine Image)
+## "image"
 
-  * **Container** - an isolated set of processs
-      - similar to: Virtual Machine, EC2 instance
+  * a filesystem snapshot, plus metadata
+  * similar to:
+    - Virtual Machine image
+    - AMI (Amazon Machine Image)
+
+--
+
+## "container"
+
+  * an isolated set of processs
+  * similar to:
+    - Virtual Machine
+    - EC2 instance
 
 ---
-# Excercise: Hello world!
+# Exercise: Hello world!
 
 "Pull" an image:
 
 ```
 $ docker pull hello-world
+Using default tag: latest
+latest: Pulling from library/hello-world
+3f12c794407e: Pull complete
+975b84d108f1: Pull complete
+Digest: sha256:517f03be3f8169d84711c9ffb2b3235a4d27c1…
+Status: Downloaded newer image for hello-world:latest
 ```
 
 Run a container:
 
 ```
 $ docker run hello-world
+
+Hello from Docker.
+…
 ```
 
 ---
