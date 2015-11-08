@@ -169,12 +169,84 @@ Various drivers supported:
 ]
 
 ---
-# Try it: run a command
+# Containers vs. Virtualisation
+
+.center[
+![VMs vs. containers](diagrams/containers-vs-vms.png)
+]
+
+---
+# Containers vs. Virtualisation
+
+<table class="compare">
+  <tr>
+    <td></td>
+    <th>Virtual<br/>Machines</th>
+    <th>Docker</th>
+  </tr>
+  <tr>
+    <td class="factor">image size</td>
+    <td>Gigabytes</td>
+    <td>Megabytes</td>
+  </tr>
+  <tr>
+    <td class="factor">startup time</td>
+    <td>minutes</td>
+    <td>sub-second</td>
+  </tr>
+  <tr>
+    <td class="factor">Linux kernel is</td>
+    <td>separate</td>
+    <td>shared</td>
+  </tr>
+  <tr>
+    <td class="factor">isolation is</td>
+    <td>complete</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td class="factor">used to encapsulate</td>
+    <td>servers</td>
+    <td>services</td>
+  </tr>
+</table>
+
+---
+# Try it: run multiple Linux distros
+
+Run Ubuntu:
 
 ```
 $ docker run ubuntu dpkg -l
+```
+
+or CentOS:
+
+```
 $ docker run centos rpm -qa
 ```
+
+---
+# Try it: which kernel?
+
+Run `uname -a` on both `ubuntu` and `centos`:
+
+```
+$ docker run ubuntu uname -a
+$ docker run centos uname -a
+```
+
+Spot the difference?
+
+--
+
+…
+
+Trick question: same kernel, same result.
+
+.center[
+![2 distros, one kernel](diagrams/two-distros-one-kernel.png)
+]
 
 ---
 # Try it: overhead, much?

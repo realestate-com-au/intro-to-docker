@@ -35,6 +35,21 @@ div.rhs {
   font-size: 150%;
 }
 
+table.compare {
+  border-collapse: collapse;
+  margin: auto;
+}
+
+table.compare th, table.compare td {
+  border: 1px solid #aaa;
+  padding: 6px 10px;
+  text-align: center;
+}
+
+table.compare td.factor {
+  font-style: italic;
+}
+
 table.docker-image {
   margin: 10px auto;
   border-collapse: collapse;
