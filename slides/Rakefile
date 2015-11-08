@@ -10,7 +10,7 @@ file "../exercises.md" => "index.html" do |t|
   end
   File.open(t.name, "w") do |exercises|
     slides.each do |slide|
-      next unless slide =~ /^# Exercise: /
+      next unless slide =~ /^# Try it:/
       exercises.puts slide
     end
   end
