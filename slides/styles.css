@@ -12,6 +12,14 @@ pre {
   padding: 6px;
   border: 1px solid #eee;
   border-radius: 3px;
+  background: black;
+  color: #ddd;
+}
+
+.remark-inline-code {
+  border: 1px solid #eee;
+  font-size: 90%;
+  padding: 2px;
 }
 
 div.half {
