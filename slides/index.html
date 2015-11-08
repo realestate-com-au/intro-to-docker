@@ -72,7 +72,7 @@ Hello from Docker.
 ---
 # Basic concepts
 
-.half[
+.lhs[
 
 ## "image"
 
@@ -86,7 +86,7 @@ Hello from Docker.
 
 --
 
-.half[
+.rhs[
 
 ## "container"
 
@@ -103,9 +103,12 @@ Hello from Docker.
 ]
 
 ---
-class: center, middle
+class: center, middle, big
 
-.big[Linux "cgroups" + "image" management = **Docker**]
+# The clever bits
+
+Linux "cgroups" + "image" management =
+![Docker](media/docker/small_v-trans.png)
 
 ---
 # Linux "control groups"
@@ -127,8 +130,29 @@ Not a new idea:
 ---
 # Union file systems
 
-* Made of layers
-* Copy-On-Write
+.lhs[
+
+* made of layers
+* copy-on-write
+
+
+* many options:
+  - aufs
+  - btrfs
+  - devicemapper
+  - overlay
+  - zfs
+
+]
+
+.rhs[
+<table class="docker-image">
+  <tr><td class="writable">container root</td></tr>
+  <tr><td>image layer</td></tr>
+  <tr><td>image layer</td></tr>
+  <tr><td>image layer</td></tr>
+</table>
+]
 
 ---
 # Exercise: run a command
