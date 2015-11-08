@@ -45,31 +45,13 @@ class: center, middle
 Notes for me
 
 ---
-# Basic concepts
-
-## "image"
-
-  * a filesystem snapshot, plus metadata
-  * similar to:
-    - Virtual Machine image
-    - AMI (Amazon Machine Image)
-
---
-
-## "container"
-
-  * an isolated set of processs
-  * similar to:
-    - Virtual Machine
-    - EC2 instance
-
----
 # Exercise: Hello world!
 
 "Pull" an image:
 
 ```
 $ docker pull hello-world
+
 Using default tag: latest
 latest: Pulling from library/hello-world
 3f12c794407e: Pull complete
@@ -88,6 +70,67 @@ Hello from Docker.
 ```
 
 ---
+# Basic concepts
+
+.half[
+
+## "image"
+
+  * a file system snapshot
+  * plus metadata
+  * similar to:
+    - Virtual Machine image
+    - AMI (Amazon Machine Image)
+
+]
+
+--
+
+.half[
+
+## "container"
+
+  * an isolated set of processs
+  * similar to:
+    - Virtual Machine
+    - EC2 instance
+
+]
+
+--
+.center[
+![on Linux](diagrams/images-and-containers.png)
+]
+
+---
+class: center, middle
+
+.big[Linux "cgroups" + "image" management = **Docker**]
+
+---
+# Linux "control groups"
+
+.big.center[cgroups = "`chroot` on steroids"]
+
+<br/>
+
+Isolate processes by limiting access to:
+  - file system
+  - hardware resources
+  - other processes
+
+Not a new idea:
+  * aka LXC
+  * used extensively by PaaS such as Heroku
+  * similar to Solaris Zones, BSD Jails
+
+---
+# Union file systems
+
+* Made of layers
+* Copy-On-Write
+
+---
 # Exercise: run a command
 
 ```
@@ -96,7 +139,7 @@ $ docker run centos rpm -qa
 ```
 
 ---
-# Exercise: how much overhead?
+# Exercise: overhead, much?
 
 Use "time" to measure the overhead of running a command in a container.
 

@@ -13,3 +13,12 @@ pre {
   border: 1px solid #eee;
   border-radius: 3px;
 }
+
+div.half {
+  float: left;
+  width: 49%;
+}
+
+.big {
+  font-size: 150%;
+}
