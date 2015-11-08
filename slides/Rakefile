@@ -1,6 +1,7 @@
 task "default" => "../exercises.md"
 
 file "../exercises.md" => "index.html" do |t|
+  puts "re-generating #{t.name}"
   slides_body = File.read("index.html")
     .sub(%r{.*<textarea id="source">(.*)</textarea>.*}m) { $1 }
   slides = slides_body.split("---\n")
