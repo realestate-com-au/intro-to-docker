@@ -12,28 +12,56 @@ class: center, middle
 # Getting started with
 
 ![Docker](media/docker/small_v-trans.png)
+
 ---
 # Agenda
 
-1. Docker basics
-  * Concepts
-  * Running containers
+  * Installation
+  * Hello world!
+  * Key concepts
+  * Containers
+  * Images
   * Building images
-2. More
-3. Stuff
 
 ---
-# Dockerfile
+# Installing Docker
+
+  * OS X: "Docker Toolbox", or HomeBrew
+
+  * Windows: "Docker Toolbox"
+
+  * Linux: `curl -sSL https://get.docker.com/ | sh`
+
+---
+# How it works
+
+.center[
+![on Linux](media/linux_docker_host.svg)
+![on Windows](media/mac_docker_host.svg)
+]
+
+---
+# Basic concepts
+
+  * **Image** - a filesystem snapshot, plus metadata
+      - similar to: Virtual Machine image, AMI (Amazon Machine Image)
+
+  * **Container** - an isolated set of processs
+      - similar to: Virtual Machine, EC2 instance
+
+---
+# Excercise: Hello world!
+
+"Pull" an image:
 
 ```
-FROM ubuntu
-RUN apt-get install curl
+$ docker pull hello-world
 ```
 
-```ruby
-def foo
-  s = "dsfsf"
-end
+Run a container:
+
+```
+$ docker run hello-world
 ```
 
 ---

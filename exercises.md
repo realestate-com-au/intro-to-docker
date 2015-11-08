@@ -1,4 +1,4 @@
-# Exercise: run a command dsf
+# Exercise: run a command
 
 ```
 $ docker run ubuntu dpkg -l
