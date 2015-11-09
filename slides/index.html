@@ -274,35 +274,72 @@ root@3ed46bfba026:/# ls /usr/bin
 ```
 
 ---
-# Try it: install some software
+# Try it: check out those layers
+
+Use `docker history` to view image layers
+
+```
+$ docker history ubuntu
+IMAGE               CREATED             CREATED BY
+a005e6b7dd01        3 weeks ago         /bin/sh -c #(nop) CMD ["/bin/bash"]
+002fa881df8a        3 weeks ago         /bin/sh -c sed -i 's/^#\s*\(deb.*uni…
+66395c31eb82        3 weeks ago         /bin/sh -c echo '#!/bin/sh' > /usr/s…
+0105f98ced6d        3 weeks ago         /bin/sh -c #(nop) ADD file:754fe6755…
+
+```
+
+---
+# Try it: build an image,  the hard way
+
+Install some software in an `ubuntu` container:
 
 ```
 $ docker run -i -t ubuntu bash
-root@f78d00da1408:/# curl http://example.com
-bash: curl: command not found
 root@f78d00da1408:/# apt-get update && apt-get install -y curl
-…
-root@f78d00da1408:/# curl http://example.com
 …
 ^D
 ```
 
----
-# Try it: turn a container into an image
+Now, `commit` that container to create an image:
 
 ```
-$ last_container=`docker ps -a -q -n 1`
+$ last_container=$(docker ps -ql)
 $ docker commit $last_container ubuntu-with-curl
+```
 
-$ docker run -i -t ubuntu-with-curl curl http://example.com
+Check it out:
+
+```
+$ docker history ubuntu-with-curl
+…
+$ docker run ubuntu-with-curl curl http://example.com
 ```
 
 ---
-# Try it: show Docker containers
+# Try it: build an image, the easy way
+
+Create a `Dockerfile`:
 
 ```
-$ docker ps
-$ docker ps -a
+FROM ubuntu
+RUN apt-get update && apt-get install -y curl
+```
+
+And use it to build an image:
+
+```
+$ docker build -t ubuntu-with-curl .
+Sending build context to Docker daemon 2.048 kB
+Step 0 : FROM ubuntu
+ ---> a005e6b7dd01
+Step 1 : RUN apt-get update && apt-get install -y curl
+ ---> Running in 51bf195331b7
+Ign http://archive.ubuntu.com trusty InRelease
+Get:1 http://archive.ubuntu.com trusty-updates InRelease [64.4 kB]
+…
+ ---> 70b42c74bb66
+Removing intermediate container 51bf195331b7
+Successfully built 70b42c74bb66
 ```
 
 ---
@@ -337,10 +374,11 @@ $ docker run -e GREETEE=Kitty hello
 ```
 
 ---
-# Try it: inspect built image
+# Try it: show Docker containers
 
 ```
-$ docker history hello
+$ docker ps
+$ docker ps -a
 ```
 
 ---
