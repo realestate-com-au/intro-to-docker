@@ -83,30 +83,14 @@ Hello from Docker.
 ```
 
 ---
-# Try it: run a shell
-
-```
-$ docker run -i -t ubuntu bash
-```
-
-* `-i` = Keep STDIN open
-* `-t` = Allocate a pseudo-TTY
-
-Now, try doing an Ubuntu thing:
-
-```
-root@container# apt-get update
-```
-
----
 # Key concepts
 
 .lhs[
 
 ## "image"
 
+  * passive
   * a file system snapshot
-  * plus metadata
   * similar to:
     - Virtual Machine image
     - AMI (Amazon Machine Image)
@@ -119,7 +103,8 @@ root@container# apt-get update
 
 ## "container"
 
-  * an isolated set of processs
+  * active
+  * a group of processes
   * similar to:
     - Virtual Machine
     - EC2 instance
@@ -132,20 +117,7 @@ root@container# apt-get update
 ]
 
 ---
-# Containers vs. Virtualisation
-
-.center[
-![VMs vs. containers](diagrams/containers-vs-vms.png)
-]
-
-???
-
-With virtualisation, you have the added weight of a guest kernel.
-
-With Docker, processes communicate directly with the host kernel.
-
----
-# Try it: run multiple Linux distros
+# Try it: different Linux distros
 
 Run Ubuntu:
 
@@ -163,6 +135,35 @@ $ docker run centos rpm -qa
 …
 
 Speedy, huh?
+
+---
+# Try it: run a shell
+
+```
+$ docker run -i -t ubuntu bash
+```
+
+* `-i` = Keep STDIN open
+* `-t` = Allocate a pseudo-TTY
+
+Now, try doing an Ubuntu thing:
+
+```
+root@container# apt-get update
+```
+
+---
+# Containers vs. Virtualisation
+
+.center[
+![VMs vs. containers](diagrams/containers-vs-vms.png)
+]
+
+???
+
+With virtualisation, you have the added weight of a guest kernel.
+
+With Docker, processes communicate directly with the host kernel.
 
 ---
 # Try it: which kernel?
@@ -289,7 +290,7 @@ a005e6b7dd01        3 weeks ago         /bin/sh -c #(nop) CMD ["/bin/bash"]
 ```
 
 ---
-# Try it: build an image,  the hard way
+# Try it: build an image,<br/> the hard way
 
 Install some software in an `ubuntu` container:
 
@@ -316,7 +317,7 @@ $ docker run ubuntu-with-curl curl http://example.com
 ```
 
 ---
-# Try it: build an image, the easy way
+# Try it: build an image,<br/> the easy way
 
 Create a `Dockerfile`:
 
