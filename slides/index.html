@@ -53,7 +53,9 @@ class: center, middle
 
 ???
 
-Notes for me
+Docker only runs on Linux.
+
+On OS X and Windows, you can run it inside a VM.
 
 ---
 # Try it: Hello world!
@@ -78,6 +80,22 @@ $ docker run hello-world
 
 Hello from Docker.
 …
+```
+
+---
+# Try it: run a shell
+
+```
+$ docker run -i -t ubuntu bash
+```
+
+* `-i` = Keep STDIN open
+* `-t` = Allocate a pseudo-TTY
+
+Now, try doing an Ubuntu thing:
+
+```
+root@container# apt-get update
 ```
 
 ---
@@ -114,6 +132,72 @@ Hello from Docker.
 ]
 
 ---
+# Containers vs. Virtualisation
+
+.center[
+![VMs vs. containers](diagrams/containers-vs-vms.png)
+]
+
+???
+
+With virtualisation, you have the added weight of a guest kernel.
+
+With Docker, processes communicate directly with the host kernel.
+
+---
+# Try it: run multiple Linux distros
+
+Run Ubuntu:
+
+```
+$ docker run ubuntu dpkg -l
+```
+
+or CentOS:
+
+```
+$ docker run centos rpm -qa
+```
+
+--
+…
+
+Speedy, huh?
+
+---
+# Try it: which kernel?
+
+Run `uname -a` on both `ubuntu` and `centos`:
+
+```
+$ docker run ubuntu uname -a
+$ docker run centos uname -a
+```
+
+Can you explain the result?
+
+--
+
+…
+
+Different distros, same kernel: same result.
+
+.center[
+![2 distros, one kernel](diagrams/two-distros-one-kernel.png)
+]
+
+---
+# Try it: overhead, much?
+
+Use "time" to measure the overhead of running a command in a container.
+
+```
+$ time docker run ubuntu bash -c "time sleep 1"
+```
+
+How much time did Docker add?
+
+---
 class: center, middle, big
 
 # The clever bits
@@ -124,7 +208,7 @@ Linux "cgroups" + "image" management =
 ---
 # Linux "control groups"
 
-.big.center[cgroups = "`chroot` on steroids"]
+.big.center["`chroot` on steroids"]
 
 <br/>
 
@@ -135,6 +219,7 @@ Isolate processes by limiting access to:
 
 Not a new idea:
   * aka LXC
+  * project started by Google
   * used extensively by PaaS such as Heroku
   * similar to Solaris Zones, BSD Jails
 
@@ -149,8 +234,8 @@ Container root file system is just another (writable) layer.
 
 Various drivers supported:
   - aufs
-  - btrfs
   - devicemapper
+  - btrfs
   - overlay
   - zfs
 
@@ -169,101 +254,47 @@ Various drivers supported:
 ]
 
 ---
-# Containers vs. Virtualisation
+# Try it: test container file system isolation
 
-.center[
-![VMs vs. containers](diagrams/containers-vs-vms.png)
-]
-
----
-# Containers vs. Virtualisation
-
-<table class="compare">
-  <tr>
-    <td></td>
-    <th>Virtual<br/>Machines</th>
-    <th>Docker</th>
-  </tr>
-  <tr>
-    <td class="factor">image size</td>
-    <td>Gigabytes</td>
-    <td>Megabytes</td>
-  </tr>
-  <tr>
-    <td class="factor">startup time</td>
-    <td>minutes</td>
-    <td>sub-second</td>
-  </tr>
-  <tr>
-    <td class="factor">Linux kernel is</td>
-    <td>separate</td>
-    <td>shared</td>
-  </tr>
-  <tr>
-    <td class="factor">isolation is</td>
-    <td>complete</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="factor">used to encapsulate</td>
-    <td>servers</td>
-    <td>services</td>
-  </tr>
-</table>
-
----
-# Try it: run multiple Linux distros
-
-Run Ubuntu:
-
-```
-$ docker run ubuntu dpkg -l
-```
-
-or CentOS:
-
-```
-$ docker run centos rpm -qa
-```
-
----
-# Try it: which kernel?
-
-Run `uname -a` on both `ubuntu` and `centos`:
-
-```
-$ docker run ubuntu uname -a
-$ docker run centos uname -a
-```
-
-Spot the difference?
-
---
-
-…
-
-Trick question: same kernel, same result.
-
-.center[
-![2 distros, one kernel](diagrams/two-distros-one-kernel.png)
-]
-
----
-# Try it: overhead, much?
-
-Use "time" to measure the overhead of running a command in a container.
-
-```
-$ time docker run ubuntu bash -c "time sleep 1"
-```
-
-How much time did Docker add?
-
----
-# Try it: run a shell
+Attempt to cripple your Ubuntu image:
 
 ```
 $ docker run -i -t ubuntu bash
+root@3256d8252fe6:/# ls /usr/bin
+root@3256d8252fe6:/# rm -fr /usr/bin
+root@3256d8252fe6:/# ls /usr/bin
+^D
+```
+
+Now, start another container:
+
+```
+$ docker run -i -t ubuntu bash
+root@3ed46bfba026:/# ls /usr/bin
+```
+
+---
+# Try it: install some software
+
+```
+$ docker run -i -t ubuntu bash
+root@f78d00da1408:/# curl http://example.com
+bash: curl: command not found
+root@f78d00da1408:/# apt-get update && apt-get install -y curl
+…
+root@f78d00da1408:/# curl http://example.com
+…
+^D
+```
+
+---
+# Try it: turn a container into an image
+
+```
+$ last_container=`docker ps -a -q -n 1`
+$ docker commit $last_container ubuntu-with-curl
+
+$ docker run -i -t ubuntu-with-curl curl http://example.com
 ```
 
 ---
@@ -272,29 +303,6 @@ $ docker run -i -t ubuntu bash
 ```
 $ docker ps
 $ docker ps -a
-```
-
----
-# Try it: install some software
-
-```
-$ docker run -i -t ubuntu bash
-
-root@container# curl http://example.com
-
-root@container# apt-get update && apt-get install -y curl
-
-root@container# curl http://example.com
-```
-
----
-# Try it: manually snapshot an image
-
-```
-$ last_container=`docker ps -a -q -n 1`
-$ docker commit $last_container ubuntu-with-curl
-
-$ docker run -i -t ubuntu-with-curl curl http://example.com
 ```
 
 ---
@@ -386,6 +394,42 @@ $ curl http://$docker_ip
 ```
 
 (then browse to `http://$docker_ip`)
+
+---
+# More containers vs. VMs
+
+<table class="compare">
+  <tr>
+    <td></td>
+    <th>Virtual<br/>Machines</th>
+    <th>Docker</th>
+  </tr>
+  <tr>
+    <td class="factor">image size</td>
+    <td>Gigabytes</td>
+    <td>Megabytes</td>
+  </tr>
+  <tr>
+    <td class="factor">startup time</td>
+    <td>minutes</td>
+    <td>sub-second</td>
+  </tr>
+  <tr>
+    <td class="factor">Linux kernel is</td>
+    <td>separate</td>
+    <td>shared</td>
+  </tr>
+  <tr>
+    <td class="factor">isolation is</td>
+    <td>complete</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td class="factor">used to encapsulate</td>
+    <td>servers</td>
+    <td>services</td>
+  </tr>
+</table>
 
 ---
 # Try it: here's one I prepared earlier
