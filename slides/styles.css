@@ -35,6 +35,10 @@ div.rhs {
   font-size: 150%;
 }
 
+a:link {
+  text-decoration: none;
+}
+
 table.compare {
   border-collapse: collapse;
   margin: auto;
@@ -67,5 +71,12 @@ table.docker-image td.writable {
 
 table.docker-image td.snapshot {
   padding: 5px;
+  background-color: #f8f8f8;
   border: 2px solid #666;
+}
+
+table.docker-image td.labels {
+  text-align: left;
+  padding-left: 20px;
+  font-family: 'Ubuntu Mono', monospace;
 }

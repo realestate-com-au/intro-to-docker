@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Title</title>
+    <title>An introduction to Docker</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -9,7 +9,7 @@
     <textarea id="source">
 
 class: center, middle
-# Getting started with
+# An introduction to
 
 ![Docker](media/docker/small_v-trans.png)
 
@@ -17,22 +17,23 @@ class: center, middle
 # Agenda
 
   * Intro and overview
-    * Hello world!
-    * Key concepts
-    * Containers vs Virtual Machines
+    * [Hello world!](#hello-world)
+    * [Key concepts](#key-concepts)
+    * [Containers vs Virtual Machines](#containers-vs-vms)
+    * [The clever bits](#the-clever-bits)
   * Images
-    * getting images
-    * building images
-    * publishing images
-  * Running containers
-    * environment
-    * ports
-    * volumes
-  * Assembling containers
-    * composition
+    * [Names and tags](#image-names-and-tags)
+    * [Building images](#building-images)
+    * [Publishing images](#publishing-images)
+  * Containers
+    * Environment variables
+    * Ports &amp; Links
+    * Volumes
+    * `docker-compose`
   * Applied Docker
-    * for dev and test
-    * in production
+    * 12-factor apps
+    * Docker to support dev and testing
+    * Docker in production
 
 ---
 # Installing Docker
@@ -42,9 +43,6 @@ class: center, middle
   * OS X: "Docker Toolbox", or HomeBrew
 
   * Windows: "Docker Toolbox"
-
----
-# How it works
 
 .center[
 ![on Linux](media/linux_docker_host.svg)
@@ -58,6 +56,7 @@ Docker only runs on Linux.
 On OS X and Windows, you can run it inside a VM.
 
 ---
+name: hello-world
 # Try it: Hello world!
 
 "Pull" an image:
@@ -83,6 +82,7 @@ Hello from Docker.
 ```
 
 ---
+name: key-concepts
 # Key concepts
 
 .lhs[
@@ -153,6 +153,7 @@ root@container# apt-get update
 ```
 
 ---
+name: containers-vs-vms
 # Containers vs. Virtualisation
 
 .center[
@@ -199,6 +200,7 @@ $ time docker run ubuntu bash -c "time sleep 1"
 How much time did Docker add?
 
 ---
+name: the-clever-bits
 class: center, middle, big
 
 # The clever bits
@@ -282,14 +284,69 @@ Use `docker history` to view image layers
 ```
 $ docker history ubuntu
 IMAGE               CREATED             CREATED BY
-a005e6b7dd01        3 weeks ago         /bin/sh -c #(nop) CMD ["/bin/bash"]
-002fa881df8a        3 weeks ago         /bin/sh -c sed -i 's/^#\s*\(deb.*uni…
-66395c31eb82        3 weeks ago         /bin/sh -c echo '#!/bin/sh' > /usr/s…
-0105f98ced6d        3 weeks ago         /bin/sh -c #(nop) ADD file:754fe6755…
+a005e6b7dd01        3 weeks ago         /bin/sh -c #(nop) CMD ["/bin
+002fa881df8a        3 weeks ago         /bin/sh -c sed -i 's/^#\s*\(
+66395c31eb82        3 weeks ago         /bin/sh -c echo '#!/bin/sh'
+0105f98ced6d        3 weeks ago         /bin/sh -c #(nop) ADD file:7
 
 ```
 
 ---
+name: images
+class: center, middle
+
+# Images
+
+---
+name: image-names-and-tags
+# Image names and tags
+
+Image-name pattern:
+
+.center[
+`[[<REGISTRY>/]<NAMESPACE>/]<REPOSITORY>[:<TAG>]`
+]
+
+* `<REGISTRY>` defaults to `hub.docker.com` ("official" registry)
+* `<NAMESPACE>` defaults to `library`
+* `<TAG>` defaults to `latest`
+
+These are all equivalent:
+
+```
+$ docker run hello-world
+$ docker run hello-world:latest
+$ docker run library/hello-world
+$ docker run hub.docker.com/library/hello-world:latest
+$ docker run 975b84d108f1
+$ docker run 975b84d108f1024953937167506c2935a081c8c55ae9e9f7b7deee11
+```
+
+---
+# Try it: investigate tags in the `ubuntu` repository
+
+Run a command using `ubuntu:15.04`:
+
+```
+$ docker run ubuntu:15.04 grep -v "^#" /etc/apt/sources.list
+```
+
+Try the same thing using `ubuntu:14.04`:
+
+```
+$ docker run ubuntu:14.04 grep -v "^#" /etc/apt/sources.list
+```
+
+--
+
+View images in the `ubuntu` repository:
+
+```
+$ docker images ubuntu
+```
+
+---
+name: images
 # Try it: build an image,<br/> the hard way
 
 Install some software in an `ubuntu` container:
@@ -315,6 +372,38 @@ $ docker history ubuntu-with-curl
 …
 $ docker run ubuntu-with-curl curl http://example.com
 ```
+
+---
+# Layers, with labels
+
+```
+$ docker history ubuntu-with-curl
+```
+
+<table class="docker-image">
+  <tr>
+    <td class="snapshot">70b42c74bb66</td>
+    <td class="labels">ubuntu-with-curl</td>
+  </tr>
+  <tr><td>↓</td></tr>
+  <tr>
+    <td class="snapshot">a005e6b7dd01</td>
+    <td class="labels">ubuntu:latest</td>
+  </tr>
+  <tr><td>↓</td></tr>
+  <tr>
+    <td class="snapshot">002fa881df8a</td>
+  </tr>
+  <tr><td>↓</td></tr>
+  <tr>
+    <td class="snapshot">66395c31eb82</td>
+  </tr>
+  <tr><td>↓</td></tr>
+  <tr>
+    <td class="snapshot">0105f98ced6d</td>
+  </tr>
+</table>
+
 
 ---
 # Try it: build an image,<br/> the easy way
@@ -366,6 +455,10 @@ Run it:
 $ docker run hello /app/run
 $ docker run hello
 ```
+---
+name: containers
+class: center, middle
+# Containers
 
 ---
 # Try it: configure using environment variables
