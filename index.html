@@ -307,7 +307,7 @@ Image-name pattern:
 `[[<REGISTRY>/]<NAMESPACE>/]<REPOSITORY>[:<TAG>]`
 ]
 
-* `<REGISTRY>` defaults to `hub.docker.com` ("official" registry)
+* `<REGISTRY>` defaults to `docker.io` ("official" registry)
 * `<NAMESPACE>` defaults to `library`
 * `<TAG>` defaults to `latest`
 
@@ -317,7 +317,7 @@ These are all equivalent:
 $ docker run hello-world
 $ docker run hello-world:latest
 $ docker run library/hello-world
-$ docker run hub.docker.com/library/hello-world:latest
+$ docker run docker.io/library/hello-world:latest
 $ docker run 975b84d108f1
 $ docker run 975b84d108f1024953937167506c2935a081c8c55ae9e9f7b7deee11
 ```
