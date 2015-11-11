@@ -1,4 +1,5 @@
 FROM ubuntu:latest
-COPY hello.sh /app/run
+WORKDIR /app
+COPY hello.sh run
 ENV GREETEE World
 CMD ["/app/run"]

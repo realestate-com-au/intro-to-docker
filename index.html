@@ -433,28 +433,112 @@ Successfully built 70b42c74bb66
 ```
 
 ---
-# Try it: show Docker images
+[`http://hub.docker.com`](http://hub.docker.com)
+
+.center[
+<img src="media/docker-hub.png" width="100%"/>
+]
+
+---
+# Try it: push an image to Docker Hub
+
+Authenticate to Docker Hub:
 
 ```
-$ docker images
-$ docker history ubuntu-with-curl
+$ docker login
+```
+
+"Tag" an image into _your_ namespace:
+
+```
+$ docker tag ubuntu-with-curl YOURNAMEHERE/curly
+```
+
+Now you can push it:
+
+```
+$ docker push YOURNAMEHERE/curly
 ```
 
 ---
-# Try it: build an image using a Dockerfile
-
-Build it:
+# Try it: run an image from the public registry
 
 ```
-$ docker build -t hello ./hello
+$ docker run hello-world
+$ docker run YOURNEIGHBOUR/hello
 ```
 
-Run it:
+---
+class: middle, center
+# Containers
 
-```
-$ docker run hello /app/run
-$ docker run hello
-```
+---
+# Try it: configure using an environment variable
+
+---
+# Try it: pass environment settings from host
+
+---
+# Try it: use an env-file
+
+---
+# Try it: expose a port
+
+---
+# Try it: map a port to a host port
+
+---
+# Try it: link a database container
+
+---
+# Try it: create a volume
+
+---
+# Try it: map a volume from the host
+
+---
+# Try it: use volumes from another container
+
+---
+# Try it: link a database container using docker-compose
+
+---
+class: middle, center
+# Applied Docker
+
+---
+# "12 factor" apps
+
+---
+# Using docker-compose for dev
+
+---
+# Using docker-compose as a build environment
+
+---
+# Docker in production
+
+So many options!
+
+Roll your own:
+
+  - `docker run` plus custom scripts
+  - `docker-compose`
+
+Docker-aware clusters:
+
+  - Amazon **ECS**
+  - Apache **Mesos**
+  - Google **Kubernetes**
+  - Docker **Swarm**
+
+Open-source Platforms-as-a-Service:
+
+  - CloudFoundry
+  - Deis
+  - Convox
+  - etc …
+
 ---
 name: containers
 class: center, middle
@@ -496,21 +580,24 @@ $ docker build -t hello ./hello
 ```
 
 ---
-# Try it: push an image to Docker Hub
+# Try it: build an image using a Dockerfile
+
+Build it:
 
 ```
-$ docker build -t YOURNAMEHERE/hello ./hello
+$ docker build -t hello ./hello
+```
 
-$ docker push YOURNAMEHERE/hello
+Run it:
+
+```
+$ docker run hello /app/run
+$ docker run hello
 ```
 
 ---
-# Try it: run an image from the public registry
+# Try it: push an image to Docker Hub
 
-```
-$ docker run hello-world
-$ docker run YOURNEIGHBOUR/hello
-```
 
 ---
 # Try it: build a more complex image
