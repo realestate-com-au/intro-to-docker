@@ -404,7 +404,6 @@ $ docker history ubuntu-with-curl
   </tr>
 </table>
 
-
 ---
 # Try it: build an image,<br/> the easy way
 
@@ -433,20 +432,51 @@ Successfully built 70b42c74bb66
 ```
 
 ---
-[`http://hub.docker.com`](http://hub.docker.com)
-
-.center[
-<img src="media/docker-hub.png" width="100%"/>
-]
-
----
 # Try it: leverage the "build cache"
 
 Build an image from the recipe provided:
 
 ```
-$ docker build -t hello exercises/hello
+$ docker build -t ciao exercises/ciao
 ```
+
+--
+
+Build it again:
+
+```
+$ docker build -t ciao exercises/ciao
+```
+
+Faster, eh?
+
+---
+# Try it: invalidate the "build cache"
+
+Make a change to `exercises/ciao/index.js`, then build again:
+
+```
+$ docker build -t ciao exercises/ciao
+```
+
+What happens at "Step 5"?
+
+--
+
+Now make a change to `exercises/ciao/package.json`, and build again.
+
+```
+$ docker build -t ciao exercises/ciao
+```
+
+What happens at "Step 4"?
+
+---
+[`http://hub.docker.com`](http://hub.docker.com)
+
+.center[
+<img src="media/docker-hub.png" width="100%"/>
+]
 
 ---
 # Try it: push an image to Docker Hub
