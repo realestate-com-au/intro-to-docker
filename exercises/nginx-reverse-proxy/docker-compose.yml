@@ -1,0 +1,9 @@
+app:
+  image: tutum/hello-world
+
+nginx:
+  build: .
+  links:
+  - app
+  ports:
+  - 80:80

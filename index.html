@@ -583,40 +583,133 @@ class: middle, center
 # Containers
 
 ---
+# Try it: container basics
+
+Run a container as a daemon (in the background):
+
+```
+$ docker run -d ciao
+```
+
+List the running containers:
+
+```
+$ docker ps
+```
+
+List ALL the containers:
+
+```
+$ docker ps -a
+```
+
+Remove a container:
+
+```
+$ docker rm <ID_OR_NAME>
+```
+
+Remove a RUNNING container:
+
+```
+$ docker rm -f <ID_OR_NAME>
+```
+
+---
+# Try it: name your containers
+
+Start a container with a `--name`:
+
+```
+$ docker run --name app ciao
+```
+
+Now you can use the NAME rather than an ID:
+
+```
+$ docker rm -f app
+```
+
+---
 name: ports
 # Try it: map a port to a host port
 
 ```
-$ docker run -p 5678:5000 ciao
+$ docker run -d --name app -p 5678:80 ciao
 ```
 
 .center[
-<img src="diagrams/port-mapping-to-host.png" width=40% />
+<img src="diagrams/ciao-explicit-port.png" width=40% />
 ]
 
 ```
 $ curl $(docker-machine ip default):5678
 ```
 
+Remember to clean up:
+
+```
+$ docker rm -f app
+```
+
 ---
-# Try it: run a daemon container
+# Try it: use a random host port
 
-With the `-d` flag, container detaches from terminal:
+If you don't specify a host port, Docker will choose one:
 
 ```
-$ docker run -d --name ciao -p 5678:5000 ciao
+$ docker run -d --name app -p 80 ciao
 ```
+
+.center[
+<img src="diagrams/ciao-random-port.png" width=40% />
+]
+
+Use `docker port` to discover which one it chose:
+
+```
+$ docker port app 80
+```
+
+---
+# Try it: logs
 
 You can get the output using `docker logs`:
 
 ```
-$ docker logs ciao
+$ docker logs app
 ```
 
-Stop it using `stop`:
+or even follow along in real time:
 
 ```
-$ docker stop ciao
+$ docker logs --follow --timestamps app
+```
+
+---
+# Try it: link two containers
+
+You can link containers together, without exposing ports to the host:
+
+```
+$ docker run -d --name app -p 80 ciao
+$ docker run -d --name web -p 5678:80 --link app:app woollyams/nginx-reverse-proxy
+```
+
+.center[
+  <img src="diagrams/nginx-ciao.png" width="60%" />
+]
+
+To see proof:
+
+```
+$ curl -si $(docker-machine ip default):5678 | grep Server
+```
+
+Cleanup:
+
+```
+$ docker rm -f app web
 ```
 
 ---
@@ -632,12 +725,14 @@ var MESSAGE = (process.env.MESSAGE || "Ciao mondo.");
 You can set them to provide configuration:
 
 ```
-$ docker run -d -p 5678:5000 -e MESSAGE='Hey, guys!' ciao
-$ curl $(docker-machine ip default):5678
+$ docker run -d --name app -p 5678:5000 -e MESSAGE='Hey, guys!' ciao
 ```
 
----
-# Try it: link a database container
+Test the result:
+
+```
+$ curl $(docker-machine ip default):5678
+```
 
 ---
 # Try it: create a volume

@@ -1,7 +1,7 @@
 var express = require('express');
 
 // Constants
-var PORT = (process.env.PORT || "5000");
+var PORT = (process.env.PORT || "80");
 var MESSAGE = (process.env.MESSAGE || "Ciao mondo.");
 
 // SIGINT handler
