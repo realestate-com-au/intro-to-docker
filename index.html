@@ -26,12 +26,13 @@ class: center, middle
     * [Building images](#building-images)
     * [Publishing images](#publishing-images)
   * Containers
-    * Environment variables
-    * Ports &amp; Links
-    * Volumes
-    * `docker-compose`
+    * [Ports](#ports)
+    * [Environment variables](#environment)
+    * [Links](#links)
+    * [Volumes](#volumes)
+    * [`docker-compose`](#compose)
   * Applied Docker
-    * 12-factor apps
+    * [12-factor apps](#12factor)
     * Docker to support dev and testing
     * Docker in production
 
@@ -346,7 +347,7 @@ $ docker images ubuntu
 ```
 
 ---
-name: images
+name: building-images
 # Try it: build an image,<br/> the hard way
 
 Install some software in an `ubuntu` container:
@@ -407,17 +408,17 @@ $ docker history ubuntu-with-curl
 ---
 # Try it: build an image,<br/> the easy way
 
-Create a `Dockerfile`:
+Use a `Dockerfile`:
 
 ```
 FROM ubuntu
 RUN apt-get update && apt-get install -y curl
 ```
 
-And use it to build an image:
+to build an image:
 
 ```
-$ docker build -t ubuntu-with-curl .
+$ docker build -t ubuntu-with-curl exercises/ubuntu-with-curl
 Sending build context to Docker daemon 2.048 kB
 Step 0 : FROM ubuntu
  ---> a005e6b7dd01
@@ -472,7 +473,10 @@ $ docker build -t ciao exercises/ciao
 What happens at "Step 4"?
 
 ---
-[`http://hub.docker.com`](http://hub.docker.com)
+name: publishing-images
+# Publishing images
+
+Sign up for an account at [`http://hub.docker.com`](http://hub.docker.com)
 
 .center[
 <img src="media/docker-hub.png" width="100%"/>
