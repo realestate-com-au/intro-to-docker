@@ -595,18 +595,6 @@ $ curl $(docker-machine ip default):5678
 ```
 
 ---
-# Try it: pass environment settings from host
-
----
-# Try it: use an env-file
-
----
-# Try it: expose a port
-
----
-# Try it: map a port to a host port
-
----
 # Try it: link a database container
 
 ---
@@ -619,6 +607,7 @@ $ curl $(docker-machine ip default):5678
 # Try it: use volumes from another container
 
 ---
+name: docker-compose
 # Try it: link a database container using docker-compose
 
 ---
@@ -626,7 +615,37 @@ class: middle, center
 # Applied Docker
 
 ---
+name: 12factor
 # "12 factor" apps
+
+See [12factor.net](http://12factor.net)
+
+1. **Codebase** - One codebase tracked in revision control, many deploys
+2. **Dependencies** - Explicitly declare and isolate dependencies
+3. **Config** - Store config in the environment
+4. **Backing Services** - Treat backing services as attached resources
+5. **Build, release, run** - Strictly separate build and run stages
+6. **Processes** - Execute the app as one or more stateless processes
+7. **Port binding** - Export services via port binding
+8. **Concurrency** - Scale out via the process model
+9. **Disposability** - Maximize robustness with fast startup and graceful shutdown
+10. **Dev/prod parity** - Keep development, staging, and production as similar as possible
+11. **Logs** - Treat logs as event streams
+12. **Admin processes** - Run admin/management tasks as one-off processes
+
+---
+# "12 factor" containers
+
+.lhs[
+* Use environment variables (not files) to configure your app
+* Expose ports to provide services (e.g. HTTP)
+* Write logs to STDOUT/STDERR (not to files)
+* Treat backing services (e.g. database) as external resources
+]
+
+.rhs[
+<img src="diagrams/12factor-container.png" width="100%" />
+]
 
 ---
 # Using docker-compose for dev
