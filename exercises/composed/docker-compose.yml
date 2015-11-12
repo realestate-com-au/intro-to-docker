@@ -1,0 +1,9 @@
+app:
+  image: ciao
+
+web:
+  image: woollyams/nginx-reverse-proxy
+  links:
+  - app
+  ports:
+  - 5678:80

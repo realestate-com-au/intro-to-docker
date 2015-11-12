@@ -37,8 +37,8 @@ class: center, middle
 
 * Containers
   * [Ports](#ports)
-  * [Environment variables](#environment)
   * [Links](#links)
+  * [Environment variables](#environment)
   * [Volumes](#volumes)
   * [`docker-compose`](#compose)
 
@@ -687,6 +687,7 @@ $ docker logs --follow --timestamps app
 ```
 
 ---
+name: links
 # Try it: link two containers
 
 You can link containers together, without exposing ports to the host:
@@ -735,17 +736,60 @@ $ curl $(docker-machine ip default):5678
 ```
 
 ---
-# Try it: create a volume
-
----
+name: volumes
 # Try it: map a volume from the host
 
----
-# Try it: use volumes from another container
+Mount a directory from the "host":
+
+```
+$ docker run -it --rm -v /tmp/my-cache:/var/cache ubuntu bash
+root@c10a43c38793:/# echo TESTING > /var/cache/test
+^D
+```
+
+and then later:
+
+```
+$ docker run -it --rm -v /tmp/my-cache:/var/cache ubuntu bash
+root@f5be5dec8a5a:/# ls /var/cache/
+```
 
 ---
-name: docker-compose
-# Try it: link a database container using docker-compose
+# Volumes
+
+You can also:
+- mount a volume without specifying the host path
+  - for faster I/O
+- share volumes with other containers
+
+TODO: add some exercises!
+
+---
+name: compose
+# Try it: link containers using docker-compose
+
+- Lifecycle management for _groups_ of containers.
+
+Given YAML config file:
+
+```
+app:
+  image: ciao
+
+web:
+  image: woollyams/nginx-reverse-proxy
+  links:
+  - app
+  ports:
+  - 5678:80
+```
+
+You can start all the containers with:
+
+```
+$ cd exercises/composed
+$ docker-compose up
+```
 
 ---
 class: middle, center
@@ -783,9 +827,6 @@ See [12factor.net](http://12factor.net)
 .rhs[
 <img src="diagrams/12factor-container.png" width="100%" />
 ]
-
----
-# Using docker-compose for dev
 
 ---
 # Using docker-compose as a build environment
