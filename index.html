@@ -790,6 +790,29 @@ See [12factor.net](http://12factor.net)
 ---
 # Using docker-compose as a build environment
 
+For example:
+
+```
+db:
+  image: postgres:9.0
+
+dev:
+  image: ruby:2.2
+  volumes:
+  - .:/cwd
+  working_dir: /cwd
+  links:
+  - db:db
+  ports:
+  - "80:80"
+```
+
+And then:
+
+```
+docker-compose run dev
+```
+
 ---
 # Docker in production
 
