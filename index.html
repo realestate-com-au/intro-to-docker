@@ -516,13 +516,13 @@ $ docker login
 "Tag" an image into _your_ namespace:
 
 ```
-$ docker tag ubuntu-with-curl YOURNAMEHERE/curly
+$ docker tag ciao YOURNAMEHERE/ciao
 ```
 
 Now you can push it:
 
 ```
-$ docker push YOURNAMEHERE/curly
+$ docker push YOURNAMEHERE/ciao
 ```
 
 ---
@@ -533,12 +533,43 @@ for their Docker Hub username.  Then, you shoud be able to
 fetch the image _they_ pushed.
 
 ```
-$ docker pull YOURNEIGHBOUR/curly
+$ docker pull YOURNEIGHBOUR/ciao
 ```
 
 ---
 class: middle, center
 # Containers
+
+---
+name: ports
+# Try it: map a port to a host port
+
+```
+$ docker run -p 5678:5000 ciao
+```
+
+.center[
+<img src="diagrams/port-mapping-to-host.png" width=40% />
+]
+
+```
+$ curl $(docker-machine ip default):5678
+```
+
+---
+# Try it: run a daemon container
+
+With the `-d` flag, container detaches from terminal:
+
+```
+$ docker run -d --name hi hello-world
+```
+
+You can get the output using `docker logs`:
+
+```
+$ docker logs hi
+```
 
 ---
 # Try it: configure using an environment variable

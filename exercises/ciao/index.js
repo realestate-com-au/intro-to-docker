@@ -13,6 +13,7 @@ process.on('SIGINT', function() {
 // App
 var app = express();
 app.get('/', function (req, res) {
+  console.log("Saying: " + MESSAGE);
   res.send(MESSAGE + '\n');
 });
 
