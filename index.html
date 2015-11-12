@@ -44,8 +44,8 @@ class: center, middle
 
 * Applied Docker
   * [12-factor apps](#12factor)
-  * Dev and testing with Docker
-  * Docker in production
+  * [Dev and testing with Docker](#devtest)
+  * [Docker in production](#docker-in-prod)
 
 ]
 
@@ -829,7 +829,8 @@ See [12factor.net](http://12factor.net)
 ]
 
 ---
-# Using docker-compose as a build environment
+name: devtest
+# Using docker-compose as a dev/test/build environment
 
 For example:
 
@@ -851,10 +852,11 @@ dev:
 And then:
 
 ```
-docker-compose run dev
+docker-compose run --rm dev
 ```
 
 ---
+name: docker-in-prod
 # Docker in production
 
 So many options!
