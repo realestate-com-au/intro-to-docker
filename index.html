@@ -159,6 +159,10 @@ $ docker run centos rpm -qa
 
 Speedy, huh?
 
+--
+
+… or not, if you have a slow internet connection :-(
+
 ---
 # Try it: run a shell
 
@@ -188,6 +192,42 @@ name: containers-vs-vms
 With virtualisation, you have the added weight of a guest kernel.
 
 With Docker, processes communicate directly with the host kernel.
+
+---
+# More containers vs. VMs
+
+<table class="compare">
+  <tr>
+    <td></td>
+    <th>Virtual<br/>Machines</th>
+    <th>Docker</th>
+  </tr>
+  <tr>
+    <td class="factor">image size</td>
+    <td>Gigabytes</td>
+    <td>Megabytes</td>
+  </tr>
+  <tr>
+    <td class="factor">startup time</td>
+    <td>minutes</td>
+    <td>sub-second</td>
+  </tr>
+  <tr>
+    <td class="factor">Linux kernel is</td>
+    <td>separate</td>
+    <td>shared</td>
+  </tr>
+  <tr>
+    <td class="factor">isolation is</td>
+    <td>complete</td>
+    <td>pretty good</td>
+  </tr>
+  <tr>
+    <td class="factor">used to encapsulate</td>
+    <td>servers</td>
+    <td>services</td>
+  </tr>
+</table>
 
 ---
 # Try it: which kernel?
@@ -676,117 +716,6 @@ Open-source Platforms-as-a-Service:
   - Deis
   - Convox
   - etc …
-
----
-name: containers
-class: center, middle
-# Containers
-
----
-# Try it: configure using environment variables
-
-```
-$ docker run -e GREETEE=Kitty hello
-```
-
----
-# Try it: show Docker containers
-
-```
-$ docker ps
-$ docker ps -a
-```
-
----
-# Try it: build cache
-
-Build again:
-
-```
-$ docker build -t hello ./hello
-```
-
-Why so fast?
-
----
-# Try it: make a change, and rebuild
-
-Edit `hello/hello.sh`, then:
-
-```
-$ docker build -t hello ./hello
-```
-
----
-# Try it: build an image using a Dockerfile
-
-Build it:
-
-```
-$ docker build -t hello ./hello
-```
-
-Run it:
-
-```
-$ docker run hello /app/run
-$ docker run hello
-```
-
----
-# Try it: push an image to Docker Hub
-
-
----
-# Try it: build a more complex image
-
-```
-$ docker build -t mysite ./mysite
-
-$ docker run -d -p 80:80 mysite
-$ docker ps
-
-$ docker_ip=$(docker-machine ip $(docker-machine active))
-$ curl http://$docker_ip
-```
-
-(then browse to `http://$docker_ip`)
-
----
-# More containers vs. VMs
-
-<table class="compare">
-  <tr>
-    <td></td>
-    <th>Virtual<br/>Machines</th>
-    <th>Docker</th>
-  </tr>
-  <tr>
-    <td class="factor">image size</td>
-    <td>Gigabytes</td>
-    <td>Megabytes</td>
-  </tr>
-  <tr>
-    <td class="factor">startup time</td>
-    <td>minutes</td>
-    <td>sub-second</td>
-  </tr>
-  <tr>
-    <td class="factor">Linux kernel is</td>
-    <td>separate</td>
-    <td>shared</td>
-  </tr>
-  <tr>
-    <td class="factor">isolation is</td>
-    <td>complete</td>
-    <td></td>
-  </tr>
-  <tr>
-    <td class="factor">used to encapsulate</td>
-    <td>servers</td>
-    <td>services</td>
-  </tr>
-</table>
 
 ---
 # Try it: here's one I prepared earlier
