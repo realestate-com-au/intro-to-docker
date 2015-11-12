@@ -8,6 +8,10 @@ h1, h2, h3 {
 }
 .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono', monospace; }
 
+h1 {
+  line-height: 110%;
+}
+
 pre {
   padding: 6px;
   border: 1px solid #eee;

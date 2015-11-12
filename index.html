@@ -562,17 +562,37 @@ $ curl $(docker-machine ip default):5678
 With the `-d` flag, container detaches from terminal:
 
 ```
-$ docker run -d --name hi hello-world
+$ docker run -d --name ciao -p 5678:5000 ciao
 ```
 
 You can get the output using `docker logs`:
 
 ```
-$ docker logs hi
+$ docker logs ciao
+```
+
+Stop it using `stop`:
+
+```
+$ docker stop ciao
 ```
 
 ---
-# Try it: configure using an environment variable
+name: environment
+# Try it: set environment variables
+
+Assuming your application looks for environment variables, e.g.
+
+```
+var MESSAGE = (process.env.MESSAGE || "Ciao mondo.");
+```
+
+You can set them to provide configuration:
+
+```
+$ docker run -d -p 5678:5000 -e MESSAGE='Hey, guys!' ciao
+$ curl $(docker-machine ip default):5678
+```
 
 ---
 # Try it: pass environment settings from host
