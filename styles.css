@@ -6,7 +6,19 @@ body { font-family: 'Noto Sans', sans-serif; }
 h1, h2, h3 {
   font-weight: normal;
 }
-.remark-code, .remark-inline-code { font-family: 'Ubuntu Mono', monospace; }
+.remark-code, .remark-inline-code {
+  font-family: monospace;
+}
+
+.remark-code-span-highlighted {
+  background-color: inherit;
+  color: #ffc;
+}
+
+.hljs-obsidian pre .hljs {
+  background-color: inherit;
+  padding: 0;
+}
 
 h1 {
   line-height: 110%;
