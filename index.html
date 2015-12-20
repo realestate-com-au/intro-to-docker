@@ -810,14 +810,23 @@ VOLUME /var/lib/postgresql/data
 ```
 
 ---
-# Volumes
+# Try it: share a volume with another container
 
-You can also:
-- mount a volume without specifying the host path
-  - for faster I/O
-- share volumes with other containers
+Create a container, with a volume:
 
-TODO: add some exercises!
+```
+$ `docker run -it --name provider -v /shared ubuntu`
+root@118f38503653:/# `echo ohai > /shared/stuff`
+```
+
+Use the volume from a different container:
+
+```
+$ `docker run -it --rm --volumes-from provider ubuntu`
+root@118f38503653:/# `cat /shared/stuff`
+```
+
+NOTE: Docker 1.9 adds first-class volume support.
 
 ---
 name: compose
