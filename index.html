@@ -766,7 +766,8 @@ Mount a directory from the "host":
 
 ```
 $ `docker run -it --rm -v /tmp/my-cache:/var/cache ubuntu bash`
-root@c10a43c38793:/# echo TESTING > /var/cache/test
+root@c10a43c38793:/# `mount | grep cache`
+root@c10a43c38793:/# `echo TESTING > /var/cache/test`
 ^D
 ```
 
@@ -774,7 +775,7 @@ and then later:
 
 ```
 $ `docker run -it --rm -v /tmp/my-cache:/var/cache ubuntu bash`
-root@f5be5dec8a5a:/# ls /var/cache/
+root@f5be5dec8a5a:/# `ls /var/cache/`
 ```
 
 ---
