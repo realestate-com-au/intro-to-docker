@@ -717,7 +717,7 @@ You can link containers together, without exposing ports to the host:
 
 ```
 $ `docker run -d --name app -p 80 ciao`
-$ `docker run -d --name web -p 5678:80 --link app:app woollyams/nginx-reverse-proxy`
+$ `docker run -d --name proxy -p 5678:80 --link app:app woollyams/nginx-reverse-proxy`
 ```
 
 .center[
@@ -733,7 +733,7 @@ $ `curl -si ${DOCKER_IP-localhost}:5678 | grep Server`
 Cleanup:
 
 ```
-$ `docker rm -f app web`
+$ `docker rm -f app proxy`
 ```
 
 ---
@@ -799,7 +799,7 @@ Given YAML config file:
 app:
   image: ciao
 
-web:
+proxy:
   image: woollyams/nginx-reverse-proxy
   links:
   - app

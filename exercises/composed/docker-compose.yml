@@ -1,7 +1,7 @@
 app:
   image: ciao
 
-web:
+proxy:
   image: woollyams/nginx-reverse-proxy
   links:
   - app
