@@ -89,9 +89,19 @@ On OS X and Windows, you can run it inside a VM.
 ---
 # Setup
 
+Let's check that everything is working:
+
 ```
-eval $(docker-machine env default)
+$ `./check-docker-setup.sh`
+YAY: $DOCKER_HOST is set
+YAY: I can talk to docker
+YAY: $DOCKER_IP is set correctly
 ```
+
+Note:
+
+* `$DOCKER_HOST` tells the docker client where to find the docker daemon
+* `$DOCKER_IP` is unique to this tutorial
 
 ---
 name: hello-world
@@ -656,7 +666,7 @@ $ `docker run -d --name app -p 5678:80 ciao`
 ]
 
 ```
-$ `curl $(docker-machine ip default):5678`
+$ `curl ${DOCKER_IP-localhost}:5678`
 ```
 
 Remember to clean up:
@@ -717,7 +727,7 @@ $ `docker run -d --name web -p 5678:80 --link app:app woollyams/nginx-reverse-pr
 To see proof:
 
 ```
-$ `curl -si $(docker-machine ip default):5678 | grep Server`
+$ `curl -si ${DOCKER_IP-localhost}:5678 | grep Server`
 ```
 
 Cleanup:
@@ -745,7 +755,7 @@ $ `docker run -d --name app -p 5678:80 -e MESSAGE='Hey, guys!' ciao`
 Test the result:
 
 ```
-$ `curl $(docker-machine ip default):5678`
+$ `curl ${DOCKER_IP-localhost}:5678`
 ```
 
 ---

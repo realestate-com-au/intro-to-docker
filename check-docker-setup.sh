@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 
 yay() {
   echo -ne "\033[32mYAY: \033[0m"; echo "$1"
@@ -52,7 +52,6 @@ check_darwin_setup() {
 check_linux_setup() {
   check_docker_sock
   check_docker_connectivity
-  check_docker_ip "localhost"
 }
 
 case "`uname`" in
