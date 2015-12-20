@@ -779,6 +779,37 @@ root@f5be5dec8a5a:/# `ls /var/cache/`
 ```
 
 ---
+# Try it: use a volume for extra writable space
+
+Tip: you can improve security by:
+
+* mounting your root volume read-only
+* creating writable volumes as required
+
+```
+$ `docker run -it --rm --read-only -v /scratch ubuntu`
+root@c10a43c38793:/# `mount | grep scratch`
+root@c10a43c38793:/# `echo TESTING > /tmp/test`
+root@c10a43c38793:/# `echo TESTING > /scratch/test`
+```
+
+---
+# Creating volumes in images
+
+Use the `VOLUME` directive in your `Dockerfile` to create a volume.
+
+Sample from "[postgres](https://github.com/docker-library/postgres/blob/8a9fbcb40f13ccc7762f278b9df611cabe22d300/9.5/Dockerfile)" image:
+
+```
+FROM debian:jessie
+RUN apt-get install -y postgresql-common postgresql-9.5
+…
+ENV PGDATA /var/lib/postgresql/data
+VOLUME /var/lib/postgresql/data
+…
+```
+
+---
 # Volumes
 
 You can also:
