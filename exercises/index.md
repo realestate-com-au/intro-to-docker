@@ -3,7 +3,7 @@
 "Pull" an image:
 
 ```
-$ docker pull hello-world
+$ `docker pull hello-world`
 
 Using default tag: latest
 latest: Pulling from library/hello-world
@@ -16,7 +16,7 @@ Status: Downloaded newer image for hello-world:latest
 Run a container:
 
 ```
-$ docker run hello-world
+$ `docker run hello-world`
 
 Hello from Docker.
 …
@@ -27,13 +27,13 @@ Hello from Docker.
 Run Ubuntu:
 
 ```
-$ docker run ubuntu dpkg -l
+$ `docker run ubuntu dpkg -l`
 ```
 
 or CentOS:
 
 ```
-$ docker run centos rpm -qa
+$ `docker run centos rpm -qa`
 ```
 
 --
@@ -41,10 +41,14 @@ $ docker run centos rpm -qa
 
 Speedy, huh?
 
+--
+
+… or not, if you have a slow internet connection :-(
+
 # Try it: run a shell
 
 ```
-$ docker run -i -t ubuntu bash
+$ `docker run -i -t ubuntu bash`
 ```
 
 * `-i` = Keep STDIN open
@@ -53,7 +57,7 @@ $ docker run -i -t ubuntu bash
 Now, try doing an Ubuntu thing:
 
 ```
-root@container# apt-get update
+root@container# `apt-get update`
 ```
 
 # Try it: which kernel?
@@ -61,8 +65,8 @@ root@container# apt-get update
 Run `uname -a` on both `ubuntu` and `centos`:
 
 ```
-$ docker run ubuntu uname -a
-$ docker run centos uname -a
+$ `docker run ubuntu uname -a`
+$ `docker run centos uname -a`
 ```
 
 Can you explain the result?
@@ -82,7 +86,7 @@ Different distros, same kernel: same result.
 Use "time" to measure the overhead of running a command in a container.
 
 ```
-$ time docker run ubuntu bash -c "time sleep 1"
+$ `time docker run ubuntu bash -c "time sleep 1"`
 ```
 
 How much time did Docker add?
@@ -92,18 +96,18 @@ How much time did Docker add?
 Attempt to cripple your Ubuntu image:
 
 ```
-$ docker run -i -t ubuntu bash
-root@3256d8252fe6:/# ls /usr/bin
-root@3256d8252fe6:/# rm -fr /usr/bin
-root@3256d8252fe6:/# ls /usr/bin
+$ `docker run -i -t ubuntu bash`
+root@3256d8252fe6:/# `ls /usr/bin`
+root@3256d8252fe6:/# `rm -fr /usr/bin`
+root@3256d8252fe6:/# `ls /usr/bin`
 ^D
 ```
 
 Now, start another container:
 
 ```
-$ docker run -i -t ubuntu bash
-root@3ed46bfba026:/# ls /usr/bin
+$ `docker run -i -t ubuntu bash`
+root@3ed46bfba026:/# `ls /usr/bin`
 ```
 
 # Try it: check out those layers
@@ -111,7 +115,7 @@ root@3ed46bfba026:/# ls /usr/bin
 Use `docker history` to view image layers
 
 ```
-$ docker history ubuntu
+$ `docker history ubuntu`
 IMAGE               CREATED             CREATED BY
 a005e6b7dd01        3 weeks ago         /bin/sh -c #(nop) CMD ["/bin
 002fa881df8a        3 weeks ago         /bin/sh -c sed -i 's/^#\s*\(
@@ -125,13 +129,13 @@ a005e6b7dd01        3 weeks ago         /bin/sh -c #(nop) CMD ["/bin
 Run a command using `ubuntu:15.04`:
 
 ```
-$ docker run ubuntu:15.04 grep -v "^#" /etc/apt/sources.list
+$ `docker run ubuntu:15.04 grep -v "^#" /etc/apt/sources.list`
 ```
 
 Try the same thing using `ubuntu:14.04`:
 
 ```
-$ docker run ubuntu:14.04 grep -v "^#" /etc/apt/sources.list
+$ `docker run ubuntu:14.04 grep -v "^#" /etc/apt/sources.list`
 ```
 
 --
@@ -139,7 +143,7 @@ $ docker run ubuntu:14.04 grep -v "^#" /etc/apt/sources.list
 View images in the `ubuntu` repository:
 
 ```
-$ docker images ubuntu
+$ `docker images ubuntu`
 ```
 
 # Try it: build an image,<br/> the hard way
@@ -147,8 +151,8 @@ $ docker images ubuntu
 Install some software in an `ubuntu` container:
 
 ```
-$ docker run -i -t ubuntu bash
-root@f78d00da1408:/# apt-get update && apt-get install -y curl
+$ `docker run -i -t ubuntu bash`
+root@f78d00da1408:/# `apt-get update && apt-get install -y curl`
 …
 ^D
 ```
@@ -156,31 +160,31 @@ root@f78d00da1408:/# apt-get update && apt-get install -y curl
 Now, `commit` that container to create an image:
 
 ```
-$ last_container=$(docker ps -ql)
-$ docker commit $last_container ubuntu-with-curl
+$ `last_container=$(docker ps -ql)`
+$ `docker commit $last_container ubuntu-with-curl`
 ```
 
 Check it out:
 
 ```
-$ docker history ubuntu-with-curl
+$ `docker history ubuntu-with-curl`
 …
-$ docker run ubuntu-with-curl curl http://example.com
+$ `docker run ubuntu-with-curl curl http://example.com`
 ```
 
 # Try it: build an image,<br/> the easy way
 
-Create a `Dockerfile`:
+Use a `Dockerfile`:
 
 ```
 FROM ubuntu
 RUN apt-get update && apt-get install -y curl
 ```
 
-And use it to build an image:
+to build an image:
 
 ```
-$ docker build -t ubuntu-with-curl .
+$ `docker build -t ubuntu-with-curl exercises/ubuntu-with-curl`
 Sending build context to Docker daemon 2.048 kB
 Step 0 : FROM ubuntu
  ---> a005e6b7dd01
@@ -194,93 +198,289 @@ Removing intermediate container 51bf195331b7
 Successfully built 70b42c74bb66
 ```
 
-# Try it: show Docker images
+# Try it: leverage the "build cache"
+
+Build an image from the recipe provided:
 
 ```
-$ docker images
-$ docker history ubuntu-with-curl
+$ `docker build -t ciao exercises/ciao`
 ```
 
-# Try it: build an image using a Dockerfile
+--
 
-Build it:
-
-```
-$ docker build -t hello ./hello
-```
-
-Run it:
+Build it again:
 
 ```
-$ docker run hello /app/run
-$ docker run hello
-```
-# Try it: configure using environment variables
-
-```
-$ docker run -e GREETEE=Kitty hello
+$ `docker build -t ciao exercises/ciao`
 ```
 
-# Try it: show Docker containers
+Faster, eh?
+
+# Try it: invalidate the "build cache"
+
+Make a change to `exercises/ciao/index.js`, then build again:
 
 ```
-$ docker ps
-$ docker ps -a
+$ `docker build -t ciao exercises/ciao`
 ```
 
-# Try it: build cache
+What happens at "Step 5"?
 
-Build again:
+--
 
-```
-$ docker build -t hello ./hello
-```
-
-Why so fast?
-
-# Try it: make a change, and rebuild
-
-Edit `hello/hello.sh`, then:
+Now make a change to `exercises/ciao/package.json`, and build again.
 
 ```
-$ docker build -t hello ./hello
+$ `docker build -t ciao exercises/ciao`
 ```
+
+What happens at "Step 4"?
 
 # Try it: push an image to Docker Hub
 
-```
-$ docker build -t YOURNAMEHERE/hello ./hello
-
-$ docker push YOURNAMEHERE/hello
-```
-
-# Try it: run an image from the public registry
+Authenticate to Docker Hub:
 
 ```
-$ docker run hello-world
-$ docker run YOURNEIGHBOUR/hello
+$ `docker login`
 ```
 
-# Try it: build a more complex image
+"Tag" an image into _your_ namespace:
 
 ```
-$ docker build -t mysite ./mysite
-
-$ docker run -d -p 80:80 mysite
-$ docker ps
-
-$ docker_ip=$(docker-machine ip $(docker-machine active))
-$ curl http://$docker_ip
+$ `docker tag ciao YOURNAMEHERE/ciao`
 ```
 
-(then browse to `http://$docker_ip`)
-
-# Try it: here's one I prepared earlier
+Now you can push it:
 
 ```
-$ docker run -p 80:80 woollyams/blob-store
+$ `docker push YOURNAMEHERE/ciao`
 ```
 
-(then browse to `http://$docker_ip`)
+# Try it: pull an image someone else pushed
 
-    
+Talk to the esteemed colleague next to you, and ask them
+for their Docker Hub username.  Then, you shoud be able to
+fetch the image _they_ pushed.
+
+```
+$ `docker pull YOURNEIGHBOUR/ciao`
+```
+
+# Try it: container basics
+
+Run a container as a daemon (in the background):
+
+```
+$ `docker run -d ciao`
+```
+
+List the running containers:
+
+```
+$ `docker ps`
+```
+
+List ALL the containers:
+
+```
+$ `docker ps -a`
+```
+
+Remove a container:
+
+```
+$ `docker rm <ID_OR_NAME>`
+```
+
+Remove a RUNNING container:
+
+```
+$ `docker rm -f <ID_OR_NAME>`
+```
+
+# Try it: name your containers
+
+Start a container with a `--name`:
+
+```
+$ `docker run --name app ciao`
+```
+
+Now you can use the NAME rather than an ID:
+
+```
+$ `docker rm -f app`
+```
+
+# Try it: map a port to a host port
+
+```
+$ `docker run -d --name app -p 5678:80 ciao`
+```
+
+.center[
+<img src="diagrams/ciao-explicit-port.png" width=40% />
+]
+
+```
+$ `curl ${DOCKER_IP-localhost}:5678`
+```
+
+Remember to clean up:
+
+```
+$ `docker rm -f app`
+```
+
+# Try it: use a random host port
+
+If you don't specify a host port, Docker will choose one:
+
+```
+$ `docker run -d --name app -p 80 ciao`
+```
+
+.center[
+<img src="diagrams/ciao-random-port.png" width=40% />
+]
+
+Use `docker port` to discover which one it chose:
+
+```
+$ `docker port app 80`
+```
+
+# Try it: logs
+
+You can get the output using `docker logs`:
+
+```
+$ `docker logs app`
+```
+
+or even follow along in real time:
+
+```
+$ `docker logs --follow --timestamps app`
+```
+
+# Try it: link two containers
+
+You can link containers together, without exposing ports to the host:
+
+```
+$ `docker run -d --name app -p 80 ciao`
+$ `docker run -d --name proxy -p 5678:80 --link app:app woollyams/nginx-reverse-proxy`
+```
+
+.center[
+  <img src="diagrams/nginx-ciao.png" width="60%" />
+]
+
+To see proof:
+
+```
+$ `curl -si ${DOCKER_IP-localhost}:5678 | grep Server`
+```
+
+Cleanup:
+
+```
+$ `docker rm -f app proxy`
+```
+
+# Try it: set environment variables
+
+Assuming your application looks for environment variables, e.g.
+
+```javascript
+var MESSAGE = (process.env.MESSAGE || "Ciao mondo.");
+```
+
+You can set them to provide configuration:
+
+```
+$ `docker run -d --name app -p 5678:80 -e MESSAGE='Hey, guys!' ciao`
+```
+
+Test the result:
+
+```
+$ `curl ${DOCKER_IP-localhost}:5678`
+```
+
+# Try it: map a volume from the host
+
+Mount a directory from the "host":
+
+```
+$ `docker run -it --rm -v /tmp/my-cache:/var/cache ubuntu bash`
+root@c10a43c38793:/# `mount | grep cache`
+root@c10a43c38793:/# `echo TESTING > /var/cache/test`
+^D
+```
+
+and then later:
+
+```
+$ `docker run -it --rm -v /tmp/my-cache:/var/cache ubuntu bash`
+root@f5be5dec8a5a:/# `ls /var/cache/`
+```
+
+# Try it: use a volume for extra writable space
+
+Tip: you can improve security by:
+
+* mounting your root volume read-only
+* creating writable volumes as required
+
+```
+$ `docker run -it --rm --read-only -v /scratch ubuntu`
+root@c10a43c38793:/# `mount | grep scratch`
+root@c10a43c38793:/# `echo TESTING > /tmp/test`
+root@c10a43c38793:/# `echo TESTING > /scratch/test`
+```
+
+# Try it: share a volume with another container
+
+Create a container, with a volume:
+
+```
+$ `docker run -it --name provider -v /shared ubuntu`
+root@118f38503653:/# `echo ohai > /shared/stuff`
+```
+
+Use the volume from a different container:
+
+```
+$ `docker run -it --rm --volumes-from provider ubuntu`
+root@118f38503653:/# `cat /shared/stuff`
+```
+
+NOTE: Docker 1.9 adds first-class volume support.
+
+# Try it: link containers using docker-compose
+
+- Lifecycle management for _groups_ of containers.
+
+Given YAML config file:
+
+```
+app:
+  image: ciao
+
+proxy:
+  image: woollyams/nginx-reverse-proxy
+  links:
+  - app
+  ports:
+  - 5678:80
+```
+
+You can start all the containers with:
+
+```
+$ `cd exercises/composed`
+$ `docker-compose up`
+```
+
