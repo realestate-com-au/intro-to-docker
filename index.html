@@ -522,13 +522,29 @@ Successfully built 70b42c74bb66
 ---
 # Try it: leverage the "build cache"
 
-Build an image from the recipe provided:
+Use the recipe provided:
+
+```
+FROM node:4.2
+
+COPY package.json /app/
+WORKDIR /app
+RUN npm install
+COPY index.js /app/
+
+ENV PORT 80
+EXPOSE $PORT
+CMD ["node", "/app/index.js"]
+```
+
+to build an image:
 
 ```
 $ `docker build -t ciao exercises/ciao`
 ```
 
---
+---
+# Try it: invalidate the "build cache"
 
 Build it again:
 
@@ -536,10 +552,9 @@ Build it again:
 $ `docker build -t ciao exercises/ciao`
 ```
 
-Faster, eh?
+Faster, eh? Observe: "Using cache".
 
----
-# Try it: invalidate the "build cache"
+--
 
 Make a change to `exercises/ciao/index.js`, then build again:
 
