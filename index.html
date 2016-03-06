@@ -219,10 +219,6 @@ $ `docker run centos rpm -qa`
 
 Speedy, huh?
 
---
-
-… or not, if you have a slow internet connection :-(
-
 ---
 # Try it: run a shell
 
@@ -407,10 +403,10 @@ Use `docker history` to view image layers
 ```
 $ `docker history ubuntu`
 IMAGE               CREATED             CREATED BY
-a005e6b7dd01        3 weeks ago         /bin/sh -c #(nop) CMD ["/bin
-002fa881df8a        3 weeks ago         /bin/sh -c sed -i 's/^#\s*\(
-66395c31eb82        3 weeks ago         /bin/sh -c echo '#!/bin/sh'
-0105f98ced6d        3 weeks ago         /bin/sh -c #(nop) ADD file:7
+07c86167cdc4        2 days ago          /bin/sh -c #(nop) CMD ["/bin
+<missing>           2 days ago          /bin/sh -c sed -i 's/^#\s*\(
+<missing>           2 days ago          /bin/sh -c echo '#!/bin/sh'
+<missing>           2 days ago          /bin/sh -c #(nop) ADD file:b
 
 ```
 
@@ -448,10 +444,10 @@ $ `docker run 975b84d108f1024953937167506c2935a081c8c55ae9e9f7b7deee11`
 ---
 # Try it: investigate tags in the `ubuntu` repository
 
-Run a command using `ubuntu:15.04`:
+Run a command using `ubuntu:15.10`:
 
 ```
-$ `docker run ubuntu:15.04 grep -v "^#" /etc/apt/sources.list`
+$ `docker run ubuntu:15.10 grep -v "^#" /etc/apt/sources.list`
 ```
 
 Try the same thing using `ubuntu:14.04`:
@@ -476,7 +472,7 @@ Install some software in an `ubuntu` container:
 
 ```
 $ `docker run -i -t ubuntu bash`
-root@f78d00da1408:/# `apt-get update && apt-get install -y curl`
+root@f55393e5dc31:/# `apt-get update && apt-get install -y curl`
 …
 ^D
 ```
@@ -484,8 +480,7 @@ root@f78d00da1408:/# `apt-get update && apt-get install -y curl`
 Now, `commit` that container to create an image:
 
 ```
-$ `last_container=$(docker ps -ql)`
-$ `docker commit $last_container ubuntu-with-curl`
+$ `docker commit f55393e5dc31 ubuntu-with-curl`
 ```
 
 Check it out:
@@ -505,25 +500,25 @@ $ `docker history ubuntu-with-curl`
 
 <table class="docker-image">
   <tr>
-    <td class="snapshot">70b42c74bb66</td>
+    <td class="snapshot">27323a7d221f</td>
     <td class="labels">ubuntu-with-curl</td>
   </tr>
   <tr><td>↓</td></tr>
   <tr>
-    <td class="snapshot">a005e6b7dd01</td>
+    <td class="snapshot">07c86167cdc4</td>
     <td class="labels">ubuntu:latest</td>
   </tr>
   <tr><td>↓</td></tr>
   <tr>
-    <td class="snapshot">002fa881df8a</td>
+    <td class="snapshot">...</td>
   </tr>
   <tr><td>↓</td></tr>
   <tr>
-    <td class="snapshot">66395c31eb82</td>
+    <td class="snapshot">...</td>
   </tr>
   <tr><td>↓</td></tr>
   <tr>
-    <td class="snapshot">0105f98ced6d</td>
+    <td class="snapshot">...</td>
   </tr>
 </table>
 
@@ -542,9 +537,9 @@ to build an image:
 ```
 $ `docker build -t ubuntu-with-curl exercises/ubuntu-with-curl`
 Sending build context to Docker daemon 2.048 kB
-Step 0 : FROM ubuntu
- ---> a005e6b7dd01
-Step 1 : RUN apt-get update && apt-get install -y curl
+Step 1 : FROM ubuntu
+ ---> 07c86167cdc4
+Step 2 : RUN apt-get update && apt-get install -y curl
  ---> Running in 51bf195331b7
 Ign http://archive.ubuntu.com trusty InRelease
 Get:1 http://archive.ubuntu.com trusty-updates InRelease [64.4 kB]
@@ -716,7 +711,7 @@ $ `docker run -d --name app -p 5678:80 ciao`
 ]
 
 ```
-$ `curl ${DOCKER_IP-localhost}:5678`
+$ `curl $(docker-machine ip):5678`
 ```
 
 Remember to clean up:
@@ -778,7 +773,7 @@ $ `docker run -d --name app -p 5678:80 -e MESSAGE='Hey, guys!' ciao`
 Test the result:
 
 ```
-$ `curl ${DOCKER_IP-localhost}:5678`
+$ `curl $(docker-machine ip):5678`
 ```
 
 Cleanup:
@@ -803,10 +798,8 @@ $ `docker run -d --name proxy -p 5678:80 --link app \`
   <img src="diagrams/nginx-ciao.png" width="60%" />
 ]
 
-To see proof:
-
 ```
-$ `curl -si ${DOCKER_IP-localhost}:5678 | grep Server`
+$ `curl -si $(docker-machine ip):5678`
 ```
 
 Cleanup:

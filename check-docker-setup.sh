@@ -33,3 +33,6 @@ docker pull alpine
 docker pull busybox
 docker pull centos
 docker pull ubuntu
+docker pull ubuntu:14.04
+docker pull ubuntu:15.10
+docker pull node:5.7.1
