@@ -67,20 +67,12 @@ class: center, middle
 * Docker!
 
 ---
-# Installing Docker
+# Docker Engine
 
-## OS X
-
-* `brew install docker-machine`
-* `docker-machine create default --driver virtualbox`
-
-## Linux
-
-* `curl -sSL https://get.docker.com/ | sh`
-
-## Windows (or OS X)
-
-* Get "[Docker Toolbox](https://www.docker.com/products/docker-toolbox)"
+.center[
+![on Linux](media/linux_docker_host.svg)
+![on Windows](media/mac_docker_host.svg)
+]
 
 ???
 
@@ -89,12 +81,40 @@ Docker only runs on Linux.
 On OS X and Windows, you can run it inside a VM.
 
 ---
-# What you get
+# Installing Docker on Linux
 
-.center[
-![on Linux](media/linux_docker_host.svg)
-![on Windows](media/mac_docker_host.svg)
-]
+```
+$ `curl -sSL https://get.docker.com/ | sh`
+```
+
+---
+# Installing Docker using Homebrew (OS X)
+
+First, install [VirtualBox](https://virtualbox.org), and [Homebrew](http://brew.sh), then:
+
+```
+$ `brew install docker-machine`
+$ `docker-machine create default --driver virtualbox`
+```
+
+Then run:
+
+```
+$ `eval $(docker-machine env default)`
+```
+
+(best add that to your `~/.bashrc` or similar)
+
+---
+# Installing Docker using Toolbox (Windows or OS X)
+
+Get "[Docker Toolbox](https://www.docker.com/products/docker-toolbox)"
+
+This gives you:
+* Docker Engine
+* Compose
+* Machine
+* Kitematic
 
 ---
 # Setup
@@ -105,13 +125,18 @@ Let's check that everything is working:
 $ `./check-docker-setup.sh`
 YAY: $DOCKER_HOST is set
 YAY: I can talk to docker
-YAY: $DOCKER_IP is set correctly
+Docker is at 192.168.99.100
+echo "Pulling some images to get you started ..."
+...
 ```
 
-Note:
+or not:
 
-* `$DOCKER_HOST` tells the docker client where to find the docker daemon
-* `$DOCKER_IP` is unique to this tutorial
+```
+$ `./check-docker-setup.sh`
+BOO: No $DOCKER_HOST, no /var/run/docker.sock ... where's Docker?
+$ `eval $(docker-machine env default)`
+```
 
 ---
 name: hello-world
