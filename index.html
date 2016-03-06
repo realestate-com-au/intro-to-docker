@@ -69,22 +69,32 @@ class: center, middle
 ---
 # Installing Docker
 
-  * Linux: `curl -sSL https://get.docker.com/ | sh`
+## OS X
 
-  * OS X: "Docker Toolbox", or HomeBrew
+* `brew install docker-machine`
+* `docker-machine create default --driver virtualbox`
 
-  * Windows: "Docker Toolbox"
+## Linux
 
-.center[
-![on Linux](media/linux_docker_host.svg)
-![on Windows](media/mac_docker_host.svg)
-]
+* `curl -sSL https://get.docker.com/ | sh`
+
+## Windows (or OS X)
+
+* Get "[Docker Toolbox](https://www.docker.com/products/docker-toolbox)"
 
 ???
 
 Docker only runs on Linux.
 
 On OS X and Windows, you can run it inside a VM.
+
+---
+# What you get
+
+.center[
+![on Linux](media/linux_docker_host.svg)
+![on Windows](media/mac_docker_host.svg)
+]
 
 ---
 # Setup
