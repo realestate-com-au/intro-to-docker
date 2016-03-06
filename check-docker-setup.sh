@@ -27,3 +27,9 @@ else
 fi
 
 echo "Docker is at $docker_addr"
+
+echo "Pulling some images to get you started"
+docker pull alpine
+docker pull busybox
+docker pull centos
+docker pull ubuntu
