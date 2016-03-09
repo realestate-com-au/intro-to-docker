@@ -823,24 +823,50 @@ $ `docker rm -f app proxy`
 name: volumes
 # Try it: map a volume from the host
 
-Mount a directory from the "host":
+Mount your home directory from the "host":
 
 ```
-$ `docker run -it --rm -v /tmp/my-cache:/var/cache ubuntu bash`
-root@c10a43c38793:/# `mount | grep cache`
-root@c10a43c38793:/# `echo TESTING > /var/cache/test`
+$ `docker run -it --rm -v $HOME:/myhome ubuntu bash`
+root@c10a43c38793:/# `mount | grep home`
+root@c10a43c38793:/# `cd /myhome; ls`
+root@c10a43c38793:/# `echo HELLO FROM DOCKER > written-from-docker`
+^D
+$ `ls $HOME`
+```
+
+---
+# Try it: use a named cache volume
+
+```
+$ `docker run -it --rm -v my-cache:/cache ubuntu bash`
+root@c10a43c38793:/# `echo TESTING > /cache/test`
 ^D
 ```
 
 and then later:
 
 ```
-$ `docker run -it --rm -v /tmp/my-cache:/var/cache ubuntu bash`
-root@f5be5dec8a5a:/# `ls /var/cache/`
+$ `docker run -it --rm -v my-cache:/cache ubuntu bash`
+root@f5be5dec8a5a:/# `ls /cache`
 ```
 
 ---
-# Try it: use a volume for extra writable space
+# Try it: more volume commands
+
+List volumes:
+
+```
+$ `docker volume ls`
+```
+
+Remove a volume:
+
+```
+$ `docker volume rm my-cache`
+```
+
+---
+# Try it: use a anonymous volume for extra writable space
 
 Tip: you can improve security by:
 
@@ -849,7 +875,6 @@ Tip: you can improve security by:
 
 ```
 $ `docker run -it --rm --read-only -v /scratch ubuntu`
-root@c10a43c38793:/# `mount | grep scratch`
 root@c10a43c38793:/# `echo TESTING > /tmp/test`
 root@c10a43c38793:/# `echo TESTING > /scratch/test`
 ```
