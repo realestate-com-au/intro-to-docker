@@ -9,6 +9,10 @@ boo() {
   exit 1
 }
 
+beat() {
+  echo ""
+}
+
 docker_sock=/var/run/docker.sock
 if test -n "$DOCKER_HOST"; then
   yay "\$DOCKER_HOST is set"
@@ -26,13 +30,25 @@ else
   boo "I can't talk to docker"
 fi
 
+beat
+
 echo "Docker is at $docker_addr"
 
+pull() {
+  echo ""
+  echo "=== $1"
+  docker pull $1
+}
+
+beat
+
 echo "Pulling some images to get you started ..."
-docker pull alpine
-docker pull busybox
-docker pull centos
-docker pull ubuntu
-docker pull ubuntu:14.04
-docker pull ubuntu:15.10
-docker pull node:5.7.1
+pull alpine
+pull busybox
+pull centos
+pull ubuntu
+pull ubuntu:14.04
+pull ubuntu:15.10
+pull node:5.7.1
+
+beat
