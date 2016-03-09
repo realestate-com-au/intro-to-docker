@@ -46,12 +46,10 @@ class: center, middle
   * [Environment variables](#environment)
   * [Links](#links)
   * [Volumes](#volumes)
-  * [`docker-compose`](#compose)
+  * [Docker Compose](#compose)
 
-* Applied Docker
+* Docker patterns
   * [12-factor apps](#12factor)
-  * [Dev and testing with Docker](#devtest)
-  * [Docker in production](#docker-in-prod)
 
 ]
 
@@ -946,7 +944,7 @@ $ `docker-compose up`
 
 ---
 class: middle, center
-# Applied Docker
+# Docker patterns
 
 ---
 name: 12factor
@@ -980,58 +978,6 @@ See [12factor.net](http://12factor.net)
 .rhs[
 <img src="diagrams/12factor-container.png" width="100%" />
 ]
-
----
-name: devtest
-# Using docker-compose as a dev/test/build environment
-
-For example:
-
-```
-db:
-  image: postgres:9.0
-
-dev:
-  image: ruby:2.2
-  volumes:
-  - .:/cwd
-  working_dir: /cwd
-  links:
-  - db:db
-  ports:
-  - "80:80"
-```
-
-And then:
-
-```
-$ `docker-compose run --rm dev`
-```
-
----
-name: docker-in-prod
-# Docker in production
-
-So many options!
-
-Roll your own:
-
-  - `docker run` plus custom scripts
-  - `docker-compose`
-
-Docker-aware clusters:
-
-  - Amazon **ECS**
-  - Apache **Mesos**
-  - Google **Kubernetes**
-  - Docker **Swarm**
-
-Open-source Platforms-as-a-Service:
-
-  - CloudFoundry
-  - Deis
-  - Convox
-  - etc …
 
 ---
 class: middle, center
