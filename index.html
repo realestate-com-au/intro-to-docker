@@ -963,6 +963,23 @@ $ `docker-compose down`
 ```
 
 ---
+# New `docker-compose.yml` format
+
+```
+version: '2'
+
+services:
+
+  app:
+    image: ciao
+
+  proxy:
+    image: woollyams/nginx-reverse-proxy
+    ports:
+    - 5678:80
+```
+
+---
 class: middle, center
 # Thanks!
 
