@@ -48,7 +48,7 @@ class: center, middle
   * [Volumes](#volumes)
   * [Docker Compose](#compose)
 
-* Docker patterns
+* Docker conventions
   * [12-factor apps](#12factor)
 
 ]
@@ -944,15 +944,15 @@ $ `docker-compose up`
 
 ---
 class: middle, center
-# Docker patterns
+# Docker conventions
 
 ---
 name: 12factor
 # "12 factor" apps
 
-See [12factor.net](http://12factor.net)
+See [12factor.net](http://12factor.net) (from Heroku)
 
-1. **Codebase** - One codebase tracked in revision control, many deploys
+1. Codebase - One codebase tracked in revision control, many deploys
 2. **Dependencies** - Explicitly declare and isolate dependencies
 3. **Config** - Store config in the environment
 4. **Backing Services** - Treat backing services as attached resources
@@ -963,21 +963,19 @@ See [12factor.net](http://12factor.net)
 9. **Disposability** - Maximize robustness with fast startup and graceful shutdown
 10. **Dev/prod parity** - Keep development, staging, and production as similar as possible
 11. **Logs** - Treat logs as event streams
-12. **Admin processes** - Run admin/management tasks as one-off processes
+12. Admin processes - Run admin/management tasks as one-off processes
 
 ---
 # "12 factor" containers
 
-.lhs[
+.center[
+<img src="diagrams/12factor-container.png" width="50%" />
+]
+
 * Use environment variables (not files) to configure your app
 * Expose ports to provide services (e.g. HTTP)
 * Write logs to STDOUT/STDERR (not to files)
 * Treat backing services (e.g. database) as external resources
-]
-
-.rhs[
-<img src="diagrams/12factor-container.png" width="100%" />
-]
 
 ---
 class: middle, center
