@@ -821,7 +821,7 @@ $ `docker rm -f app proxy`
 
 ---
 name: volumes
-# Try it: map a volume from the host
+# Try it: volume from host
 
 Mount your home directory from the "host":
 
@@ -835,7 +835,7 @@ $ `ls $HOME`
 ```
 
 ---
-# Try it: use a named cache volume
+# Try it: named cache volume
 
 ```
 $ `docker run -it --rm -v my-cache:/cache ubuntu bash`
@@ -866,7 +866,7 @@ $ `docker volume rm my-cache`
 ```
 
 ---
-# Try it: use a anonymous volume for extra writable space
+# Try it: anonymous volume for extra writable space
 
 Tip: you can improve security by:
 
@@ -878,6 +878,28 @@ $ `docker run -it --rm --read-only -v /scratch ubuntu`
 root@c10a43c38793:/# `echo TESTING > /tmp/test`
 root@c10a43c38793:/# `echo TESTING > /scratch/test`
 ```
+
+---
+# Try it: share a volume with another container
+
+Create a container, with a volume:
+
+```
+$ `docker run -it --rm --name provider -v data:/published ubuntu`
+root@118f38503653:/# `echo ohai > /published/stuff`
+```
+
+.center[
+<img src="diagrams/shared-volume.png" width=50% />
+]
+
+Use the volume from a different container:
+
+```
+$ `docker run -it --rm --name consumer -v data:/provided ubuntu`
+root@d88a7a468b01:/# `cat /provided/stuff`
+```
+
 
 ---
 # Creating volumes in images
@@ -894,25 +916,6 @@ ENV PGDATA /var/lib/postgresql/data
 VOLUME /var/lib/postgresql/data
 …
 ```
-
----
-# Try it: share a volume with another container
-
-Create a container, with a volume:
-
-```
-$ `docker run -it --name provider -v /shared ubuntu`
-root@118f38503653:/# `echo ohai > /shared/stuff`
-```
-
-Use the volume from a different container:
-
-```
-$ `docker run -it --rm --volumes-from provider ubuntu`
-root@d88a7a468b01:/# `cat /shared/stuff`
-```
-
-NOTE: Docker 1.9 adds first-class volume support.
 
 ---
 name: compose
