@@ -27,6 +27,7 @@ class: center, middle
 .lhs[
 
 * Intro and overview
+  * [Check your setup](#prep)
   * [Hello world!](#hello-world)
   * [Key concepts](#key-concepts)
   * [Containers vs Virtual Machines](#containers-vs-vms)
@@ -52,15 +53,19 @@ class: center, middle
 ]
 
 ---
-# You will need
+name: prep
+# Preparation
 
-* a copy of this repository
+You will need **a good connection to the internet** during this setup, and
+(to some extent) while going through the course, as we'll be installing
+software, and downloading Docker "images".
+
+It's useful to have **a local copy of these training materials**:
 
   `git clone https://github.com/realestate-com-au/intro-to-docker.git`
 
-* a good connection to the internet
-
-* Docker!
+You definitely need **Docker and Docker Compose**.<br/>
+Installation intructions follow.
 
 ---
 # Docker Engine
@@ -122,7 +127,7 @@ This gives you:
 * Kitematic
 
 ---
-# Setup
+# Check your setup
 
 Let's check that everything is working:
 
@@ -133,17 +138,23 @@ YAY: I can talk to docker
 Docker is at 192.168.99.100
 echo "Pulling some images to get you started ..."
 ...
+YAY: docker version 1.10.2
+YAY: docker-compose version 1.6.0
 ```
 
 or not:
 
 ```
-$ `./check-docker-setup.sh`
 BOO: No $DOCKER_HOST, no /var/run/docker.sock ... where's Docker?
 $ `eval $(docker-machine env default)`
 ```
 
 Not working? Ask for help!
+
+.small.lhs[
+Don't worry _too_ much if you get complaints about versions of `docker`
+and `docker-compose`; _most_ things will still work.)
+]
 
 ---
 name: hello-world

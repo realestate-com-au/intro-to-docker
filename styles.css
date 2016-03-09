@@ -50,6 +50,9 @@ div.rhs {
 .big {
   font-size: 150%;
 }
+.small {
+  font-size: 75%;
+}
 
 a:link {
   text-decoration: none;
