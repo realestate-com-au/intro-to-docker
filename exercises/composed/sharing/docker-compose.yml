@@ -1,0 +1,20 @@
+version: '2'
+
+volumes:
+  shared: {}
+
+services:
+
+  producer:
+    image: busybox
+    volumes:
+      - shared:/out
+    command: sh -c "while true; do date; sleep 1; done > /out/dates"
+
+  consumer:
+    image: ubuntu:14.04
+    volumes:
+      - shared:/data
+    links:
+      - producer
+    command: tail -f /data/dates
