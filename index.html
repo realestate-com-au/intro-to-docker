@@ -963,6 +963,26 @@ $ `docker-compose down`
 ```
 
 ---
+# Try it: get compose to build your image
+
+```
+app:
+  build: ../../ciao
+
+proxy:
+  image: woollyams/nginx-reverse-proxy
+  links:
+  - app
+  ports:
+  - 5678:80
+```
+
+```
+$ `cd exercises/composed/autobuilt`
+$ `docker-compose up`
+```
+
+---
 # New `docker-compose.yml` format
 
 ```
