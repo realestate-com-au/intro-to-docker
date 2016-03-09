@@ -46,7 +46,8 @@ class: center, middle
   * [Environment variables](#environment)
   * [Links](#links)
   * [Volumes](#volumes)
-  * [Docker Compose](#compose)
+
+* [Docker Compose](#compose)
 
 ]
 
@@ -937,6 +938,28 @@ You can start all the containers with:
 ```
 $ `cd exercises/composed`
 $ `docker-compose up`
+```
+
+---
+# Try it: under the covers of compose
+
+Generate some logs:
+
+```
+$ `curl $(docker-machine ip):5678`
+```
+
+What containers are running?
+
+```
+$ `docker ps`
+$ `docker-compose ps`
+```
+
+Take it all down:
+
+```
+$ `docker-compose down`
 ```
 
 ---
