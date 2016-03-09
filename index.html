@@ -88,9 +88,18 @@ $ `curl -sSL https://get.docker.com/ | sh`
 ```
 
 ---
-# Installing Docker using Homebrew (OS X)
+# Installing Docker on OS X (using Homebrew)
 
-First, install [VirtualBox](https://virtualbox.org), and [Homebrew](http://brew.sh), then:
+First, get [Homebrew](http://brew.sh).
+
+You also need [VirtualBox](https://virtualbox.org), which you can install
+manually, or via Homebrew:
+
+```
+$ `brew cask install virtualbox`
+```
+
+Then, install Docker Machine and create a VM:
 
 ```
 $ `brew install docker-machine`
@@ -106,7 +115,7 @@ $ `eval $(docker-machine env default)`
 (best add that to your `~/.bashrc` or similar)
 
 ---
-# Installing Docker using Toolbox (Windows or OS X)
+# Installing Docker Toolbox on Windows (or OS X)
 
 Get "[Docker Toolbox](https://www.docker.com/products/docker-toolbox)"
 
@@ -137,6 +146,8 @@ $ `./check-docker-setup.sh`
 BOO: No $DOCKER_HOST, no /var/run/docker.sock ... where's Docker?
 $ `eval $(docker-machine env default)`
 ```
+
+Not working? Ask for help!
 
 ---
 name: hello-world
