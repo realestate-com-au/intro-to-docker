@@ -52,3 +52,25 @@ pull ubuntu:15.10
 pull node:5.7.1
 
 beat
+
+version_of() {
+  $1 --version | egrep -o '\d+(\.\d+)+'
+}
+
+version_lte() {
+  [ "$1" = "`echo -e "$1\n$2" | docker run -i ubuntu:14.04 sort -V | head -n1`" ]
+}
+
+check_version() {
+  app=$1
+  expected_version=$2
+  actual_version=$(version_of $app)
+  if version_lte $expected_version $actual_version; then
+    yay "$app version $actual_version"
+  else
+    boo "need $app version $expected_version, got $actual_version"
+  fi
+}
+
+check_version docker 1.10.0
+check_version docker-compose 1.6.0
