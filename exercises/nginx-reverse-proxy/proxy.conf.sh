@@ -1,16 +1,14 @@
 #! /bin/sh
 
-: ${BACKEND:=app:80}
-: ${PORT:=80}
-
 cat <<EOF
-upstream app {
-  server ${BACKEND} fail_timeout=0;
+
+upstream backend {
+  server ${BACKEND:-app:80} fail_timeout=0;
 }
 
 server {
 
-  listen ${PORT};
+  listen ${PORT:-80};
 
   client_header_timeout 15s;
   client_body_timeout 30s;
@@ -23,7 +21,9 @@ server {
     proxy_set_header X-Request-Start "t=\${msec}";
     proxy_set_header Host \$http_host;
     proxy_redirect off;
-    proxy_pass http://app;
+    proxy_pass http://backend;
   }
 
 }
+
+EOF

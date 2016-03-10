@@ -801,6 +801,31 @@ $ `docker rm -f app`
 ```
 
 ---
+# Consider: a reverse-proxy image
+
+```
+# /nginx/proxy.conf.sh
+
+upstream backend {
+  server ${BACKEND:-app:80};
+}
+
+server {
+  listen ${PORT:-80};
+  location / {
+    proxy_pass http://backend;
+  }
+}
+```
+
+```
+# /nginx/run (default command)
+
+/nginx/proxy.conf.sh > /etc/nginx/sites-enabled/proxy.conf
+exec nginx
+```
+
+---
 name: links
 # Try it: link two containers
 
@@ -808,8 +833,9 @@ You can link containers together, without exposing ports to the host:
 
 ```
 $ `docker run -d --name app ciao`
-$ `docker run -d --name proxy -p 5678:80 --link app \`
-  `-e NGINX_APP_PORT=80 woollyams/nginx-reverse-proxy`
+$ `docker run -d --name proxy --link app \`
+  `-p 5678:1234 -e PORT=1234 -e BACKEND=app:80 \`
+  `woollyams/nginx-reverse-proxy`
 ```
 
 .center[
@@ -820,14 +846,12 @@ $ `docker run -d --name proxy -p 5678:80 --link app \`
 $ `curl -si $(docker-machine ip):5678`
 ```
 
-Cleanup:
-
-```
-$ `docker rm -f app proxy`
-```
-
 ---
 name: volumes
+class: middle, center
+# Volumes
+
+---
 # Try it: volume from host
 
 Mount your home directory from the "host":
@@ -932,8 +956,6 @@ class: middle, center
 ---
 # Try it: link containers using docker-compose
 
-- Lifecycle management for _groups_ of containers.
-
 Given YAML config file:
 
 ```
@@ -941,11 +963,13 @@ app:
   image: ciao
 
 proxy:
-  image: woollyams/nginx-reverse-proxy
+  image: woollyams/nginx-reverse-proxy:201603101638
   links:
-  - app
+    - app
   ports:
-  - 5678:80
+    - 5678:8080
+  environment:
+    PORT: 8080
 ```
 
 You can start all the containers with:
@@ -978,19 +1002,39 @@ $ `docker-compose down`
 ```
 
 ---
-# Try it: get compose to build your image
+# Try it: get compose to build your images
+
+```
+app:
+  image: ciao
+
+proxy:
+  image: woollyams/nginx-reverse-proxy:201603101638
+  ports:
+    - 5678:8080
+  links:
+    - app
+  environment:
+    PORT: 8080
+```
+
+---
+# Try it: get compose to build your images
 
 ```
 app:
   build: ../../ciao
 
 proxy:
-  image: woollyams/nginx-reverse-proxy
-  links:
-  - app
+  build: ../../nginx-reverse-proxy
   ports:
-  - 5678:80
+    - 5678:8080
+  links:
+    - app
+  environment:
+    PORT: 8080
 ```
+--
 
 ```
 $ `cd exercises/composed/autobuilt`
@@ -1009,7 +1053,7 @@ services:
     image: ciao
 
   proxy:
-    image: woollyams/nginx-reverse-proxy
+    image: woollyams/nginx-reverse-proxy:201603101638
     ports:
     - 5678:80
 ```

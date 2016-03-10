@@ -50,6 +50,7 @@ pull ubuntu
 pull ubuntu:14.04
 pull ubuntu:15.10
 pull node:5.7.1
+pull woollyams/nginx-reverse-proxy:201603101638
 
 beat
 
