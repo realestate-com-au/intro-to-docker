@@ -926,6 +926,10 @@ VOLUME /var/lib/postgresql/data
 
 ---
 name: compose
+class: middle, center
+# Docker Compose
+
+---
 # Try it: link containers using docker-compose
 
 - Lifecycle management for _groups_ of containers.
@@ -963,8 +967,8 @@ $ `curl $(docker-machine ip):5678`
 What containers are running?
 
 ```
-$ `docker ps`
 $ `docker-compose ps`
+$ `docker ps`
 ```
 
 Take it all down:
