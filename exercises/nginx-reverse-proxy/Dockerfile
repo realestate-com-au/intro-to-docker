@@ -6,12 +6,12 @@ RUN apt-get install -qqy software-properties-common
 RUN apt-add-repository -y ppa:nginx/stable && apt-get update -qqy
 RUN apt-get install -qqy nginx
 
-COPY nginx.conf /etc/nginx/nginx.conf
 RUN rm /etc/nginx/sites-enabled/default
 
-COPY proxy.conf /container/proxy.conf
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY proxy.conf.sh /nginx/proxy.conf.sh
+COPY run /nginx/run
 
-COPY run /container/run
-CMD ["/container/run"]
+CMD ["/nginx/run"]
 
 EXPOSE 80

@@ -1,7 +1,5 @@
 #! /bin/sh
 
-: ${APP_ADDRESS=}
-cp /container/proxy.conf /etc/nginx/sites-enabled/proxy.conf
-sed -i'' 's/_APP_PORT_/'"${NGINX_APP_PORT:-80}"'/' /etc/nginx/sites-enabled/proxy.conf
+/nginx/proxy.conf.sh > /etc/nginx/sites-enabled/proxy.conf
 
 exec nginx
