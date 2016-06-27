@@ -45,7 +45,7 @@ class: center, middle
 * Containers
   * [Ports](#ports)
   * [Environment variables](#environment)
-  * [Links](#links)
+  * [Networks](#networks)
   * [Volumes](#volumes)
 
 * [Docker Compose](#compose)
@@ -826,14 +826,15 @@ exec nginx
 ```
 
 ---
-name: links
-# Try it: link two containers
+name: networks
+# Try it: connect two containers
 
-You can link containers together, without exposing ports to the host:
+Using networks you can connect containers together, without exposing ports to the host:
 
 ```
-$ `docker run -d --name app ciao`
-$ `docker run -d --name proxy --link app \`
+$ `docker network create proxy_network`
+$ `docker run -d --name app ciao --net proxy_network`
+$ `docker run -d --name proxy --net proxy_network \`
   `-p 5678:1234 -e PORT=1234 -e BACKEND=app:80 \`
   `woollyams/nginx-reverse-proxy`
 ```
@@ -954,25 +955,34 @@ class: middle, center
 # Docker Compose
 
 ---
-# Try it: link containers using docker-compose
+# Consider: use containers with docker-compose
 
 Given YAML config file:
 
 ```
-app:
-  image: ciao
+version: '2'
 
-proxy:
-  image: woollyams/nginx-reverse-proxy:201603101638
-  links:
-    - app
-  ports:
-    - 5678:8080
-  environment:
-    PORT: 8080
+services:
+  app:
+    image: ciao
+    networks:
+      - proxy_network
+  
+  proxy:
+    image: woollyams/nginx-reverse-proxy:201603101638
+    networks:
+      - proxy_network
+    ports:
+      - 5678:8080
+    environment:
+      PORT: 8080
+networks:
+    proxy_network:
 ```
 
-You can start all the containers with:
+---
+# Try it: connect containers using docker-compose
+  You can start all the containers with:
 
 ```
 $ `cd exercises/composed/basic`
@@ -1005,34 +1015,46 @@ $ `docker-compose down`
 # Try it: get compose to build your images
 
 ```
-app:
-  image: ciao
+version: '2'
+services:
+  app:
+    image: ciao
+    networks:
+      - proxy_network
+  proxy:
+    image: woollyams/nginx-reverse-proxy:201603101638
+    ports:
+      - 5678:8080
+    networks:
+      - proxy_network
+    environment:
+      PORT: 8080
 
-proxy:
-  image: woollyams/nginx-reverse-proxy:201603101638
-  ports:
-    - 5678:8080
-  links:
-    - app
-  environment:
-    PORT: 8080
+networks:
+  proxy_network:
 ```
 
 ---
 # Try it: get compose to build your images
 
 ```
-app:
-  build: ../../ciao
+version: '2'
+services:
+  app:
+    build: ../../ciao
+    networks:
+      - proxy_network
+  proxy:
+    build: ../../nginx-reverse-proxy
+    ports:
+      - 5678:8080
+    networks:
+      - proxy_network
+    environment:
+      PORT: 8080
 
-proxy:
-  build: ../../nginx-reverse-proxy
-  ports:
-    - 5678:8080
-  links:
-    - app
-  environment:
-    PORT: 8080
+networks:
+  proxy_network:
 ```
 --
 
@@ -1042,47 +1064,36 @@ $ `docker-compose up`
 ```
 
 ---
-# New `docker-compose.yml` format
+# Consider: volume sharing 
 
 ```
 version: '2'
-
 services:
-
-  app:
-    image: ciao
-
-  proxy:
-    image: woollyams/nginx-reverse-proxy:201603101638
-    ports:
-    - 5678:80
-```
-
----
-# Try it: sharing a volume
-
-```
-version: '2'
-
-services:
-
   producer:
     image: busybox
     volumes:
       - shared:/out
+    networks:
+      - share_network
     command: sh -c "while true; do date; sleep 1; done > /out/dates"
 
   consumer:
     image: ubuntu:14.04
     volumes:
       - shared:/data
-    links:
-      - producer
+    networks:
+      - share_network
     command: tail -f /data/dates
 
 volumes:
   shared: {}
+
+networks:
+  share_network
 ```
+
+---
+# Try it: sharing a volume
 
 ```
 $ `cd exercises/composed/sharing`
