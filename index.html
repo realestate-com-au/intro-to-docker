@@ -89,42 +89,23 @@ $ `curl -sSL https://get.docker.com/ | sh`
 ```
 
 ---
-# Installing Docker on OS X (using Homebrew)
+# Installing Docker on OS X
 
-First, get [Homebrew](http://brew.sh).
+Docker provides a Mac native application,
+"[Docker for Mac](https://docs.docker.com/docker-for-mac/docker-toolbox/#/the-docker-for-mac-environment)",
+that invisibly manages a VM running docker for you.
 
-You also need [VirtualBox](https://virtualbox.org), which you can install
-manually, or via Homebrew:
-
-```
-$ `brew cask install virtualbox`
-```
-
-Then, install Docker Machine and create a VM:
-
-```
-$ `brew install docker-machine`
-$ `docker-machine create default --driver virtualbox`
-```
-
-Then run:
-
-```
-$ `eval $(docker-machine env default)`
-```
-
-(best add that to your `~/.bashrc` or similar)
+[Download Docker for Mac](https://docs.docker.com/docker-for-mac/) and follow
+the installation instructions
 
 ---
-# Installing Docker Toolbox on Windows (or OS X)
+# Installing Docker on Windows
 
-Get "[Docker Toolbox](https://www.docker.com/products/docker-toolbox)"
+Docker provides a Windows native application, "Docker for Windows", that
+invisibly manages a VM running docker for you.
 
-This gives you:
-* Docker Engine
-* Compose
-* Machine
-* Kitematic
+[Download Docker for Windows](https://docs.docker.com/docker-for-mac/) and
+follow the installation instructions
 
 ---
 # Check your setup
@@ -140,13 +121,6 @@ echo "Pulling some images to get you started ..."
 ...
 YAY: docker version 1.10.2
 YAY: docker-compose version 1.6.0
-```
-
-or not:
-
-```
-BOO: No $DOCKER_HOST, no /var/run/docker.sock ... where's Docker?
-$ `eval $(docker-machine env default)`
 ```
 
 Not working? Ask for help!
@@ -729,7 +703,7 @@ $ `docker run -d --name app -p 5678:80 ciao`
 ]
 
 ```
-$ `curl $(docker-machine ip):5678`
+$ `curl localhost:5678`
 ```
 
 Remember to clean up:
@@ -791,7 +765,7 @@ $ `docker run -d --name app -p 5678:80 -e MESSAGE='Hey, guys!' ciao`
 Test the result:
 
 ```
-$ `curl $(docker-machine ip):5678`
+$ `curl localhost:5678`
 ```
 
 Cleanup:
@@ -843,7 +817,7 @@ $ `docker run -d --name proxy --link app \`
 ]
 
 ```
-$ `curl -si $(docker-machine ip):5678`
+$ `curl -si localhost:5678`
 ```
 
 ---
@@ -985,7 +959,7 @@ $ `docker-compose up`
 Generate some logs:
 
 ```
-$ `curl $(docker-machine ip):5678`
+$ `curl localhost:5678`
 ```
 
 What containers are running?
