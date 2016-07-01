@@ -1,11 +1,15 @@
-app:
-  image: ciao
+version: '2'
 
-proxy:
-  image: woollyams/nginx-reverse-proxy:201603101638
-  ports:
-    - 5678:8080
-  links:
-    - app
-  environment:
-    PORT: 8080
+services:
+  app:
+    image: ciao
+
+  proxy:
+    image: woollyams/nginx-reverse-proxy:201603101638
+    depends_on:
+      - app
+    ports:
+      - 5678:80
+    environment:
+      BACKEND: app:80
+

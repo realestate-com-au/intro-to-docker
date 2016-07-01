@@ -1,11 +1,15 @@
-app:
-  build: ../../ciao
+version: '2'
 
-proxy:
-  build: ../../nginx-reverse-proxy
-  ports:
-    - 5678:8080
-  links:
-    - app
-  environment:
-    PORT: 8080
+services:
+  app:
+    build: ../../ciao
+
+  proxy:
+    build: ../../nginx-reverse-proxy
+    depends_on:
+      - app
+    ports:
+      - 5678:80
+    environment:
+      BACKEND: app:80
+

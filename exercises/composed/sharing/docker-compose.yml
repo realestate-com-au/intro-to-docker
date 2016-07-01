@@ -4,7 +4,6 @@ volumes:
   shared: {}
 
 services:
-
   producer:
     image: busybox
     volumes:
@@ -13,8 +12,9 @@ services:
 
   consumer:
     image: ubuntu:14.04
+    depends_on:
+      - producer
     volumes:
       - shared:/data
-    links:
-      - producer
     command: tail -f /data/dates
+
