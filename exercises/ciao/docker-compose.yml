@@ -1,5 +1,5 @@
 dev:
-  image: node:4.2
+  image: node:6.2.2
   volumes:
     - .:/app
   working_dir: /app
