@@ -829,12 +829,11 @@ exec nginx
 name: networks
 # Try it: connect two containers
 
-Using networks you can connect containers together, without exposing ports to the host:
+Docker by default will connect all your containers to a shared bridge network. Containers can resolve each others names and talk to each other over that network, without exposing ports to the host.
 
 ```
-$ `docker network create proxy_network`
-$ `docker run -d --name app ciao --net proxy_network`
-$ `docker run -d --name proxy --net proxy_network \`
+$ `docker run -d --name app ciao` 
+$ `docker run -d --name proxy \`
   `-p 5678:1234 -e PORT=1234 -e BACKEND=app:80 \`
   `woollyams/nginx-reverse-proxy`
 ```
@@ -955,7 +954,7 @@ class: middle, center
 # Docker Compose
 
 ---
-# Consider: use containers with docker-compose
+# Try it: docker-compose
 
 Given YAML config file:
 
@@ -965,24 +964,18 @@ version: '2'
 services:
   app:
     image: ciao
-    networks:
-      - proxy_network
   
   proxy:
     image: woollyams/nginx-reverse-proxy:201603101638
-    networks:
-      - proxy_network
+    depends_on:
+      - app
     ports:
-      - 5678:8080
+      - 5678:80
     environment:
-      PORT: 8080
-networks:
-    proxy_network:
+      BACKEND: app:80
 ```
 
----
-# Try it: connect containers using docker-compose
-  You can start all the containers with:
+You can start the containers with:
 
 ```
 $ `cd exercises/composed/basic`
@@ -1016,45 +1009,19 @@ $ `docker-compose down`
 
 ```
 version: '2'
-services:
-  app:
-    image: ciao
-    networks:
-      - proxy_network
-  proxy:
-    image: woollyams/nginx-reverse-proxy:201603101638
-    ports:
-      - 5678:8080
-    networks:
-      - proxy_network
-    environment:
-      PORT: 8080
 
-networks:
-  proxy_network:
-```
-
----
-# Try it: get compose to build your images
-
-```
-version: '2'
 services:
   app:
     build: ../../ciao
-    networks:
-      - proxy_network
+
   proxy:
     build: ../../nginx-reverse-proxy
+    depends_on:
+      - app
     ports:
-      - 5678:8080
-    networks:
-      - proxy_network
+      - 5678:80
     environment:
-      PORT: 8080
-
-networks:
-  proxy_network:
+      BACKEND: app:80
 ```
 --
 
@@ -1064,36 +1031,29 @@ $ `docker-compose up`
 ```
 
 ---
-# Consider: volume sharing 
+# Try it: sharing a volume 
 
 ```
 version: '2'
+
+volumes:
+  shared: {}
+
 services:
   producer:
     image: busybox
     volumes:
       - shared:/out
-    networks:
-      - share_network
     command: sh -c "while true; do date; sleep 1; done > /out/dates"
 
   consumer:
     image: ubuntu:14.04
+    depends_on:
+      - producer
     volumes:
       - shared:/data
-    networks:
-      - share_network
     command: tail -f /data/dates
-
-volumes:
-  shared: {}
-
-networks:
-  share_network
 ```
-
----
-# Try it: sharing a volume
 
 ```
 $ `cd exercises/composed/sharing`

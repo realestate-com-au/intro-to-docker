@@ -3,17 +3,13 @@ version: '2'
 services:
   app:
     build: ../../ciao
-    networks:
-      - proxy_network
-  
+
   proxy:
     build: ../../nginx-reverse-proxy
+    depends_on:
+      - app
     ports:
-      - 5678:8080
-    networks:
-      - proxy_network
+      - 5678:80
     environment:
-      PORT: 8080
+      BACKEND: app:80
 
-networks:
-  proxy_network:
