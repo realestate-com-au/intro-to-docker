@@ -34,24 +34,6 @@ beat
 
 echo "Docker is at $docker_addr"
 
-pull() {
-  echo ""
-  echo "=== $1"
-  docker pull $1
-}
-
-beat
-
-echo "Pulling some images to get you started ..."
-pull alpine
-pull busybox
-pull centos
-pull ubuntu
-pull ubuntu:14.04
-pull ubuntu:15.10
-pull node:6.2.2
-pull woollyams/nginx-reverse-proxy:201603101638
-
 beat
 
 version_of() {
@@ -75,3 +57,21 @@ check_version() {
 
 check_version docker 1.10.0
 check_version docker-compose 1.6.0
+
+beat
+
+pull() {
+  echo ""
+  echo "=== $1"
+  docker pull $1
+}
+
+echo "Pulling some images to get you started ..."
+pull alpine
+pull busybox
+pull centos
+pull ubuntu
+pull ubuntu:14.04
+pull ubuntu:15.10
+pull node:6.2.2
+pull woollyams/nginx-reverse-proxy:201603101638
