@@ -72,6 +72,6 @@ pull busybox
 pull centos
 pull ubuntu
 pull ubuntu:14.04
-pull ubuntu:15.10
+pull ubuntu:16.04
 pull node:6.2.2
 pull woollyams/nginx-reverse-proxy:201603101638
