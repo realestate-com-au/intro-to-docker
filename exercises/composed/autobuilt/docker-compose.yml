@@ -12,4 +12,4 @@ services:
     ports:
       - 5678:80
     environment:
-      BACKEND_HOST: app
+      BACKEND: app

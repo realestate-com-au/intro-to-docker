@@ -780,7 +780,7 @@ $ `docker rm -f app`
 
 ```
 upstream backend {
-  server ${BACKEND_HOST:-app}:${BACKEND_PORT:-80} fail_timeout=0;
+  server ${BACKEND:-"app"} fail_timeout=0;
 }
 
 server {
@@ -799,8 +799,8 @@ Docker by default will connect all your containers to a shared bridge network. C
 
 ```
 $ `docker run -d --name app ciao`
-$ `docker run -d --name proxy \`
-  `-p 5678:1234 -e PORT=1234 -e BACKEND_HOST=app \`
+$ `docker run -d --name proxy -p 5678:1234 \`
+  `-e PORT=1234 -e BACKEND=app \`
   `woollyams/nginx-reverse-proxy`
 ```
 
