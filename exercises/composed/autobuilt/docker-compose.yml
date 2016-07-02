@@ -6,7 +6,7 @@ services:
     build: ../../ciao
 
   proxy:
-    build: ../../nginx-reverse-proxy
+    build: ../../ciao-proxy
     depends_on:
       - app
     ports:

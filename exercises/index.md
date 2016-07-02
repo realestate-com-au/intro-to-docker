@@ -370,7 +370,7 @@ You can link containers together, without exposing ports to the host:
 
 ```
 $ `docker run -d --name app -p 80 ciao`
-$ `docker run -d --name proxy -p 5678:80 --link app:app woollyams/nginx-reverse-proxy`
+$ `docker run -d --name proxy -p 5678:80 --link app:app realestate/ciao-proxy`
 ```
 
 .center[
@@ -470,7 +470,7 @@ app:
   image: ciao
 
 proxy:
-  image: woollyams/nginx-reverse-proxy
+  image: realestate/ciao-proxy
   links:
   - app
   ports:
@@ -483,4 +483,3 @@ You can start all the containers with:
 $ `cd exercises/composed`
 $ `docker-compose up`
 ```
-

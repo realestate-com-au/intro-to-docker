@@ -1,4 +1,4 @@
-REPOSITORY = woollyams/nginx-reverse-proxy
+REPOSITORY = realestate/ciao-proxy
 VERSION := $(shell TZ=Australia/Melbourne date +'%Y%m%d%H%M')
 
 default: image
