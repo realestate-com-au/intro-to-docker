@@ -777,11 +777,10 @@ $ `docker rm -f app`
 ---
 # Consider: a reverse-proxy image
 
-```
-# /nginx/proxy.conf.sh
 
+```
 upstream backend {
-  server ${BACKEND:-app:80};
+  server ${BACKEND_HOST:-app}:${BACKEND_PORT:-80} fail_timeout=0;
 }
 
 server {
@@ -792,13 +791,6 @@ server {
 }
 ```
 
-```
-# /nginx/run (default command)
-
-/nginx/proxy.conf.sh > /etc/nginx/sites-enabled/proxy.conf
-exec nginx
-```
-
 ---
 name: networks
 # Try it: connect two containers
@@ -806,9 +798,9 @@ name: networks
 Docker by default will connect all your containers to a shared bridge network. Containers can resolve each others names and talk to each other over that network, without exposing ports to the host.
 
 ```
-$ `docker run -d --name app ciao` 
+$ `docker run -d --name app ciao`
 $ `docker run -d --name proxy \`
-  `-p 5678:1234 -e PORT=1234 -e BACKEND=app:80 \`
+  `-p 5678:1234 -e PORT=1234 -e BACKEND_HOST=app \`
   `woollyams/nginx-reverse-proxy`
 ```
 
@@ -938,7 +930,7 @@ version: '2'
 services:
   app:
     image: ciao
-  
+
   proxy:
     image: woollyams/nginx-reverse-proxy:201603101638
     depends_on:
@@ -1005,7 +997,7 @@ $ `docker-compose up`
 ```
 
 ---
-# Try it: sharing a volume 
+# Try it: sharing a volume
 
 ```
 version: '2'

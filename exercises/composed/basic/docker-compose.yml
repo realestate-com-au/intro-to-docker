@@ -1,6 +1,7 @@
 version: '2'
 
 services:
+
   app:
     image: ciao
 
@@ -11,5 +12,4 @@ services:
     ports:
       - 5678:80
     environment:
-      BACKEND: app:80
-
+      BACKEND_HOST: app

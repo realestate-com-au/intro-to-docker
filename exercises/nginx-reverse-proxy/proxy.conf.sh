@@ -1,9 +1,11 @@
 #! /bin/sh
 
+: ${BACKEND:="${BACKEND_HOST:-app}:${BACKEND_PORT:-80}"}
+
 cat <<EOF
 
 upstream backend {
-  server ${BACKEND:-app:80} fail_timeout=0;
+  server ${BACKEND} fail_timeout=0;
 }
 
 server {
