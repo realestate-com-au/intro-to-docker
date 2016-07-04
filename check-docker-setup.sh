@@ -73,7 +73,10 @@ pull centos
 pull ubuntu
 pull ubuntu:14.04
 pull ubuntu:16.04
+pull microsoft/dotnet:1.0.0-preview1
+pull node:5.11.0-slim
 pull node:6.2.2
+pull python:2.7-alpine
 pull ruby:2.3
 pull realestate/ciao
 pull realestate/ciao-proxy
