@@ -783,20 +783,24 @@ server {
 
 ---
 name: networks
-# Try it: connect two containers
+# Try it: inter-container networking
 
-Docker by default will connect all your containers to a shared bridge network. Containers can resolve each others names and talk to each other over that network, without exposing ports to the host.
+Create a "network":
 
 ```
-$ `docker run -d --name app ciao`
-$ `docker run -d --name proxy -p 5678:1234 \`
-  `-e PORT=1234 -e BACKEND=app \`
+$ `docker network create shared`
+$ `docker network ls`
+```
+
+Attach some containers:
+
+```
+$ `docker run -d --net=shared --name app \`
+  `realestate/ciao`
+$ `docker run -d --net=shared --name proxy \`
+  `-p 5678:1234 -e PORT=1234 -e BACKEND=app \`
   `realestate/ciao-proxy`
 ```
-
-.center[
-  <img src="diagrams/nginx-ciao.png" width="60%" />
-]
 
 ```
 $ `curl -si localhost:5678`
