@@ -20,8 +20,10 @@ h1, h2, h3 {
   padding: 0;
 }
 
-h1 {
+.remark-slide-content h1 {
+  font-size: 40px;
   line-height: 110%;
+  text-shadow: 3px 3px 3px #ccc;
 }
 
 pre {
