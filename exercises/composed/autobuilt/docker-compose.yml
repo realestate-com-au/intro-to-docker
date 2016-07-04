@@ -9,7 +9,7 @@ services:
     build: ../../ciao-proxy
     depends_on:
       - app
-    ports:
-      - 5678:80
     environment:
       BACKEND: app
+    ports:
+      - 5678:80

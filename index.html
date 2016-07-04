@@ -922,17 +922,18 @@ Given YAML config file:
 version: '2'
 
 services:
+
   app:
-    image: ciao
+    image: realestate/ciao
 
   proxy:
     image: realestate/ciao-proxy
     depends_on:
       - app
+    environment:
+      BACKEND: app
     ports:
       - 5678:80
-    environment:
-      BACKEND: app:80
 ```
 
 You can start the containers with:
@@ -971,6 +972,7 @@ $ `docker-compose down`
 version: '2'
 
 services:
+
   app:
     build: ../../ciao
 
@@ -978,10 +980,10 @@ services:
     build: ../../ciao-proxy
     depends_on:
       - app
-    ports:
-      - 5678:80
     environment:
       BACKEND: app:80
+    ports:
+      - 5678:80
 ```
 --
 
@@ -1000,6 +1002,7 @@ volumes:
   shared: {}
 
 services:
+
   producer:
     image: busybox
     volumes:
