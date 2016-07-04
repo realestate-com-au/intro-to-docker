@@ -837,23 +837,20 @@ root@c10a43c38793:/# `echo TESTING > /cache/test`
 ^D
 ```
 
-and then later:
+Observe, volume created:
+
+```
+$ `docker volume ls`
+```
+
+Use it again:
 
 ```
 $ `docker run -it --rm -v my-cache:/cache ubuntu bash`
 root@f5be5dec8a5a:/# `ls /cache`
 ```
 
----
-# Try it: more volume commands
-
-List volumes:
-
-```
-$ `docker volume ls`
-```
-
-Remove a volume:
+Clean up:
 
 ```
 $ `docker volume rm my-cache`
