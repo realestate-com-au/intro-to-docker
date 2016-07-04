@@ -758,15 +758,13 @@ Test the result:
 $ `curl localhost:5678`
 ```
 
-Cleanup:
-
-```
-$ `docker rm -f app`
-```
+---
+name: networks
+class: middle, center
+# Networks
 
 ---
 # Consider: a reverse-proxy image
-
 
 ```
 upstream backend {
@@ -782,7 +780,6 @@ server {
 ```
 
 ---
-name: networks
 # Try it: inter-container networking
 
 Create a "network":
@@ -795,6 +792,7 @@ $ `docker network ls`
 Attach some containers:
 
 ```
+$ `docker rm -f app proxy`
 $ `docker run -d --net=shared --name app \`
   `realestate/ciao`
 $ `docker run -d --net=shared --name proxy \`
@@ -805,6 +803,11 @@ $ `docker run -d --net=shared --name proxy \`
 ```
 $ `curl -si localhost:5678`
 ```
+
+---
+class: center, middle
+
+<img src="diagrams/shared-network.png" width="60%" />
 
 ---
 name: volumes
