@@ -105,13 +105,14 @@ Let's check that everything is working:
 
 ```
 $ `./check-docker-setup.sh`
-YAY: $DOCKER_HOST is set
+YAY: /var/run/docker.sock exists
 YAY: I can talk to docker
-Docker is at 192.168.99.100
-echo "Pulling some images to get you started ..."
-...
-YAY: docker version 1.10.2
-YAY: docker-compose version 1.6.0
+Docker is at localhost
+
+YAY: docker version 1.12.0
+YAY: docker-compose version 1.8.0
+
+Pulling some images to get you started ...
 ```
 
 Not working? Ask for help!
