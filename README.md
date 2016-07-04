@@ -10,4 +10,5 @@ we recommend running through the setup process *before* you turn
 up on the day.  Specifically:
 
 * have Docker and Docker Compose installed
+  - [Docker for Mac](https://docs.docker.com/docker-for-mac/) is a good option
 * be able to successfully run `./check-docker-setup.sh`
