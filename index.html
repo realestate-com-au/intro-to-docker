@@ -219,6 +219,28 @@ root@container# `apt-get update`
 ```
 
 ---
+# Try it: which kernel?
+
+Run `uname -a` on both `ubuntu` and `centos`:
+
+```
+$ `docker run ubuntu uname -a`
+$ `docker run centos uname -a`
+```
+
+Can you explain the result?
+
+--
+
+…
+
+Different distros, same kernel: same result.
+
+.center[
+![2 distros, one kernel](diagrams/two-distros-one-kernel.png)
+]
+
+---
 name: containers-vs-vms
 # Containers vs. Virtualisation
 
@@ -267,28 +289,6 @@ With Docker, processes communicate directly with the host kernel.
     <td>services</td>
   </tr>
 </table>
-
----
-# Try it: which kernel?
-
-Run `uname -a` on both `ubuntu` and `centos`:
-
-```
-$ `docker run ubuntu uname -a`
-$ `docker run centos uname -a`
-```
-
-Can you explain the result?
-
---
-
-…
-
-Different distros, same kernel: same result.
-
-.center[
-![2 distros, one kernel](diagrams/two-distros-one-kernel.png)
-]
 
 ---
 # Try it: overhead, much?
