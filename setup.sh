@@ -41,7 +41,7 @@ version_of() {
 }
 
 version_lte() {
-  [ "$1" = "`echo -e "$1\n$2" | docker run -i ubuntu:14.04 sort -V | head -n1`" ]
+  [ "$1" = "`echo -e "$1\n$2" | docker run -i debian sort -V | head -n1`" ]
 }
 
 check_version() {
@@ -70,6 +70,7 @@ echo "Pulling some images to get you started ..."
 pull alpine
 pull busybox
 pull centos
+pull debian
 pull ubuntu
 pull ubuntu:14.04
 pull ubuntu:16.04
