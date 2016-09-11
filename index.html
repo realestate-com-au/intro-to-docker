@@ -817,9 +817,20 @@ $ `curl -si localhost:5678`
 ```
 
 ---
-class: center, middle
+# Try it: explore the network
 
+```
+$ `docker network inspect shared`
+```
+
+.center[
 <img src="diagrams/shared-network.png" width="60%" />
+]
+
+```
+$ `docker run -it --rm --network shared busybox`
+/ # `nslookup app`
+```
 
 ---
 name: volumes
