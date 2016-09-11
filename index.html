@@ -123,6 +123,10 @@ and `docker-compose`; _most_ things will still work.)
 ]
 
 ---
+class: center, middle
+# Let us begin
+
+---
 name: hello-world
 # Try it: Hello world!
 
@@ -767,6 +771,11 @@ class: middle, center
 ---
 # Consider: a reverse-proxy image
 
+`nginx`, configured to:
+
+* listen on port `80`
+* forward requests to a host called "`app`"
+
 ```
 upstream backend {
   server ${BACKEND:-"app"} fail_timeout=0;
@@ -779,6 +788,8 @@ server {
   }
 }
 ```
+
+I've published it as `realestate/ciao-proxy`.
 
 ---
 # Try it: inter-container networking
