@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+
+  app:
+    image: realestate/ciao
+
+  proxy:
+    image: realestate/ciao-proxy
+    depends_on:
+      - app
+    environment:
+      BACKEND: app
+    ports:
+      - 5678:80
+
+  client:
+    build: ../../ubuntu-with-curl
+    depends_on:
+      - proxy
+    command: sh -c "while true; do curl http://proxy; sleep 1; done"

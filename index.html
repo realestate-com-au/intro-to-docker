@@ -1005,10 +1005,10 @@ version: '2'
 services:
 
   app:
-    build: ../../ciao
+    `build: ../../ciao`
 
   proxy:
-    build: ../../ciao-proxy
+    `build: ../../ciao-proxy`
     depends_on:
       - app
     environment:
@@ -1052,6 +1052,36 @@ services:
 ```
 $ `cd exercises/composed/sharing`
 $ `docker-compose up`
+```
+
+---
+# Try it: add a "client" container
+
+```
+version: '2'
+
+services:
+  producer: ...
+  consumer: ...
+
+  client:
+    build: ../../ubuntu-with-curl
+    depends_on:
+      - proxy
+    command: sh -c "while true; do curl http://proxy; sleep 1; done"
+```
+
+```
+$ `cd exercises/composed/with-curl`
+$ `docker-compose up`
+```
+
+(Press Ctrl-C to tear everything down.)
+
+Try "running" a "client" container:
+
+```
+$ `docker-compose run --rm client`
 ```
 
 ---
