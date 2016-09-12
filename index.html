@@ -882,16 +882,17 @@ $ `docker volume rm my-cache`
 ---
 # Try it: anonymous volume for extra writable space
 
-Tip: you can improve security by:
-
-* mounting your root volume read-only
-* creating writable volumes as required
-
 ```
 $ `docker run -it --rm --read-only -v /scratch ubuntu`
 root@c10a43c38793:/# `echo TESTING > /tmp/test`
 root@c10a43c38793:/# `echo TESTING > /scratch/test`
 ```
+
+.center[
+<img src="diagrams/cow-vs-data-volume.png" width=60% />
+]
+
+Tip: read-only root volume is great for security!
 
 ---
 # Try it: share a volume with another container
