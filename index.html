@@ -910,7 +910,7 @@ root@118f38503653:/# `echo ohai > /published/stuff`
 Use the volume from a different container:
 
 ```
-$ `docker run -it --rm --name consumer -v data:/provided ubuntu`
+$ `docker run -it --rm --name consumer -v data:/provided:ro ubuntu`
 root@d88a7a468b01:/# `cat /provided/stuff`
 ```
 
