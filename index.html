@@ -969,7 +969,7 @@ $ `docker-compose up`
 ---
 # Try it: under the covers of compose
 
-Generate some logs:
+In a different window, generate some traffic:
 
 ```
 $ `curl localhost:5678`
@@ -978,8 +978,16 @@ $ `curl localhost:5678`
 What containers are running?
 
 ```
-$ `docker-compose ps`
 $ `docker ps`
+$ `cd exercises/composed/basic`
+$ `docker-compose ps`
+```
+
+How about networking?
+
+```
+$ `docker inspect basic_app_1 \`
+  `| jq '.[0].NetworkSettings.Networks'`
 ```
 
 Take it all down:
