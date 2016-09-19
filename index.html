@@ -829,7 +829,7 @@ $ `docker rm -f app proxy`
 $ `docker run -d --net=shared --name app \`
   `realestate/ciao`
 $ `docker run -d --net=shared --name proxy \`
-  `-p 5678:1234 -e PORT=1234 -e BACKEND=app \`
+  `-p 5678:80 -e BACKEND=app \`
   `realestate/ciao-proxy`
 ```
 
