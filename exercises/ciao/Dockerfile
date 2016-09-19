@@ -6,5 +6,4 @@ RUN npm install
 COPY index.js /app/
 
 ENV PORT 80
-EXPOSE $PORT
 CMD ["node", "/app/index.js"]
