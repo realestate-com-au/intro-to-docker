@@ -735,6 +735,12 @@ Use `docker port` to discover which one it chose:
 $ `docker port app 80`
 ```
 
+Hit it:
+
+```
+$ `curl $(docker port app 80)`
+```
+
 ---
 # Try it: logs
 
@@ -742,6 +748,12 @@ You can get the output using `docker logs`:
 
 ```
 $ `docker logs app`
+```
+
+Again, with timestamps:
+
+```
+$ `docker logs --timestamps app`
 ```
 
 or even follow along in real time:
