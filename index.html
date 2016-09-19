@@ -675,7 +675,7 @@ $ `docker rm -f <ID>`
 Start a container with a `--name`:
 
 ```
-$ `docker run --name app ciao`
+$ `docker run -d --name app ciao`
 ```
 
 Now you can use the NAME rather than an ID:
@@ -700,7 +700,17 @@ $ `docker run -d --name app -p 5678:80 ciao`
 $ `curl localhost:5678`
 ```
 
-Remember to clean up:
+---
+# Remember to clean up
+
+If/when you see:
+
+```
+docker: Error response from daemon: Conflict. The name "/app" is
+already in use by container 5678abcd...
+```
+
+you need to remove the named container:
 
 ```
 $ `docker rm -f app`
