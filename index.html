@@ -633,6 +633,23 @@ $ `docker pull YOURNEIGHBOUR/ciao`
 ```
 
 ---
+# Key `Dockerfile` directives
+
+* `FROM` specifies the base-image
+
+* `COPY` imports files into an image
+
+* `RUN` runs a command
+
+* `ENV` sets default environment-variable values
+
+* `WORKDIR` sets default working-directory
+
+* `CMD` sets the default command to run
+
+* `ENTRYPOINT` allows you to prepend elements to the command-line
+
+---
 class: middle, center
 # Containers
 
@@ -957,7 +974,6 @@ Use the volume from a different container:
 $ `docker run -it --rm --name consumer -v data:/provided:ro ubuntu`
 root@d88a7a468b01:/# `cat /provided/stuff`
 ```
-
 
 ---
 # Volume hints in images
