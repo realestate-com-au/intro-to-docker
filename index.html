@@ -940,7 +940,7 @@ root@d88a7a468b01:/# `cat /provided/stuff`
 ---
 # Creating volumes in images
 
-Use the `VOLUME` directive in your `Dockerfile` to create a volume.
+Use the `VOLUME` directive in your `Dockerfile`, for any directory that should be on a volume.
 
 Sample from "[postgres](https://github.com/docker-library/postgres/blob/8a9fbcb40f13ccc7762f278b9df611cabe22d300/9.5/Dockerfile)" image:
 
@@ -952,6 +952,14 @@ ENV PGDATA /var/lib/postgresql/data
 VOLUME /var/lib/postgresql/data
 …
 ```
+
+This <u>implicitly</u> adds
+
+```
+-v /var/lib/postgresql/data
+```
+
+to the `docker run` command-line.
 
 ---
 name: compose
