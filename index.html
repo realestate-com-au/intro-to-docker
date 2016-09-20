@@ -742,6 +742,28 @@ $ `curl $(docker port app 80)`
 ```
 
 ---
+# Try it: EXPOSEd ports
+
+In the `Dockerfile`, you can document that a port _should_ be exposed.
+
+```
+EXPOSE 80
+```
+
+But, you still need to tell Docker to expose the documented ports, with `-P`:
+
+```
+$ `docker run -d --name app -P ciao`
+```
+
+Again, you get a randomly-assigned port:
+
+```
+$ `docker port app 80`
+$ `curl $(docker port app 80)`
+```
+
+---
 # Try it: logs
 
 You can get the output using `docker logs`:
