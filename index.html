@@ -960,9 +960,9 @@ root@d88a7a468b01:/# `cat /provided/stuff`
 
 
 ---
-# Creating volumes in images
+# Volume hints in images
 
-Use the `VOLUME` directive in your `Dockerfile`, for any directory that should be on a volume.
+The `VOLUME` directive documents that the specified directory _should_ be on a volume.
 
 Sample from "[postgres](https://github.com/docker-library/postgres/blob/8a9fbcb40f13ccc7762f278b9df611cabe22d300/9.5/Dockerfile)" image:
 
@@ -975,7 +975,7 @@ VOLUME /var/lib/postgresql/data
 …
 ```
 
-This <u>implicitly</u> adds
+Docker will <u>implicitly</u> add
 
 ```
 -v /var/lib/postgresql/data
