@@ -9,6 +9,10 @@ boo() {
   exit 1
 }
 
+umm() {
+  (echo -ne "\033[33mUMM: \033[0m"; echo "$1") >&2
+}
+
 beat() {
   echo ""
 }
@@ -17,6 +21,10 @@ docker_sock=/var/run/docker.sock
 if test -n "$DOCKER_HOST"; then
   yay "\$DOCKER_HOST is set"
   docker_addr=$(echo $DOCKER_HOST | sed -e 's|tcp://\(.*\):[0-9]*|\1|')
+  if test -e $docker_sock; then
+    umm "$docker_sock exists, too - that's wierd"
+    echo "     Beware of confusion between Docker for Mac and docker-machine!"
+  fi
 elif test -e $docker_sock; then
   yay "$docker_sock exists"
   docker_addr=localhost
