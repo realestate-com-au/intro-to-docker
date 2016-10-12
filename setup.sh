@@ -37,7 +37,7 @@ echo "Docker is at $docker_addr"
 beat
 
 version_of() {
-  $1 --version | egrep -o '\d+(\.\d+)+'
+  $1 --version | egrep -o '[0-9]+(\.[0-9]+)+'
 }
 
 version_lte() {
@@ -51,7 +51,7 @@ check_version() {
   if version_lte $expected_version $actual_version; then
     yay "$app version $actual_version"
   else
-    boo "need $app version $expected_version, got $actual_version"
+    boo "need at least $app version $expected_version, got $actual_version"
   fi
 }
 
