@@ -1126,6 +1126,36 @@ $ `docker-compose up`
 ```
 
 ---
+# Try it: add a "client" container
+
+```
+version: '2'
+
+services:
+  app: ...
+  proxy: ...
+
+  client:
+    build: ../../ubuntu-with-curl
+    depends_on:
+      - proxy
+    command: sh -c "while true; do curl http://proxy; sleep 1; done"
+```
+
+```
+$ `cd exercises/composed/with-curl`
+$ `docker-compose up`
+```
+
+(Press Ctrl-C to tear everything down.)
+
+Try "running" a "client" container:
+
+```
+$ `docker-compose run --rm client`
+```
+
+---
 # Try it: sharing a volume
 
 ```
@@ -1154,36 +1184,6 @@ services:
 ```
 $ `cd exercises/composed/sharing`
 $ `docker-compose up`
-```
-
----
-# Try it: add a "client" container
-
-```
-version: '2'
-
-services:
-  app: ...
-  proxy: ...
-
-  client:
-    build: ../../ubuntu-with-curl
-    depends_on:
-      - proxy
-    command: sh -c "while true; do curl http://proxy; sleep 1; done"
-```
-
-```
-$ `cd exercises/composed/with-curl`
-$ `docker-compose up`
-```
-
-(Press Ctrl-C to tear everything down.)
-
-Try "running" a "client" container:
-
-```
-$ `docker-compose run --rm client`
 ```
 
 ---
