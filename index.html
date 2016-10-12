@@ -1149,10 +1149,21 @@ $ `docker-compose up`
 
 (Press Ctrl-C to tear everything down.)
 
+---
+# Try it: docker-compose run
+
 Try "running" a "client" container:
 
 ```
 $ `docker-compose run --rm client`
+```
+
+Or, go interactive:
+
+```
+$ `docker-compose run --rm client bash`
+root@ebb0d01e63b0:/# `curl -i app`
+root@ebb0d01e63b0:/# `curl -i proxy`
 ```
 
 ---
