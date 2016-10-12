@@ -404,43 +404,22 @@ class: center, middle
 # Images
 
 ---
-name: image-names-and-tags
-# Image names and tags
+# Try it: list images
 
-Image-name pattern:
-
-.center[
-`[[<REGISTRY>/]<NAMESPACE>/]<REPOSITORY>[:<TAG>]`
-]
-
-* `<REGISTRY>` defaults to `docker.io` ("official" registry)
-* `<NAMESPACE>` defaults to `library`
-* `<TAG>` defaults to `latest`
-
-These are all equivalent:
+View images on your Docker host:
 
 ```
-$ `docker run hello-world`
-$ `docker run hello-world:latest`
-$ `docker run library/hello-world`
-$ `docker run docker.io/library/hello-world:latest`
-$ `docker run sha256:c54a2cc56cbb`
-$ `docker run sha256:c54a2cc56cbb2f04003c1cd4507e118af7c0d340fe7e2720f70976c4b75237dc`
-```
-
----
-# Try it: investigate tags in the `ubuntu` repository
-
-Run a command using `ubuntu:16.04`:
-
-```
-$ `docker run ubuntu:16.04 grep -v "^#" /etc/apt/sources.list`
-```
-
-Try the same thing using `ubuntu:14.04`:
-
-```
-$ `docker run ubuntu:14.04 grep -v "^#" /etc/apt/sources.list`
+$ `docker images`
+REPOSITORY   TAG          IMAGE ID       CREATED       SIZE
+busybox      latest       e02e811dd08f   4 days ago    1.093 MB
+debian       latest       ddf73f48a05d   2 weeks ago   123 MB
+nginx        latest       ba6bed934df2   2 weeks ago   181.4 MB
+ruby         2.3-alpine   2467a614f30b   2 weeks ago   125.8 MB
+...
+ubuntu       14.04        f2d8ce9fa988   2 weeks ago   187.9 MB
+ubuntu       16.04        45bc58500fa3   3 weeks ago   126.9 MB
+ubuntu       latest       45bc58500fa3   3 weeks ago   126.9 MB
+ubuntu       <none>       45bc58500fa3   3 weeks ago   126.9 MB
 ```
 
 --
@@ -449,6 +428,53 @@ View images in the `ubuntu` repository:
 
 ```
 $ `docker images ubuntu`
+```
+
+---
+name: image-tags
+# Try it: use an image tag
+
+Image repositories can contain multiple images, identified by tag:
+
+.center[
+`<REPOSITORY>[:<TAG>]`
+]
+
+Run a command using different versions of Ubuntu:
+
+```
+$ `docker run ubuntu:16.04 cat /etc/lsb-release`
+$ `docker run ubuntu:14.04 cat /etc/lsb-release`
+```
+
+--
+
+By convention, there's usually a `latest` tag:
+
+```
+$ `docker run ubuntu:latest cat /etc/lsb-release`
+```
+
+which is the default:
+
+```
+$ `docker run ubuntu cat /etc/lsb-release`
+```
+
+---
+name: image-namespaces
+# Try it: pull image from a non-standard namespace
+
+Image repositories can have an optional namespace:
+
+.center[
+`[<NAMESPACE>/]<REPOSITORY>[:<TAG>]`
+]
+
+Pull an image from the `realestate` namespace:
+
+```
+$ `docker pull realestate/ciao`
 ```
 
 ---
@@ -633,21 +659,30 @@ $ `docker pull YOURNEIGHBOUR/ciao`
 ```
 
 ---
-# Key `Dockerfile` directives
+name: image-references
+# Summary: image references
 
-* `FROM` specifies the base-image
+Image-name pattern:
 
-* `COPY` imports files into an image
+.center[
+`[[<REGISTRY>/]<NAMESPACE>/]<REPOSITORY>[:<TAG>][@<DIGEST>]`
+]
 
-* `RUN` runs a command
+* `<REGISTRY>` defaults to `docker.io` ("official" registry)
+* `<NAMESPACE>` defaults to `library`
+* `<TAG>` defaults to `latest`
+* `<DIGEST>` is a SHA-256 checksum of the image manifest
 
-* `ENV` sets default environment-variable values
+These are all equivalent:
 
-* `WORKDIR` sets default working-directory
-
-* `CMD` sets the default command to run
-
-* `ENTRYPOINT` allows you to prepend elements to the command-line
+```
+$ `docker run hello-world`
+$ `docker run hello-world:latest`
+$ `docker run library/hello-world`
+$ `docker run docker.io/library/hello-world:latest`
+$ `docker run sha256:c54a2cc56cbb`
+$ `docker run sha256:c54a2cc56cbb2f04003c1cd4507e118af7c0d340fe7e2720f70976c4b75237dc`
+```
 
 ---
 class: middle, center
