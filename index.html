@@ -492,7 +492,7 @@ Install some software in an `ubuntu` container:
 $ `docker run -i -t ubuntu bash`
 root@f55393e5dc31:/# `apt-get update && apt-get install -y curl`
 …
-^D
+root@f55393e5dc31:/# `exit`
 ```
 
 Now, `commit` that container to create an image:
@@ -946,7 +946,7 @@ $ `docker run -it --rm -v $HOME:/myhome ubuntu bash`
 root@c10a43c38793:/# `mount | grep home`
 root@c10a43c38793:/# `cd /myhome; ls`
 root@c10a43c38793:/# `echo HELLO FROM DOCKER > written-from-docker`
-^D
+root@c10a43c38793:/# `exit`
 $ `ls $HOME`
 ```
 
