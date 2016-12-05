@@ -22,7 +22,7 @@ if test -n "$DOCKER_HOST"; then
   yay "\$DOCKER_HOST is set"
   docker_addr=$(echo $DOCKER_HOST | sed -e 's|tcp://\(.*\):[0-9]*|\1|')
   if test -e $docker_sock; then
-    umm "$docker_sock exists, too - that's wierd"
+    umm "$docker_sock exists, too - that's weird"
     echo "     Beware of confusion between Docker for Mac and docker-machine!"
   fi
 elif test -e $docker_sock; then
