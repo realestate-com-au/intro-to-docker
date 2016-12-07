@@ -322,12 +322,9 @@ Linux "cgroups" + "image" management =
 ---
 # Linux "control groups"
 
-.big.center["`chroot` on steroids"]
-
-<br/>
+</br>
 
 Isolate processes by limiting access to:
-  - file system
   - hardware resources
   - other processes
 
@@ -336,6 +333,8 @@ Not a new idea:
   * project started by Google
   * used extensively by PaaS such as Heroku
   * similar to Solaris Zones, BSD Jails
+
+Similar to how `chroot` limits access to the file system, but for resources.
 
 ---
 # Union file systems
