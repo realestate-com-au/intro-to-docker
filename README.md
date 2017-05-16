@@ -19,7 +19,7 @@ up on the day:
   git clone https://github.com/realestate-com-au/intro-to-docker.git
   ```
 
-3. Run `./setup.sh`
+3. Run `./setup.sh`*
 
   ```
   $ ./setup.sh
@@ -33,3 +33,4 @@ up on the day:
 
   Pulling some images to get you started ...
   ```
+*Setup total download is around 2GB
