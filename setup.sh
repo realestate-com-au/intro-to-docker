@@ -49,7 +49,7 @@ version_of() {
 }
 
 version_lte() {
-  [ "$1" = "`echo -e "$1\n$2" | docker run -i debian sort -V | head -n1`" ]
+  [ "$1" = "`echo -e "$1\n$2" | docker run -i debian:stable sort -V | head -n1`" ]
 }
 
 check_version() {
