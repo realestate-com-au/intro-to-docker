@@ -63,8 +63,8 @@ check_version() {
   fi
 }
 
-check_version docker 1.11.0
-check_version docker-compose 1.7.0
+check_version docker 1.13.0
+check_version docker-compose 1.13.0
 
 beat
 
