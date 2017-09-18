@@ -82,7 +82,7 @@ pull debian
 pull ubuntu
 pull ubuntu:14.04
 pull ubuntu:16.04
-pull microsoft/dotnet:1.0.0-preview2-sdk
+pull microsoft/dotnet:1.0-sdk
 pull node:5.11.0-slim
 pull node:6.2.2
 pull postgres:9.4
