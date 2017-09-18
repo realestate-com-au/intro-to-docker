@@ -57,9 +57,9 @@ check_version() {
   expected_version=$2
   actual_version=$(version_of $app)
   if version_lte $expected_version $actual_version; then
-    yay "$app version $actual_version"
+    yay "$app version $actual_version >= $expected_version"
   else
-    boo "need at least $app version $expected_version, got $actual_version"
+    boo "$app version $actual_version < $expected_version"
   fi
 }
 
