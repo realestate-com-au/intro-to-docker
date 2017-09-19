@@ -1080,7 +1080,7 @@ $ `docker pull YOURNEIGHBOUR/ciao`
 
 ---
 name: runtime-hints
-# Config defaults with "ENV"
+# Tip: set config defaults with "ENV"
 
 The `env` directive sets a default value for an environment variable.
 
@@ -1095,7 +1095,7 @@ $ `docker run -d -e PORT=5000 ciao`
 ```
 
 ---
-# Volume hints with "VOLUME"
+# Tip: implicit volume with "VOLUME"
 
 The `VOLUME` directive documents that the specified directory _should_ be on a volume.
 
@@ -1117,6 +1117,27 @@ Docker will <u>implicitly</u> add
 ```
 
 to the `docker run` command-line.
+
+---
+# Tip: drop privilege with "USER"
+
+```
+FROM python:3.6
+
+# install app (as root)
+COPY . /app
+
+# create a user
+RUN groupadd -r somebody
+ && useradd -r -g somebody somebody
+
+# let them write to /app/tmp
+RUN mkdir /app/tmp
+ && chown -R somebody:somebody /app/tmp
+
+# run as that user (by default)
+USER somebody
+```
 
 ---
 name: compose
