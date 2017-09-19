@@ -33,20 +33,21 @@ class: center, middle
   * [Containers vs Virtual Machines](#containers-vs-vms)
   * [The clever bits](#the-clever-bits)
 
-* Images
-  * [Names and tags](#list-images)
-  * [Building images](#building-images)
-  * [Publishing images](#publishing-images)
-
-]
-
-.rhs[
-
 * Containers
   * [Ports](#ports)
   * [Environment variables](#environment)
   * [Networks](#networks)
   * [Volumes](#volumes)
+
+]
+
+.rhs[
+
+* Images
+  * [Names and tags](#list-images)
+  * [Building images](#building-images)
+  * [Publishing images](#publishing-images)
+  * [Runtime hints](#runtime-hints)
 
 * [Docker Compose](#compose)
 
@@ -402,6 +403,310 @@ IMAGE               CREATED             CREATED BY
 ```
 
 ---
+class: middle, center
+# Containers
+
+---
+# Try it: container basics
+
+Run a container as a daemon (in the background):
+
+```
+$ `docker run -d ciao`
+```
+
+List the running containers:
+
+```
+$ `docker ps`
+```
+
+List ALL the containers:
+
+```
+$ `docker ps -a`
+```
+
+Remove a container:
+
+```
+$ `docker rm <ID>`
+```
+
+Remove a RUNNING container:
+
+```
+$ `docker rm -f <ID>`
+```
+
+---
+# Try it: name your containers
+
+Start a container with a `--name`:
+
+```
+$ `docker run -d --name app ciao`
+```
+
+Now you can use the NAME rather than an ID:
+
+```
+$ `docker rm -f app`
+```
+
+---
+name: ports
+# Try it: map a port to a host port
+
+```
+$ `docker run -d --name app -p 5678:80 ciao`
+```
+
+.center[
+<img src="diagrams/ciao-explicit-port.png" width=40% />
+]
+
+```
+$ `curl localhost:5678`
+```
+
+---
+# Remember to clean up
+
+If/when you see:
+
+```
+docker: Error response from daemon: Conflict. The name "/app" is
+already in use by container 5678abcd...
+```
+
+you need to remove the named container:
+
+```
+$ `docker rm -f app`
+```
+
+---
+# Try it: use a random host port
+
+If you don't specify a host port, Docker will choose one:
+
+```
+$ `docker run -d --name app -p 80 ciao`
+```
+
+.center[
+<img src="diagrams/ciao-random-port.png" width=40% />
+]
+
+Use `docker port` to discover which one it chose:
+
+```
+$ `docker port app 80`
+```
+
+Hit it:
+
+```
+$ `curl $(docker port app 80)`
+```
+
+---
+# Try it: logs
+
+You can get the output using `docker logs`:
+
+```
+$ `docker logs app`
+```
+
+Again, with timestamps:
+
+```
+$ `docker logs --timestamps app`
+```
+
+or even follow along in real time:
+
+```
+$ `docker logs --follow --timestamps app`
+```
+
+---
+name: environment
+# Try it: set environment variables
+
+Assuming your application looks for environment variables, e.g.
+
+```javascript
+var MESSAGE = (process.env.MESSAGE || "Ciao mondo.");
+```
+
+You can set them to provide configuration:
+
+```
+$ `docker run -d --name app -p 5678:80 -e MESSAGE='Hey, guys!' ciao`
+```
+
+Test the result:
+
+```
+$ `curl localhost:5678`
+```
+
+---
+name: networks
+class: middle, center
+# Networks
+
+---
+# Consider: a reverse-proxy image
+
+`nginx`, configured to:
+
+* listen on port `80`
+* forward requests to a host called "`app`"
+
+```
+upstream backend {
+  server ${BACKEND:-"app"} fail_timeout=0;
+}
+
+server {
+  listen ${PORT:-80};
+  location / {
+    proxy_pass http://backend;
+  }
+}
+```
+
+I've published it as `realestate/ciao-proxy`.
+
+---
+# Try it: inter-container networking
+
+Create a "network":
+
+```
+$ `docker network create shared`
+$ `docker network ls`
+```
+
+Attach some containers:
+
+```
+$ `docker rm -f app proxy`
+$ `docker run -d --net=shared --name app \`
+  `realestate/ciao`
+$ `docker run -d --net=shared --name proxy \`
+  `-p 5678:80 \`
+  `realestate/ciao-proxy`
+```
+
+```
+$ `curl -si localhost:5678`
+```
+
+---
+# Try it: explore the network
+
+```
+$ `docker network inspect shared`
+```
+
+.center[
+<img src="diagrams/shared-network.png" width="60%" />
+]
+
+```
+$ `docker run -it --rm --network shared busybox`
+/ # `nslookup app`
+```
+
+---
+name: volumes
+class: middle, center
+# Volumes
+
+---
+# Try it: volume from host
+
+Mount your home directory from the "host":
+
+```
+$ `docker run -it --rm -v $HOME:/myhome ubuntu bash`
+root@c10a43c38793:/# `mount | grep home`
+root@c10a43c38793:/# `cd /myhome; ls`
+root@c10a43c38793:/# `echo HELLO FROM DOCKER > written-from-docker`
+root@c10a43c38793:/# `exit`
+$ `ls $HOME`
+```
+
+---
+# Try it: named cache volume
+
+```
+$ `docker run -it --rm -v my-cache:/cache ubuntu bash`
+root@c10a43c38793:/# `echo TESTING > /cache/test`
+^D
+```
+
+Observe, volume created:
+
+```
+$ `docker volume ls`
+```
+
+Use it again:
+
+```
+$ `docker run -it --rm -v my-cache:/cache ubuntu bash`
+root@f5be5dec8a5a:/# `ls /cache`
+```
+
+Clean up:
+
+```
+$ `docker volume rm my-cache`
+```
+
+---
+# Try it: anonymous volume for extra writable space
+
+```
+$ `docker run -it --rm --read-only -v /scratch ubuntu`
+root@c10a43c38793:/# `echo TESTING > /tmp/test`
+root@c10a43c38793:/# `echo TESTING > /scratch/test`
+```
+
+.center[
+<img src="diagrams/cow-vs-data-volume.png" width=60% />
+]
+
+Tip: read-only root volume is great for security!
+
+---
+# Try it: share a volume with another container
+
+Create a container, with a volume:
+
+```
+$ `docker run -it --rm --name provider -v data:/published ubuntu`
+root@118f38503653:/# `echo ohai > /published/stuff`
+```
+
+.center[
+<img src="diagrams/shared-volume.png" width=80% />
+]
+
+Use the volume from a different container:
+
+```
+$ `docker run -it --rm --name consumer -v data:/provided:ro ubuntu`
+root@d88a7a468b01:/# `cat /provided/stuff`
+```
+
+---
 name: images
 class: center, middle
 
@@ -689,333 +994,8 @@ $ `docker run hello-world@sha256:0256e8a36e2070f7bf2d0b0763dbabdd67798512411de4c
 ```
 
 ---
-class: middle, center
-# Containers
-
----
-# Try it: container basics
-
-Run a container as a daemon (in the background):
-
-```
-$ `docker run -d ciao`
-```
-
-List the running containers:
-
-```
-$ `docker ps`
-```
-
-List ALL the containers:
-
-```
-$ `docker ps -a`
-```
-
-Remove a container:
-
-```
-$ `docker rm <ID>`
-```
-
-Remove a RUNNING container:
-
-```
-$ `docker rm -f <ID>`
-```
-
----
-# Try it: name your containers
-
-Start a container with a `--name`:
-
-```
-$ `docker run -d --name app ciao`
-```
-
-Now you can use the NAME rather than an ID:
-
-```
-$ `docker rm -f app`
-```
-
----
-name: ports
-# Try it: map a port to a host port
-
-```
-$ `docker run -d --name app -p 5678:80 ciao`
-```
-
-.center[
-<img src="diagrams/ciao-explicit-port.png" width=40% />
-]
-
-```
-$ `curl localhost:5678`
-```
-
----
-# Remember to clean up
-
-If/when you see:
-
-```
-docker: Error response from daemon: Conflict. The name "/app" is
-already in use by container 5678abcd...
-```
-
-you need to remove the named container:
-
-```
-$ `docker rm -f app`
-```
-
----
-# Try it: use a random host port
-
-If you don't specify a host port, Docker will choose one:
-
-```
-$ `docker run -d --name app -p 80 ciao`
-```
-
-.center[
-<img src="diagrams/ciao-random-port.png" width=40% />
-]
-
-Use `docker port` to discover which one it chose:
-
-```
-$ `docker port app 80`
-```
-
-Hit it:
-
-```
-$ `curl $(docker port app 80)`
-```
-
----
-# Try it: EXPOSEd ports
-
-In the `Dockerfile`, you can document that a port _should_ be exposed.
-
-```
-EXPOSE 80
-```
-
-But, you still need to tell Docker to expose the documented ports, with `-P`:
-
-```
-$ `docker run -d --name app -P ciao`
-```
-
-Again, you get a randomly-assigned port:
-
-```
-$ `docker port app 80`
-$ `curl $(docker port app 80)`
-```
-
----
-# Try it: logs
-
-You can get the output using `docker logs`:
-
-```
-$ `docker logs app`
-```
-
-Again, with timestamps:
-
-```
-$ `docker logs --timestamps app`
-```
-
-or even follow along in real time:
-
-```
-$ `docker logs --follow --timestamps app`
-```
-
----
-name: environment
-# Try it: set environment variables
-
-Assuming your application looks for environment variables, e.g.
-
-```javascript
-var MESSAGE = (process.env.MESSAGE || "Ciao mondo.");
-```
-
-You can set them to provide configuration:
-
-```
-$ `docker run -d --name app -p 5678:80 -e MESSAGE='Hey, guys!' ciao`
-```
-
-Test the result:
-
-```
-$ `curl localhost:5678`
-```
-
----
-name: networks
-class: middle, center
-# Networks
-
----
-# Consider: a reverse-proxy image
-
-`nginx`, configured to:
-
-* listen on port `80`
-* forward requests to a host called "`app`"
-
-```
-upstream backend {
-  server ${BACKEND:-"app"} fail_timeout=0;
-}
-
-server {
-  listen ${PORT:-80};
-  location / {
-    proxy_pass http://backend;
-  }
-}
-```
-
-I've published it as `realestate/ciao-proxy`.
-
----
-# Try it: inter-container networking
-
-Create a "network":
-
-```
-$ `docker network create shared`
-$ `docker network ls`
-```
-
-Attach some containers:
-
-```
-$ `docker rm -f app proxy`
-$ `docker run -d --net=shared --name app \`
-  `realestate/ciao`
-$ `docker run -d --net=shared --name proxy \`
-  `-p 5678:80 \`
-  `realestate/ciao-proxy`
-```
-
-```
-$ `curl -si localhost:5678`
-```
-
----
-# Try it: explore the network
-
-```
-$ `docker network inspect shared`
-```
-
-.center[
-<img src="diagrams/shared-network.png" width="60%" />
-]
-
-```
-$ `docker run -it --rm --network shared busybox`
-/ # `nslookup app`
-```
-
----
-name: volumes
-class: middle, center
-# Volumes
-
----
-# Try it: volume from host
-
-Mount your home directory from the "host":
-
-```
-$ `docker run -it --rm -v $HOME:/myhome ubuntu bash`
-root@c10a43c38793:/# `mount | grep home`
-root@c10a43c38793:/# `cd /myhome; ls`
-root@c10a43c38793:/# `echo HELLO FROM DOCKER > written-from-docker`
-root@c10a43c38793:/# `exit`
-$ `ls $HOME`
-```
-
----
-# Try it: named cache volume
-
-```
-$ `docker run -it --rm -v my-cache:/cache ubuntu bash`
-root@c10a43c38793:/# `echo TESTING > /cache/test`
-^D
-```
-
-Observe, volume created:
-
-```
-$ `docker volume ls`
-```
-
-Use it again:
-
-```
-$ `docker run -it --rm -v my-cache:/cache ubuntu bash`
-root@f5be5dec8a5a:/# `ls /cache`
-```
-
-Clean up:
-
-```
-$ `docker volume rm my-cache`
-```
-
----
-# Try it: anonymous volume for extra writable space
-
-```
-$ `docker run -it --rm --read-only -v /scratch ubuntu`
-root@c10a43c38793:/# `echo TESTING > /tmp/test`
-root@c10a43c38793:/# `echo TESTING > /scratch/test`
-```
-
-.center[
-<img src="diagrams/cow-vs-data-volume.png" width=60% />
-]
-
-Tip: read-only root volume is great for security!
-
----
-# Try it: share a volume with another container
-
-Create a container, with a volume:
-
-```
-$ `docker run -it --rm --name provider -v data:/published ubuntu`
-root@118f38503653:/# `echo ohai > /published/stuff`
-```
-
-.center[
-<img src="diagrams/shared-volume.png" width=80% />
-]
-
-Use the volume from a different container:
-
-```
-$ `docker run -it --rm --name consumer -v data:/provided:ro ubuntu`
-root@d88a7a468b01:/# `cat /provided/stuff`
-```
-
----
-# Volume hints in images
+name: runtime-hints
+# Volume hints with "VOLUME"
 
 The `VOLUME` directive documents that the specified directory _should_ be on a volume.
 
@@ -1037,6 +1017,28 @@ Docker will <u>implicitly</u> add
 ```
 
 to the `docker run` command-line.
+
+---
+# Try it: port hints with "EXPOSE"
+
+In the `Dockerfile`, you can document that a port _should_ be exposed.
+
+```
+EXPOSE 80
+```
+
+But, you still need to tell Docker to expose the documented ports, with `-P`:
+
+```
+$ `docker run -d --name app -P ciao`
+```
+
+Again, you get a randomly-assigned port:
+
+```
+$ `docker port app 80`
+$ `curl $(docker port app 80)`
+```
 
 ---
 name: compose
