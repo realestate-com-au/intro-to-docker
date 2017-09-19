@@ -791,11 +791,11 @@ Image repositories can contain multiple images, identified by tag:
 `<REPOSITORY>[:<TAG>]`
 ]
 
-Run a command using different versions of Ubuntu:
+Run different versions of Ruby:
 
 ```
-$ `docker run ubuntu:16.04 cat /etc/lsb-release`
-$ `docker run ubuntu:14.04 cat /etc/lsb-release`
+$ `docker run ruby:2.3 ruby --version`
+$ `docker run ruby:2.4 ruby --version`
 ```
 
 --
@@ -803,29 +803,84 @@ $ `docker run ubuntu:14.04 cat /etc/lsb-release`
 By convention, there's usually a `latest` tag:
 
 ```
-$ `docker run ubuntu:latest cat /etc/lsb-release`
+$ `docker run ruby:latest ruby --version`
 ```
 
 which is the default:
 
 ```
-$ `docker run ubuntu cat /etc/lsb-release`
+$ `docker run ruby ruby --version`
+```
+
+---
+name: image-digest
+# Try it: stable image references
+
+Image can also be addressed with immutable digests:
+
+.center[
+`<REPOSITORY>[@<DIGEST>]`
+]
+
+```
+$ `docker pull ruby:2.4 | grep Digest`
+```
+
+Use the digest:
+
+```
+$ `docker run ruby@sha256:ec92755b46504ec2d27d8a2887d080ca9ef799dfe7c010b7019b2165f875c738 \`
+  `ruby --version`
+```
+
+Or, a different (older) one:
+
+```
+$ `docker run ruby@sha256:450ce48d8021d33c306168654256b9c960711e6c02991f270d55488caf860410 \`
+  `ruby --version`
 ```
 
 ---
 name: image-namespaces
-# Try it: pull image from a non-standard namespace
+# Try it: non-standard namespace
 
-Image repositories can have an optional namespace:
+Repositories can have an optional namespace:
 
 .center[
-`[<NAMESPACE>/]<REPOSITORY>[:<TAG>]`
+`[<NAMESPACE>/]<REPOSITORY>`
 ]
 
-Pull an image from the `realestate` namespace:
+Use a community image:
 
 ```
-$ `docker pull realestate/ciao`
+$ `docker run -it supertest2014/nyan`
+```
+
+---
+name: image-references
+# Summary: image references
+
+Image-name pattern:
+
+.center[
+`[<REGISTRY>/][<NAMESPACE>/]<REPOSITORY>[:<TAG>][@<DIGEST>]`
+]
+
+* `<REGISTRY>` defaults to `docker.io` (aka Docker Hub)
+* `<NAMESPACE>` defaults to `library`
+* `<TAG>` defaults to `latest`
+* `<DIGEST>` is a digest of image contents
+
+So this:
+
+```
+hello-world
+```
+
+Is short for:
+
+```
+docker.io/library/hello-world:latest@sha256:1f19634d26995c320618d94e6f29c09c6589d5df3c063287a00e6de8458f8242
 ```
 
 ---
@@ -1007,31 +1062,6 @@ fetch the image _they_ pushed.
 
 ```
 $ `docker pull YOURNEIGHBOUR/ciao`
-```
-
----
-name: image-references
-# Summary: image references
-
-Image-name pattern:
-
-.center[
-`[<REGISTRY>/][<NAMESPACE>/]<REPOSITORY>[:<TAG>][@<DIGEST>]`
-]
-
-* `<REGISTRY>` defaults to `docker.io` ("official" registry)
-* `<NAMESPACE>` defaults to `library`
-* `<TAG>` defaults to `latest`
-* `<DIGEST>` is a SHA-256 checksum of the image manifest
-
-These are all equivalent:
-
-```
-$ `docker run hello-world`
-$ `docker run hello-world:latest`
-$ `docker run library/hello-world`
-$ `docker run docker.io/library/hello-world:latest`
-$ `docker run hello-world@sha256:0256e8a36e2070f7bf2d0b0763dbabdd67798512411de4cdcf9431a1feb60fd9`
 ```
 
 ---

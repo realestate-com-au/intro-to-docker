@@ -88,5 +88,7 @@ pull node:6.2.2
 pull postgres:9.6
 pull python:2.7-alpine
 pull ruby:2.3
+pull ruby:2.4
+pull ruby
 pull realestate/ciao
 pull realestate/ciao-proxy
