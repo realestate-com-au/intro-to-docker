@@ -60,7 +60,7 @@ check_version() {
     yay "$app version $actual_version >= $expected_version"
   else
     boo "$app version $actual_version < $expected_version"
-pos  fi
+  fi
 }
 
 check_version docker 1.13.0
