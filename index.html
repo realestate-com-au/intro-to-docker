@@ -431,12 +431,12 @@ class: middle, center
 # Containers
 
 ---
-# Try it: container basics
+# Try it: a long-running container
 
 Run a container as a daemon (in the background):
 
 ```
-$ `docker run -d ciao`
+$ `docker run -d realestate/ciao`
 ```
 
 List the running containers:
@@ -451,6 +451,15 @@ List ALL the containers:
 $ `docker ps -a`
 ```
 
+???
+
+`-d` starts a long-running process.
+
+Containers have an exit-status, and can be restarted with `docker start`.
+
+---
+# Try it: container cleanup
+
 Remove a container:
 
 ```
@@ -463,13 +472,19 @@ Remove a RUNNING container:
 $ `docker rm -f <ID>`
 ```
 
+Cleanup dead containers:
+
+```
+$ `docker rm $(docker ps -aq) 2>/dev/null`
+```
+
 ---
 # Try it: name your containers
 
 Start a container with a `--name`:
 
 ```
-$ `docker run -d --name app ciao`
+$ `docker run -d --name app realestate/ciao`
 ```
 
 Now you can use the NAME rather than an ID:
@@ -483,7 +498,7 @@ name: ports
 # Try it: map a port to a host port
 
 ```
-$ `docker run -d --name app -p 5678:80 ciao`
+$ `docker run -d --name app -p 5678:80 realestate/ciao`
 ```
 
 .center[
@@ -516,7 +531,7 @@ $ `docker rm -f app`
 If you don't specify a host port, Docker will choose one:
 
 ```
-$ `docker run -d --name app -p 80 ciao`
+$ `docker run -d --name app -p 80 realestate/ciao`
 ```
 
 .center[
@@ -569,7 +584,7 @@ var MESSAGE = (process.env.MESSAGE || "Ciao mondo.");
 You can set them to provide configuration:
 
 ```
-$ `docker run -d --name app -p 5678:80 -e MESSAGE='Hey, guys!' ciao`
+$ `docker run -d --name app -p 5678:80 -e MESSAGE='Hey, guys!' realestate/ciao`
 ```
 
 Test the result:
