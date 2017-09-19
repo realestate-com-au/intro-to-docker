@@ -49,6 +49,10 @@ div.rhs {
   width: 49%;
 }
 
+div.clear {
+  clear: both;
+}
+
 .big {
   font-size: 150%;
 }

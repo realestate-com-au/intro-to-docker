@@ -754,6 +754,41 @@ class: center, middle
 # Images
 
 ---
+# What's in an image?
+
+--
+
+.lhs[
+* File-system snapshot
+  * as layers
+]
+
+--
+
+.rhs[
+
+* Meta-data
+  * default command
+  * default environment settings
+  * default user id
+  * default working directory
+  * volume/port hints
+
+]
+
+--
+
+.clear[
+
+<br/>
+<br/>
+
+```
+$ `docker image inspect ubuntu`
+```
+]
+
+---
 name: list-images
 # Try it: list images
 
