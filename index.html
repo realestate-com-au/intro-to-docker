@@ -995,6 +995,21 @@ $ `docker run hello-world@sha256:0256e8a36e2070f7bf2d0b0763dbabdd67798512411de4c
 
 ---
 name: runtime-hints
+# Config defaults with "ENV"
+
+The `env` directive sets a default value for an environment variable.
+
+```
+ENV PORT 80
+```
+
+but you can override it at runtime:
+
+```
+$ `docker run -d -e PORT=5000 ciao`
+```
+
+---
 # Volume hints with "VOLUME"
 
 The `VOLUME` directive documents that the specified directory _should_ be on a volume.
