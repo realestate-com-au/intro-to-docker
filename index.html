@@ -884,13 +884,18 @@ docker.io/library/hello-world:latest@sha256:1f19634d26995c320618d94e6f29c09c6589
 ```
 
 ---
+class: center, middle
+
+# Let's make one!
+
+---
 name: building-images
 # Try it: build an image, the hard way
 
 Install some software in an `ubuntu` container:
 
 ```
-$ `docker run -i -t ubuntu bash`
+$ `docker run -it ubuntu bash`
 root@f55393e5dc31:/# `apt-get update && apt-get install -y curl`
 …
 root@f55393e5dc31:/# `exit`
@@ -899,43 +904,62 @@ root@f55393e5dc31:/# `exit`
 Now, `commit` that container to create an image:
 
 ```
-$ `docker commit f55393e5dc31 ubuntu-with-curl`
+$ `container=$(docker ps -lq)`
+$ `image=$(docker commit $container)`
 ```
 
-Check it out:
+Try it out:
 
 ```
-$ `docker history ubuntu-with-curl`
-…
-$ `docker run ubuntu-with-curl curl http://example.com`
+$ `docker run ubuntu curl http://example.com`
+$ `docker run $image curl http://example.com`
 ```
+
+---
+# Try it: name your image
+
+Attach a tag to an existing image:
+
+```
+$ `docker tag $image curly`
+```
+
+Or, when making it:
+
+```
+$ `docker commit $container curly`
+```
+
+For later use:
+
+```
+$ `docker run curly curl http://example.com`
+```
+
 
 ---
 # Layers, with labels
 
 ```
-$ `docker history ubuntu-with-curl`
+$ `docker history curly`
 ```
 
 <table class="docker-image">
   <tr>
     <td class="snapshot">27323a7d221f</td>
-    <td class="labels">ubuntu-with-curl:latest</td>
+    <td class="labels">curly:latest</td>
   </tr>
   <tr><td>↓</td></tr>
   <tr>
-    <td class="snapshot">07c86167cdc4</td>
-    <td class="labels">ubuntu:latest</td>
+    <td class="snapshot">2d696327ab2e</td>
+    <td class="labels">ubuntu:latest, ubuntu:16.04</td>
   </tr>
-  <tr><td>↓</td></tr>
-  <tr>
-    <td class="snapshot">...</td>
-  </tr>
-  <tr><td>↓</td></tr>
   <tr>
     <td class="snapshot">...</td>
   </tr>
-  <tr><td>↓</td></tr>
+  <tr>
+    <td class="snapshot">...</td>
+  </tr>
   <tr>
     <td class="snapshot">...</td>
   </tr>
@@ -954,7 +978,7 @@ RUN apt-get update && apt-get install -y curl
 to build an image:
 
 ```
-$ `docker build -t ubuntu-with-curl exercises/ubuntu-with-curl`
+$ `docker build exercises/ubuntu-with-curl`
 Sending build context to Docker daemon 2.048 kB
 Step 1 : FROM ubuntu
  ---> 07c86167cdc4
