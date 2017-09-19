@@ -60,7 +60,7 @@ check_version() {
     yay "$app version $actual_version >= $expected_version"
   else
     boo "$app version $actual_version < $expected_version"
-  fi
+pos  fi
 }
 
 check_version docker 1.13.0
@@ -85,7 +85,7 @@ pull ubuntu:16.04
 pull microsoft/dotnet:1.0-sdk
 pull node:5.11.0-slim
 pull node:6.2.2
-pull postgres:9.4
+pull postgres:9.6
 pull python:2.7-alpine
 pull ruby:2.3
 pull realestate/ciao
