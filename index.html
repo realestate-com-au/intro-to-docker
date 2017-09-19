@@ -584,7 +584,9 @@ var MESSAGE = (process.env.MESSAGE || "Ciao mondo.");
 You can set them to provide configuration:
 
 ```
-$ `docker run -d --name app -p 5678:80 -e MESSAGE='Hey, guys!' realestate/ciao`
+$ `docker run -d --name app -p 5678:80 \`
+  `-e MESSAGE='Hey, guys!' \`
+  `realestate/ciao`
 ```
 
 Test the result:
