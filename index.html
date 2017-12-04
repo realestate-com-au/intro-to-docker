@@ -1223,24 +1223,25 @@ Why is this an improvement for security?
 
 ```
 docker network create jail
-docker run -d --net=jail --name web nginx
-docker run --rm --net=jail alpine wget web
-docker run --rm alpine wget web
+docker run -d --net=jail --name=web nginx
+docker run --rm --net=jail alpine wget http://web
+docker run --rm alpine wget http://web
 docker rm -f web
 ```
 
-If we didn't create a network, what network would we have used?
+What happened? If we didn't create a network, what network would we have used?
 
 ---
 # Tip: Share read only volumes with containers
 
 ```
 docker volume create foo
-docker run -v foo:/foo:ro alpine touch /foo/bar
-touch: /foo/bar: Read-only file system
+docker run --rm -v foo:/foo --name=producer alpine sh -c 'echo hello > /foo/bar'
+docker run --rm -v foo:/foo:ro --name=consumer alpine cat /foo/bar
+docker run --rm -v foo:/foo:ro --name=consumer alpine sh -c 'echo hello > /foo/baz'
 ```
 
-Why let the root filesystem have all the read-only fun?
+What happened? Why is this useful?
 
 ---
 # Further reading:
