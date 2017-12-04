@@ -49,9 +49,10 @@ class: center, middle
   * [Publishing images](#publishing-images)
   * [Runtime hints](#runtime-hints)
 
+* [Security](#security)
+
 * [Docker Compose](#compose)
 
-* [Security](#security)
 ]
 
 ---
@@ -1176,6 +1177,81 @@ USER somebody
 ```
 
 ---
+name: security
+
+# Security
+
+Here are a few tips to get you started.
+
+---
+# Try it: Use minimal distributions
+
+```
+# how many files come with the ubuntu image?
+docker run ubuntu find / -xdev -type f | wc -l
+
+# how many files come with the alpine image?
+docker run alpine find / -xdev -type f | wc -l
+```
+
+Why is this relevant?
+
+---
+# Try it: Drop to a non-privileged user
+
+```
+echo 'FROM alpine' > Dockerfile
+echo 'USER nobody' >> Dockerfile
+docker build -t non-privileged .
+docker run non-privileged whoami
+```
+
+Without this change, who would you have been?
+
+---
+# Try it: Use read-only root filesystems
+
+```
+$ docker run --read-only -it alpine touch foo
+touch: foo: Read-only file system
+```
+
+Why is this an improvement for security?
+
+---
+# Tip: Isolate groups of containers in their own networks
+
+```
+docker network create jail
+docker run -d --net=jail --name web nginx
+docker run --rm --net=jail alpine wget web
+docker run --rm alpine wget web
+docker rm -f web
+```
+
+If we didn't create a network, what network would we have used?
+
+---
+# Tip: Share read only volumes with containers
+
+```
+docker volume create foo
+docker run -v foo:/foo:ro alpine touch /foo/bar
+touch: /foo/bar: Read-only file system
+```
+
+Why let the root filesystem have all the read-only fun?
+
+---
+# Further reading:
+* [OWASP Security by Design Principles](https://www.owasp.org/index.php/Security_by_Design_Principles)
+* [Official Docker Images guidelines](https://github.com/docker-library/official-images#image-build)
+* [Dockerfile best practices](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#user)
+* [Security do's and don'ts discussion on docker](https://github.com/moby/moby/issues/13490)
+* [Dropping capabilities](https://rhelblog.redhat.com/2016/10/17/secure-your-containers-with-this-one-weird-trick/)
+* [Docker Security by Adrian Mouat](http://www.oreilly.com/webops-perf/free/docker-security.csp)
+
+---
 name: compose
 class: middle, center
 # Docker Compose
@@ -1371,81 +1447,6 @@ When you're done, clean up:
 $ `^C`
 $ `docker-compose down`
 ```
-
----
-name: security
-
-# Security
-
-Here are a few tips to get you started.
-
----
-# Try it: Use minimal distributions
-
-```
-# how many files come with the ubuntu image?
-docker run ubuntu find / -xdev -type f | wc -l
-
-# how many files come with the alpine image?
-docker run alpine find / -xdev -type f | wc -l
-```
-
-Why is this relevant?
-
----
-# Try it: Drop to a non-privileged user
-
-```
-echo 'FROM alpine' > Dockerfile
-echo 'USER nobody' >> Dockerfile
-docker build -t non-privileged .
-docker run non-privileged whoami
-```
-
-Without this change, who would you have been?
-
----
-# Try it: Use read-only root filesystems
-
-```
-$ docker run --read-only -it alpine touch foo
-touch: foo: Read-only file system
-```
-
-Why is this an improvement for security?
-
----
-# Tip: Isolate groups of containers in their own networks
-
-```
-docker network create jail
-docker run -d --net=jail --name web nginx
-docker run --rm --net=jail alpine wget web
-docker run --rm alpine wget web
-docker rm -f web
-```
-
-If we didn't create a network, what network would we have used?
-
----
-# Tip: Share read only volumes with containers
-
-```
-docker volume create foo
-docker run -v foo:/foo:ro alpine touch /foo/bar
-touch: /foo/bar: Read-only file system
-```
-
-Why let the root filesystem have all the read-only fun?
-
----
-# Further reading:
-* [OWASP Security by Design Principles](https://www.owasp.org/index.php/Security_by_Design_Principles)
-* [Official Docker Images guidelines](https://github.com/docker-library/official-images#image-build)
-* [Dockerfile best practices](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#user)
-* [Security do's and don'ts discussion on docker](https://github.com/moby/moby/issues/13490)
-* [Dropping capabilities](https://rhelblog.redhat.com/2016/10/17/secure-your-containers-with-this-one-weird-trick/)
-* [Docker Security by Adrian Mouat](http://www.oreilly.com/webops-perf/free/docker-security.csp)
 
 ---
 class: middle, center
