@@ -1328,7 +1328,7 @@ In a different window, generate some traffic:
 ```
 $ `curl localhost:5678`
 ```
-
+<br>
 What containers are running?
 
 ```
@@ -1336,15 +1336,34 @@ $ `docker ps`
 $ `cd exercises/composed/basic`
 $ `docker-compose ps`
 ```
+---
+# How about networking?
 
-How about networking?
+### IP Address:
 
 ```
-$ `docker inspect basic_app_1 \`
-  `| jq '.[0].NetworkSettings.Networks'`
+$ `docker inspect --format='{{range .NetworkSettings.Networks}}`
+                           `{{.IPAddress}}{{end}}' basic_app_1`
+
 ```
 
-Take it all down:
+### MAC Address:
+
+```
+$ `docker inspect --format='{{range .NetworkSettings.Networks}}`
+                           `{{.MacAddress}}{{end}}' basic_app_1`
+```
+
+---
+
+# Take it all down:
+
+<br>
+
+- We may not want multiple docker containers from different docker-compose files running at the same time
+- Halts images and cleans up resources
+
+<br>
 
 ```
 $ `docker-compose down`
@@ -1456,6 +1475,7 @@ class: middle, center
 You made it.
 
 ---
+
 # Try it: Python and Redis and .Net and PostgreSQL and Node.js
 
 ```
@@ -1483,6 +1503,15 @@ $ `docker-compose down`
 ```
 
 ---
+
+# If you'd like to know more:
+
+* [Get Started with Docker Compose](https://docs.docker.com/compose/gettingstarted/)
+* [Docker Compose in 12 Minutes (YouTube)](https://www.youtube.com/watch?v=Qw9zlE3t8Ko)
+* [Sample apps with Docker Compose](https://docs.docker.com/compose/samples-for-compose/)
+* [Docker Compose Source Code](https://github.com/docker/compose)
+
+---
 class: middle, center
 # Thanks!
 
@@ -1495,7 +1524,6 @@ class: middle, center
 # Feedback Survey
 
 Please tell us how we're doing by completing a small survey on today's training.
-
 
 # https://goo.gl/SUryz8
 
