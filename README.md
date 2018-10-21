@@ -40,3 +40,9 @@ or
 
   Pulling some images to get you started ...
   ```
+
+4. You can then open the slides from your local copy:
+
+```
+open index.html
+```
