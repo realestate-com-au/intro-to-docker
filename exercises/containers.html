@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>An introduction to Docker: Container Exercises</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="shortcut icon" href="../media/favicon.png" type="image/png" />
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+# Lesson 1: Container Says 'Ciao!'
+![Docker](../media/docker/small_v-trans.png)
+
+---
+# Task 1: Get a container running
+  1. run container using `realestate/ciao` image
+  2. run container as a daemon(in 'detached' mode)
+  3. name your container
+  4. list running containers
+  5. list ALL containers
+  6. run bash shell on your container. Modify something in the container, eg. create a new file. Will the changes persist the next time you run container again?
+  7. remove all stopped containers. How do you remove a container as soon as it's stopped?
+
+### Useful refs: 
+- use `docker help run`
+- https://docs.docker.com/engine/reference/run/
+- https://docs.docker.com/engine/reference/run/#clean-up---rm
+- https://docs.docker.com/get-started/#recap-and-cheat-sheet
+
+---
+# Task 2: Expose container port
+  1. map container port 80 to host port 5678
+
+.center[
+<img src="../diagrams/ciao-explicit-port.png" width=40% />
+]
+
+  2. can you get a greeting from container?
+  3. expose container port on random host port
+  4. how to find the random host port?
+
+### Useful refs: 
+- use `docker help run`
+- https://docs.docker.com/engine/reference/run/
+- https://docs.docker.com/engine/reference/run/#expose-incoming-ports
+
+---
+class: center, middle
+# Lesson 2: Logs
+![Docker](../media/docker/small_v-trans.png)
+
+---
+# Task: Get logs for running container
+  1. display log messages from container (where do you think docker collects the log from?)
+  2. how to get logs with timestamps
+
+### Useful refs: 
+- https://docs.docker.com/engine/reference/commandline/logs
+- https://docs.docker.com/config/containers/logging/configure/
+- https://docs.docker.com/config/containers/logging/
+
+---
+class: center, middle
+# Lesson 3: Change the container greeting
+![Docker](../media/docker/small_v-trans.png)
+
+---
+# Task: Change the container's `MESSAGE` environment variable
+1. The application's greeting message is stored in the MESSAGE environment variable (see [here](https://github.com/realestate-com-au/intro-to-docker/blob/gh-pages/exercises/ciao/index.js#L5)). Set your own greeting for your container.
+
+```javascript
+var MESSAGE = (process.env.MESSAGE || "Ciao mondo.");
+```
+
+### Useful refs: 
+- https://docs.docker.com/engine/reference/run/#env-environment-variables
+
+---
+class: center, middle
+# Lesson 4: Inter-Container networking - proxy your app container
+.center[ <img src="../diagrams/shared-network.png" width="80%" /> ]
+
+---
+# Task 1: create a docker network called 'shared'
+  1. create network; confirm by getting a list of docker networks. What other networks can you see?
+
+### Useful refs: 
+- https://docs.docker.com/engine/reference/run/#network-settings
+- https://docs.docker.com/engine/reference/commandline/network_create/
+
+---
+# Task 2: run 2 containers in the 'shared' network
+  1. assign container running 'realestate/ciao' image the name 'app'
+  2. assign container running 'realestate/ciao-proxy' image the name 'proxy'
+  3. expose port on 'proxy' container
+  
+  **N.B.: There *must* be a container named 'app' for this to work.**
+
+### Useful refs: 
+- https://docs.docker.com/engine/reference/run/#network-settings
+- https://docs.docker.com/engine/reference/commandline/network_create/
+
+---
+# Task 3: explore the network
+  1. Find the assigned IPs of the `app` and `proxy` containers. 
+
+### Useful refs: 
+- https://docs.docker.com/engine/reference/run/#network-settings
+- https://docs.docker.com/engine/reference/commandline/network_create/
+
+---
+class: center, middle
+# Lesson 5: Attaching Volumes to containers
+![Docker](../media/docker/small_v-trans.png)
+
+---
+# Task 1: Make a directory in your host available to the container at /myhome using a bind mount to host directory
+  1. start a container with a bind mount. Make sure to attach a bash shell to container by overriding container's default command with 'bash'
+  2. verify that you have read/write access to the directory
+  3. verify that the changes made in /myhome persists after the container is stopped
+  4. what are the pros and cons of using bind mounts?
+
+### Useful refs: 
+- https://docs.docker.com/engine/reference/run/#volume-shared-filesystems
+- https://docs.docker.com/storage/bind-mounts/
+- https://docs.docker.com/storage/
+
+---
+# Task 2: Create a volume for storing data.
+  1. create a volume called 'data', and run a container that mounts the volume in /myhome
+  2. modify /myhome. stop and start another container that mounts the volume in /myhome (or a different one!). verify the changes persisted
+  3. why are volumes preferred over bind mounts?
+  4. start a container using --rm (to remove it as soon as it's stopped) with an anonymouse volume (mount it in /scratch), and make a change in /scratch. What will happen to the volume as soon as the container is stopped? 
+  5. when would you want to use an anonymous volume?
+
+### Useful refs: 
+- https://docs.docker.com/engine/reference/run/#volume-shared-filesystems
+- https://docs.docker.com/storage/volumes/
+- https://docs.docker.com/storage/
+
+---
+# Task 3: Create a volume to share with another container
+  1. create 2 containers that mounts the 'data' volume. verify on each container that any modifications made to the volume are visible on both containers
+
+### Useful refs: 
+- https://docs.docker.com/engine/reference/run/#volume-shared-filesystems
+- https://docs.docker.com/storage/volumes/
+- https://docs.docker.com/storage/
+
+---
+class: center, middle
+# Last, but not least: Don't forget to clean up your containers, networks and volumes!
+![Docker](../media/docker/small_v-trans.png)
+
+---
+class: center, middle
+# That's all folks!
+
+Check out the sample solutions in the [slides](../index.html#34)
+
+### [Click here to learn about Images](../index.html#51)
+![Docker](../media/docker/small_v-trans.png)
+
+    </textarea>
+    <script src="../js/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create({
+        highlightStyle: 'obsidian',
+        highlightSpans: true
+      });
+    </script>
+  </body>
+</html>
