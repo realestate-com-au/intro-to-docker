@@ -1,6 +1,6 @@
 # An introduction to Docker
 
-This here is material for REA's internal introductory Docker training.
+This is material for REA's internal introductory Docker training.
 
 The slide-deck is implemented in HTML and Javascript, so is
 easy to run in any browser.  Open `index.html` to start.
@@ -12,6 +12,13 @@ up on the day:
 1. Install Docker and Docker Compose
 
   - [Docker for Mac](https://docs.docker.com/docker-for-mac/) is a good option.
+
+or
+
+  ```
+  brew tap caskroom/cask
+  brew cask install docker
+  ```
 
 2. Clone this repository
 
