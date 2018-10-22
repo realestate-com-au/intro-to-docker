@@ -1204,12 +1204,60 @@ USER somebody
 ---
 name: security
 
-# Security
+# Outcomes
 
-Here are a few tips to get you started.
+* I understand that choices I make impact the security of my systems
+* I am aware of some security controls available to me
+* I know where to go to learn more
 
 ---
-# Try it: Use minimal distributions
+# Choices
+
+You make choices that impact the security of your systems:
+
+* Which base image?
+* Which linux distribution?
+* Which packages to install?
+* Which language runtime(s)?
+* What source code you include?
+* Which file permissions?
+* Which user to run as?
+* Which configuration is possible?
+* Which volume mounts?
+* Which seccomp profile?
+* Which networks to connect it to?
+* How frequently to update?
+
+OMG!
+
+---
+# Base images
+
+Would you use this image?
+
+```
+FROM docker123321/tomcat
+```
+
+---
+# Base images (contd)
+Lot's of people did. It was pulled 100k times!
+
+> By pushing malicious images to a Docker Hub registry and pulling it from the victim’s system, hackers were able to mine 544.74 Monero, which is equal to $90000.
+
+See https://kromtech.com/blog/security-center/cryptojacking-invades-cloud-how-modern-containerization-trend-is-exploited-by-attackers
+---
+# Base Images: YOUR CHOICE
+
+Base images are your choice. It's a choice about trust.
+
+* Consider using [official repositories on DockerHub](https://docs.docker.com/docker-hub/official_repos/)
+* Consider how frequently you update your base images 
+
+---
+# Linux distributions
+
+What's a linux distribution?
 
 ```
 # how many files come with the ubuntu image?
@@ -1222,7 +1270,32 @@ docker run alpine find / -xdev -type f | wc -l
 Why is this relevant?
 
 ---
-# Try it: Drop to a non-privileged user
+# Linux Distribution: YOUR CHOICE
+
+You decide which linux distribution to use.
+
+If you choose to use one, you place trust in the distribution's maintainers.
+
+* Consider how distributions manage security updates
+* Consider how compatibility, security and effort relate to your system
+
+---
+# User
+
+What is a user? Why does it matter?
+
+```
+docker run alpine whoami
+```
+
+What user was used when `whoami` ran?
+
+---
+# User: YOUR CHOICE
+
+It's your choice which user your program runs as.
+
+Consider dropping to a non-privileged user:
 
 ```
 echo 'FROM alpine' > Dockerfile
@@ -1230,52 +1303,68 @@ echo 'USER nobody' >> Dockerfile
 docker build -t non-privileged .
 docker run non-privileged whoami
 ```
+---
+# Writable Root file systems
 
-Without this change, who would you have been?
+When I start a container, can I change the contents of the file system?
+
+```
+docker run alpine rm -f /bin/sh
+```
+---
+# Writable Root file system: YOUR CHOICE
+
+It's your choice whether container file systems are writable.
+
+Consider using a read-only root filesystem:
+
+```
+docker run --read-only alpine rm -f /bin/sh
+rm: can't remove '/bin/sh': Read-only file system
+```
+---
+# Secrets
+
+What does this mean?
+
+```
+COPY continuous-integration.pem
+```
+
+What just happened?
 
 ---
-# Try it: Use read-only root filesystems
 
-```
-$ docker run --read-only -it alpine touch foo
-touch: foo: Read-only file system
-```
+# Secrets: YOUR CHOICE
 
-Why is this an improvement for security?
+It's your choice to add secrets to your docker image.
 
----
-# Tip: Isolate groups of containers in their own networks
-
-```
-docker network create jail
-docker run -d --net=jail --name=web nginx
-docker run --rm --net=jail alpine wget http://web
-docker run --rm alpine wget http://web
-docker rm -f web
-```
-
-What happened? If we didn't create a network, what network would we have used?
+* Consider NEVER ADDING SECRETS to your docker image
+* Consider using critical thinking before copy and paste from GitHub
+* Consider using encrypted environment variables instead
 
 ---
-# Tip: Share read only volumes with containers
+# Getting help
 
-```
-docker volume create foo
-docker run --rm -v foo:/foo --name=producer alpine sh -c 'echo hello > /foo/bar'
-docker run --rm -v foo:/foo:ro --name=consumer alpine cat /foo/bar
-docker run --rm -v foo:/foo:ro --name=consumer alpine sh -c 'echo hello > /foo/baz'
-```
+Remember, you're not alone
 
-What happened? Why is this useful?
+* Talk to other people on your team
+* Talk to your team's systems engineer
+* Talk to your team's security advisor
+* Ask on Slack
 
 ---
-# Further reading:
+
+## Learning Resources
+
+* [Official repositories on Docker Hub](https://docs.docker.com/docker-hub/official_repos/)
 * [OWASP Security by Design Principles](https://www.owasp.org/index.php/Security_by_Design_Principles)
 * [Official Docker Images guidelines](https://github.com/docker-library/official-images#image-build)
 * [Dockerfile best practices](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/#user)
 * [Security do's and don'ts discussion on docker](https://github.com/moby/moby/issues/13490)
 * [Dropping capabilities](https://rhelblog.redhat.com/2016/10/17/secure-your-containers-with-this-one-weird-trick/)
 * [Docker Security by Adrian Mouat](http://www.oreilly.com/webops-perf/free/docker-security.csp)
+* [7 Docker security vulnerabilities and threats](https://sysdig.com/blog/7-docker-security-vulnerabilities/)
 
 ---
 name: compose
