@@ -25,7 +25,7 @@ class: center, middle
 # Agenda
 
 .lhs[
-**START** (9:30)
+🏁 **START** (9:30)
 
 * Welcome (9:30-9:50)
 * Intro and overview (9:50-10:40)
@@ -38,7 +38,7 @@ class: center, middle
 ]
 
 .rhs[
-Afternoon
+🌤 Afternoon
 
 * Images (13:20-14:20)
 
@@ -54,47 +54,55 @@ Afternoon
 ---
 # Outcomes
 
-At the end of today, we hope you:
+By the end of today, we hope we've helped you understand:
 
-- understand why we use Docker.
-- know what containers, images, Dockerfiles, tags and registries are.
-- can configure, run, list and inspect properties and view logs of Docker containers.
-- know how to network containers together
-- know how to share data with volumes
-- know how and why we provide config through environment variables.
-- can build, push and pull Docker images.
-- know how to address common security risks when working with Docker.
-- are able to use Docker Compose to simplify working with multiple Docker containers.
+.moar-space[
+- Why we use Docker;
+- Containers, images, Dockerfiles, tags, and registries;
+- Configuring, running, listing, inspecting, and viewing logs of
+Docker containers;
+- Networking containers together;
+- Sharing data using volumes;
+- Why we provide config through environment variables;
+- Building, pushing, and pulling Docker images;
+- Addressing common security risks when working with Docker;
+- Using Docker Compose to simplify working with multiple Docker containers;
+]
 
 ---
 name: prep
 # Preparation
 
-You will need **a good connection to the internet** during this setup, and
-(to some extent) while going through the course, as we'll be installing
-software, and downloading Docker "images".
+You will need **a good connection to the Internet** during this setup, and
+through parts of the course, as we'll be installing software, and downloading
+Docker "images" (more on that later).
 
-It's useful to have **a local copy of these training materials**:
+It's useful to have a **local copy** of these training materials:
 
   `git clone https://github.com/realestate-com-au/intro-to-docker.git`
-
-You definitely need **Docker and Docker Compose**.<br/>
-Installation intructions follow.
 
 ---
 # Installing Docker
 
-#### OS X
+We'll definitely need **Docker**, and **Docker Compose**. Select the most
+appropriate method for your system.
 
-* Install [Docker for Mac](https://docs.docker.com/docker-for-mac/)
+<hr>
 
-#### Windows
+**MacOS**: [Docker for Mac](https://docs.docker.com/docker-for-mac/)
 
-* Install [Docker for Windows](https://docs.docker.com/docker-for-windows/)
+**Windows**: [Docker for Windows](https://docs.docker.com/docker-for-windows/)
 
-#### Linux
+**Linux**:
+- [CentOS YUM Repository](https://docs.docker.com/install/linux/docker-ce/centos/)
+- [Debian APT Repository](https://docs.docker.com/install/linux/docker-ce/debian/)
+- [Fedora DNF Repository](https://docs.docker.com/install/linux/docker-ce/fedora/)
+- [Ubuntu APT Repository](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+
+... Alternatively, for Linux:
 
 ```
+# The questionable curl-pipe-to-sh method:
 $ `curl -sSL https://get.docker.com/ | sh`
 ```
 
@@ -109,8 +117,8 @@ YAY: /var/run/docker.sock exists
 YAY: I can talk to docker
 Docker is at localhost
 
-YAY: docker version 1.12.0
-YAY: docker-compose version 1.8.0
+YAY: docker version 18.09.2 >= 1.13.0
+YAY: docker-compose version 1.23.2 >= 1.13.0
 
 Pulling some images to get you started ...
 ```
@@ -119,7 +127,9 @@ Not working? Ask for help!
 
 .small.lhs[
 Don't worry _too_ much if you get complaints about versions of `docker`
-and `docker-compose`; _most_ things will _probably_ still work.)
+and `docker-compose`
+
+Most things _should_ still work.
 ]
 
 ---
@@ -144,25 +154,21 @@ class: center, middle
 # Why would I even Docker?
 
 --
-
-It's:
-
-* a way to package code, to run it elsewhere
-  * so you can easily distribute your software
+<br>
+* **A way to package code and run it elsewhere**<br>
+  _So you can easily distribute your software_
 
 --
 
-And it's:
-
-* a way to control the (OS) environment your program runs within
-  * so you can run it "anywhere", with confidence
+<br>
+* **A way to control the environment your program runs inside**<br>
+  _So you can run it "anywhere", with confidence_
 
 --
 
-And also:
-
-* a lightweight alternative to a virtual machine
-  * so you can quickly create sandboxed environments
+<br>
+* **A lightweight alternative to a virtual machine**<br>
+  _So you can quickly create sandboxed environments_
 
 ---
 name: hello-world
@@ -175,9 +181,9 @@ $ `docker pull hello-world`
 
 Using default tag: latest
 latest: Pulling from library/hello-world
-c04b14da8d14: Pull complete
-Digest: sha256:0256e8a36e2070f7bf2d0b0763dbabdd67798512411de4cdcf9431a1feb60fd9
-Status: Downloaded newer image for hello-world:latest
+1b930d010525: Pull complete
+Digest: sha256:2557e3c07ed1e38f26e389462d03ed943586f744621577a99efb77324b0fe535
+Status: Image is up to date for hello-world:latest
 ```
 
 Run a container:
@@ -185,8 +191,8 @@ Run a container:
 ```
 $ `docker run hello-world`
 
-Hello from Docker.
-…
+Hello from Docker!
+This message shows that your...
 ```
 
 ---
@@ -195,11 +201,11 @@ name: key-concepts
 
 .lhs[
 
-## "image"
+## 'Image'
 
-  * passive
-  * a file system snapshot
-  * similar to:
+  * Passive
+  * File system snapshot
+  * Similar to:
     - Virtual Machine image
     - AMI (Amazon Machine Image)
 
@@ -209,11 +215,11 @@ name: key-concepts
 
 .rhs[
 
-## "container"
+## 'Container'
 
-  * active
-  * a group of processes
-  * similar to:
+  * Active
+  * Group of processes
+  * Similar to:
     - Virtual Machine
     - EC2 instance
 
@@ -225,7 +231,7 @@ name: key-concepts
 ]
 
 ---
-# Try it: different Linux distros
+# Try it: Different Linux Distros
 
 Run Ubuntu:
 
@@ -245,7 +251,7 @@ $ `docker run centos rpm -qa`
 Speedy, huh?
 
 ---
-# Try it: run a shell
+# Try it: Run a Shell
 
 ```
 $ `docker run -i -t ubuntu bash`
@@ -261,7 +267,7 @@ root@container# `apt update`
 ```
 
 ---
-# Try it: which kernel?
+# Try it: Which Kernel?
 
 Run `uname -a` on both `ubuntu` and `centos`:
 
@@ -295,7 +301,6 @@ name: containers-vs-vms
 ![VMs vs. containers](diagrams/containers-vs-vms.png)
 ]
 
-???
 
 With virtualisation, you have the added weight of a guest kernel.
 
@@ -362,33 +367,38 @@ Linux "cgroups" + "image" management =
 
 </br>
 
-Isolate processes by limiting access to:
-  - hardware resources
-  - other processes
+Isolates processes by limiting access to:
+  - Hardware resources;
+  - Other processes;
 
-Not a new idea:
-  * aka LXC
-  * project started by Google
-  * used extensively by PaaS such as Heroku
-  * similar to Solaris Zones, BSD Jails
+--
 
-Similar to how `chroot` limits access to the file system, but for resources.
+Not the first of its kind:
+  - Linux Containers, aka LXC (Google)
+  - Used extensively by PaaS such as Heroku
+  - Similar to Solaris Zones, BSD Jails
+
+`cgroups` limits access to system resources,  
+as opposed to `chroot`, which limits access to file system resources.
+
+But the concepts are the same - We limit access to certain resources for our
+process.
 
 ---
 # Union file systems
 
+--
+
+Images are like onions.<br>
+--
+They <del>make us cry</del> have layers.
+
+--
+
 .lhs[
 
-Images are made of "layers", and can **share** base layers.
-
-Container root file system is just another (writable) layer.
-
-Various drivers supported:
-  - aufs
-  - devicemapper
-  - btrfs
-  - overlay
-  - zfs
+Images are made of these "layers", and some layers may be 'shared' across
+multiple images.
 
 ]
 
@@ -404,17 +414,39 @@ Various drivers supported:
 </table>
 ]
 
----
-# Try it: test container file system isolation
+--
 
-Attempt to cripple your Ubuntu image:
+.lhs[
+
+<br>
+The container's root file system is also another layer that can be written to.
+
+]
+
+--
+
+.lhs[
+
+There are many ways to 'store' these layers, such as:
+  - aufs
+  - devicemapper
+  - btrfs
+  - overlay2 / overlay
+  - zfs
+
+]
+
+---
+# Try it: Container Filesystem Isolation
+
+Attempt to break your Ubuntu image:
 
 ```
 $ `docker run -i -t ubuntu bash`
 root@3256d8252fe6:/# `ls /usr/bin`
 root@3256d8252fe6:/# `rm -fr /usr/bin`
 root@3256d8252fe6:/# `ls /usr/bin`
-^D
+^D (CTRL-D)
 ```
 
 Now, start another container:
@@ -432,11 +464,11 @@ Use `docker history` to view image layers
 ```
 $ `docker history ubuntu`
 IMAGE               CREATED             CREATED BY
-07c86167cdc4        2 days ago          /bin/sh -c #(nop) CMD ["/bin
-<missing>           2 days ago          /bin/sh -c sed -i 's/^#\s*\(
-<missing>           2 days ago          /bin/sh -c echo '#!/bin/sh'
-<missing>           2 days ago          /bin/sh -c #(nop) ADD file:b
-
+94e814e2efa8        3 weeks ago         /bin/sh -c #(nop)  CMD ...
+<missing>           3 weeks ago         /bin/sh -c mkdir -p /run/...
+<missing>           3 weeks ago         /bin/sh -c rm -rf /var/...
+<missing>           3 weeks ago         /bin/sh -c set -xe   && ...
+<missing>           3 weeks ago         /bin/sh -c #(nop) ADD ...
 ```
 
 ---

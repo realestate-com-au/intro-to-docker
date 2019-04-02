@@ -6,6 +6,10 @@ body { font-family: 'Noto Sans', sans-serif; }
 h1, h2, h3 {
   font-weight: normal;
 }
+.moar-space ul li {
+  line-height: 150%;
+  padding-bottom:0.667rem;
+}
 .remark-code, .remark-inline-code {
   font-family: monospace;
 }
