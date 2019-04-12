@@ -382,7 +382,6 @@ debian       latest       ddf73f48a05d   2 weeks ago   123 MB
 nginx        latest       ba6bed934df2   2 weeks ago   181.4 MB
 ruby         2.3-alpine   2467a614f30b   2 weeks ago   125.8 MB
 ...
-ubuntu       14.04        f2d8ce9fa988   2 weeks ago   187.9 MB
 ubuntu       16.04        45bc58500fa3   3 weeks ago   126.9 MB
 ubuntu       latest       45bc58500fa3   3 weeks ago   126.9 MB
 ubuntu       <none>       45bc58500fa3   3 weeks ago   126.9 MB
@@ -614,7 +613,7 @@ $ `docker pull YOURNEIGHBOUR/ciao`
 Given YAML config file:
 
 ```
-version: '2'
+version: '3'
 
 services:
 
@@ -670,7 +669,7 @@ $ `docker-compose down`
 # Try it: get compose to build your images
 
 ```
-version: '2'
+version: '3'
 
 services:
 
@@ -696,7 +695,7 @@ $ `docker-compose up`
 # Try it: add a "client" container
 
 ```
-version: '2'
+version: '3'
 
 services:
   app: ...
@@ -735,7 +734,7 @@ root@ebb0d01e63b0:/# `curl -i proxy`
 # Try it: sharing a volume
 
 ```
-version: '2'
+version: '3'
 
 volumes:
   shared: {}
@@ -749,7 +748,7 @@ services:
     command: sh -c "while true; do date; sleep 1; done > /out/dates"
 
   consumer:
-    image: ubuntu:14.04
+    image: ubuntu:16.04
     depends_on:
       - producer
     volumes:
