@@ -614,7 +614,7 @@ $ `docker pull YOURNEIGHBOUR/ciao`
 Given YAML config file:
 
 ```
-version: '2'
+version: '3'
 
 services:
 
@@ -670,7 +670,7 @@ $ `docker-compose down`
 # Try it: get compose to build your images
 
 ```
-version: '2'
+version: '3'
 
 services:
 
@@ -696,7 +696,7 @@ $ `docker-compose up`
 # Try it: add a "client" container
 
 ```
-version: '2'
+version: '3'
 
 services:
   app: ...
@@ -735,7 +735,7 @@ root@ebb0d01e63b0:/# `curl -i proxy`
 # Try it: sharing a volume
 
 ```
-version: '2'
+version: '3'
 
 volumes:
   shared: {}
