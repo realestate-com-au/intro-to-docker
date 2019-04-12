@@ -749,7 +749,7 @@ services:
     command: sh -c "while true; do date; sleep 1; done > /out/dates"
 
   consumer:
-    image: ubuntu:14.04
+    image: ubuntu:16.04
     depends_on:
       - producer
     volumes:
