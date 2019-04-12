@@ -382,7 +382,6 @@ debian       latest       ddf73f48a05d   2 weeks ago   123 MB
 nginx        latest       ba6bed934df2   2 weeks ago   181.4 MB
 ruby         2.3-alpine   2467a614f30b   2 weeks ago   125.8 MB
 ...
-ubuntu       14.04        f2d8ce9fa988   2 weeks ago   187.9 MB
 ubuntu       16.04        45bc58500fa3   3 weeks ago   126.9 MB
 ubuntu       latest       45bc58500fa3   3 weeks ago   126.9 MB
 ubuntu       <none>       45bc58500fa3   3 weeks ago   126.9 MB
