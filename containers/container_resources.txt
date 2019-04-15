@@ -1,0 +1,36 @@
+Container vs VM (good visualisation)
+https://www.google.com/url?sa=i&source=images&cd=&cad=rja&uact=8&ved=2ahUKEwjupvewqcXhAhWHdH0KHWtPCs0QjRx6BAgBEAU&url=https://medium.com/devopslinks/docker-containers-vms-and-orchestration-technology-for-the-beginners-68ae979bce5a&psig=AOvVaw2HsTmmxMvS2PTe72z8qyFe&ust=1554978735176428
+
+Best resource for the exercises we will be doing
+https://docs.docker.com/engine/reference/commandline
+
+Docker run (most used)
+https://docs.docker.com/engine/reference/commandline/run/
+
+Exposing ports
+https://docs.docker.com/engine/reference/run/#expose-incoming-ports
+
+Docker network
+https://docs.docker.com/engine/reference/commandline/network/
+
+Docker volume
+https://docs.docker.com/storage/volumes/
+
+Docker bind mount
+https://docs.docker.com/storage/bind-mounts/
+
+Understanding volumes
+https://www.ionos.com/community/server-cloud-infrastructure/docker/understanding-and-managing-docker-container-volumes/
+
+Docker logs
+https://docs.docker.com/engine/reference/commandline/logs/
+
+Customer docker images used in the exercises
+realestata/ciao --> https://git.realestate.com.au/cowbell/intro-to-docker/tree/gh-pages/exercises/ciao
+realestate/ciao-proxy --> https://git.realestate.com.au/cowbell/intro-to-docker/tree/gh-pages/exercises/ciao-proxy
+
+
+-------------------------------------------------------------------------------------------
+
+SOLUTIONS
+https://git.realestate.com.au/bharg-sharma/docker-training/blob/master/docker-container-solutions.txt
