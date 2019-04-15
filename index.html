@@ -1455,12 +1455,63 @@ From the <a href="https://docs.docker.com/compose/overview/">Docker Website</a>:
 --
 
 - Then, with a single command, you create and start all the services from your configuration.
+---
+# The docker-compose.yml file
 
+```
+version: '3'
+
+services:
+
+  web:
+    image: my-app
+    ports:
+      - 5000:80
+
+  redis:
+    image: redis:alpine
+```
+
+- Lists multiple containers as services
+- Options to each service almost identical to `docker run`
+- Start them all at once with `docker-compose up`
 
 ---
-# Try it: docker-compose
 
-Given YAML config file:
+# Exercise 1: write your own docker-compose.yml
+
+This docker-compose file isn't complete!
+
+```
+version: '3'
+
+services:
+
+  app: {}
+
+  proxy:
+    image: realestate/ciao-proxy
+    depends_on:
+      - app
+```
+
+--
+
+- App's image needs to be `realestate/ciao`
+- Proxy needs an environment variable `BACKEND` set to `app`
+- Proxy needs to expose port `80` externally as `5678`
+
+--
+
+```
+$ `cd exercises/composed/basic-exercise`
+$ `docker-compose up`
+```
+Then in a different window: `curl localhost:5678`
+https://docs.docker.com/compose/compose-file/
+
+---
+# Exercise 1: solution
 
 ```
 version: '3'
@@ -1564,8 +1615,25 @@ $ `docker-compose up`
 ```
 
 ---
-# Try it: add a "client" container
+# Exercise 2: add a "client" container
 
+We're going to add a client container that will generate traffic to the proxy for us.
+
+- Client needs to be built from `../../ubuntu-with-curl`
+- It depends on `proxy`
+- It should run the command `sh -c "while true; do curl ???; sleep 1; done"`
+  - What address should we curl to reach the proxy?
+  - https://docs.docker.com/compose/networking/
+
+```
+$ `cd exercises/composed/with-curl-exercise`
+$ `docker-compose up`
+```
+
+(Press Ctrl-C to tear everything down.)
+
+---
+# Exercise 2: solution
 ```
 version: '3'
 
@@ -1605,7 +1673,50 @@ root@ebb0d01e63b0:/# `curl -i proxy`
 ```
 
 ---
-# Try it: sharing a volume
+# Exercise 3: sharing volumes
+
+```
+version: '3'
+
+services:
+
+  consumer:
+    image: ubuntu:16.04
+    volumes:
+      - .:/data
+    command: tail -f /data/dates
+```
+
+```
+$ `cd exercises/composed/sharing-exercise`
+$ `docker-compose up`
+```
+
+Add some content to the `dates` file
+
+---
+# Exercise 3: sharing volumes
+
+Use a producer container to generate dates.
+
+--
+
+- Add a producer container
+
+```
+producer:
+  image: busybox
+  volumes:
+    - shared:/out
+  command: sh -c "while true; do date; sleep 1; done > /out/dates"
+```
+
+- Change the consumer's volume to `- shared:/data`
+- Add a global volume called shared
+https://docs.docker.com/compose/compose-file/#volume-configuration-reference
+
+---
+# Exercise 3: solution
 
 ```
 version: '3'

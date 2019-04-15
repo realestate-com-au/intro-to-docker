@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+
+  consumer:
+    image: ubuntu:16.04
+    volumes:
+      - .:/data
+    command: tail -f /data/dates
